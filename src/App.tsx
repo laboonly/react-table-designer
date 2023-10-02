@@ -1,9 +1,9 @@
-import { Text } from './components/text/text';
+import { Home } from './home';
 
 const App = () => {
   return (
-    <div className="text-center selection:bg-green-900">
-      <Text text="App" />
+    <div>
+      <Home />
     </div>
   );
 };
