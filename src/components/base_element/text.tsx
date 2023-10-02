@@ -1,6 +1,6 @@
 import { Rnd } from 'react-rnd';
 
-const style = {
+const baseStyle = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -10,18 +10,19 @@ const style = {
 
 interface ITextProps {
   text: string;
+  style?: any;
 }
 
 export const Text: React.FC<React.PropsWithChildren<ITextProps>> = (props) => {
-  const { text } = props;
+  const { text, style } = props;
   return (
     <Rnd
-      style={style}
+      style={{ ...baseStyle, ...style }}
       default={{
         x: 0,
         y: 0,
         width: 200,
-        height: 200,
+        height: 34,
       }}
     >
       {text}
