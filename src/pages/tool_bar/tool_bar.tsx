@@ -15,7 +15,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+import { useElementStore } from '@/store';
+
 export const ToolBar = () => {
+  const increasePopulation = useElementStore(
+    (state: any) => state.increasePopulation,
+  );
   return (
     <div className="mx-[16px] flex justify-between border-b-2 border-gray-400 py-[8px]">
       <div className="flex justify-start space-x-4">
@@ -41,7 +46,7 @@ export const ToolBar = () => {
         </div>
       </div>
       <div className="flex justify-end space-x-4">
-        <Button variant="ghost">
+        <Button variant="ghost" onClick={increasePopulation}>
           <Pencil2Icon className="w-4.h mr-2" />
           Edit Layout
         </Button>
