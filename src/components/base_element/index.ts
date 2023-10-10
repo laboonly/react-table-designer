@@ -1,3 +1,4 @@
-import { Text } from './text';
+import { TextElement } from './text_element';
+import { ImageElement } from './image_element';
 
-export { Text };
+export { TextElement, ImageElement };

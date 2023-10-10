@@ -1,20 +1,10 @@
-import { Text } from '../../components/base_element/text';
+import { TextElement, ImageElement } from '../../components/base_element';
 
 export const BaseElementsContent = () => {
   return (
-    <div className="flex flex-col">
-      <Text
-        text="hello"
-        style={{
-          top: 10,
-        }}
-      />
-      <Text
-        text="yyy"
-        style={{
-          top: 50,
-        }}
-      />
+    <div className="flex flex-col space-y-4">
+      <TextElement />
+      <ImageElement />
     </div>
   );
 };

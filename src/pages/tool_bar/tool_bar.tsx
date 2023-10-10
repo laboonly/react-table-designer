@@ -18,8 +18,8 @@ import {
 import { useElementStore } from '@/store';
 
 export const ToolBar = () => {
-  const increasePopulation = useElementStore(
-    (state: any) => state.increasePopulation,
+  const changeElmentShow = useElementStore(
+    (state: any) => state.changeElmentShow,
   );
   return (
     <div className="mx-[16px] flex justify-between border-b-2 border-gray-400 py-[8px]">
@@ -46,7 +46,7 @@ export const ToolBar = () => {
         </div>
       </div>
       <div className="flex justify-end space-x-4">
-        <Button variant="ghost" onClick={increasePopulation}>
+        <Button variant="ghost" onClick={changeElmentShow}>
           <Pencil2Icon className="w-4.h mr-2" />
           Edit Layout
         </Button>
