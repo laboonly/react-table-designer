@@ -6,12 +6,12 @@ export const useElementStore = create((set) => ({
     set((state: any) => ({ elementShow: !state.elementShow })),
 }));
 
-enum IElementType {
+export enum IElementType {
   Text = 'Text',
-  Imag = 'Imag',
+  Image = 'Image',
 }
 
-interface IElement {
+interface IBaseElement {
   type: IElementType;
   x: number;
   y: number;
@@ -20,11 +20,43 @@ interface IElement {
   text?: string;
 }
 
+export const defalutTextElement: IBaseElement = {
+  type: IElementType.Text,
+  x: 0,
+  y: 0,
+  width: 100,
+  height: 100,
+  text: 'Text',
+};
+
+export const defalutImageElement: IBaseElement = {
+  type: IElementType.Image,
+  x: 0,
+  y: 0,
+  width: 100,
+  height: 100,
+};
+
+export const defalutBaseElements: IBaseElement[] = [
+  defalutTextElement,
+  defalutImageElement,
+];
+
 export const useDragElementStore = create((set) => ({
-  dragList: [] as IElement[],
-  addDragList: (element: IElement) =>
+  dragList: [] as IBaseElement[],
+  addDragElement: (element: IBaseElement, index: number) =>
     set((state: any) => {
-      const list = state.dragList.push(element);
-      return { dragList: list };
-    }),
+      state.dragList.splice(index, 0);
+      return { dragList: state.dragList };
+    }, true),
+  initDargList: () => set({ dragList: defalutBaseElements }),
+}));
+
+export const useDropElementListStore = create((set) => ({
+  dropList: [] as IBaseElement[],
+  addDropElement: (element: IBaseElement) =>
+    set((state: any) => {
+      state.dropList.push(element);
+      return { dropList: state.dropList };
+    }, true),
 }));
