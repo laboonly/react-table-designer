@@ -18,6 +18,8 @@ interface IBaseElement {
   width: number;
   height: number;
   text?: string;
+  src?: string;
+  uuid?: string;
 }
 
 export const defalutTextElement: IBaseElement = {
@@ -37,11 +39,13 @@ export const defalutImageElement: IBaseElement = {
   height: 100,
 };
 
+// 默认元素列表
 export const defalutBaseElements: IBaseElement[] = [
   defalutTextElement,
   defalutImageElement,
 ];
 
+// 拖拽元素列表
 export const useDragElementStore = create((set) => ({
   dragList: [] as IBaseElement[],
   addDragElement: (element: IBaseElement, index: number) =>
@@ -52,11 +56,44 @@ export const useDragElementStore = create((set) => ({
   initDargList: () => set({ dragList: defalutBaseElements }),
 }));
 
+// 打印元素列表
 export const useDropElementListStore = create((set) => ({
   dropList: [] as IBaseElement[],
   addDropElement: (element: IBaseElement) =>
     set((state: any) => {
       state.dropList.push(element);
       return { dropList: state.dropList };
-    }, true),
+    }),
+  updateDropElement: (elementInfo: IBaseElement) =>
+    set((state: any) => {
+      let index = 0;
+      state.dropList.forEach((element: IBaseElement, i: number) => {
+        if (element.uuid === elementInfo.uuid) {
+          index = i;
+        }
+      });
+      state.dropList[index] = elementInfo;
+      console.log('state.dropList----->', state.dropList);
+      return { dropList: state.dropList };
+    }),
+}));
+
+interface IElementStyles {
+  width: number;
+  height: number;
+  color: string;
+}
+
+export interface IElementInfo extends IBaseElement {
+  isEdit: boolean;
+  uuid: string;
+  type: IElementType;
+  styles?: IElementStyles;
+}
+
+// 选中打印元素信息
+export const useDropElementInfoStore = create((set) => ({
+  dropElementInfo: {} as IElementInfo,
+  changeDropElementInfo: (elementInfo: IElementInfo) =>
+    set({ dropElementInfo: elementInfo }),
 }));

@@ -4,6 +4,7 @@ import { useDrag } from 'react-dnd';
 import { ItemTypes } from '@/types/constants';
 import { useState } from 'react';
 import { defalutTextElement, useDropElementListStore } from '@/store';
+import { v4 as uuidv4 } from 'uuid';
 
 interface ITextProps {
   index: number;
@@ -14,7 +15,7 @@ interface ITextProps {
 export const TextElement: React.FC<React.PropsWithChildren<ITextProps>> = (
   props,
 ) => {
-  const { text, index, style } = props;
+  const { text, style } = props;
   const [offsetX, setOffsetX] = useState(0);
   const [offsetY, setOffsetY] = useState(0);
 
@@ -34,14 +35,12 @@ export const TextElement: React.FC<React.PropsWithChildren<ITextProps>> = (
             top = dropRes.top;
             left = dropRes.left;
           }
-          // setOffsetX((offsetX) => offsetX + left);
-          // setOffsetY((offsetY) => offsetY + top);
-
           // 选择性添加元素
           addDropElement({
             ...defalutTextElement,
             x: left,
             y: top,
+            uuid: uuidv4(),
           });
         } else {
           setOffsetX(0);

@@ -1,6 +1,6 @@
 import { ItemTypes } from '@/types/constants';
 import { useDrop } from 'react-dnd';
-import { useDropElementListStore, IElementType } from '@/store';
+import { useDropElementListStore, IElementType, IBaseElement } from '@/store';
 import { TextPrintElement } from '@/components/print_element';
 
 export const Print = () => {
@@ -27,7 +27,7 @@ export const Print = () => {
   );
 
   const dropList = useDropElementListStore((state: any) => state.dropList);
-  console.log('dropList--->', dropList);
+  console.log('dropList2----->', dropList);
   return (
     <div className="container flex justify-center p-[20px]">
       <div
@@ -38,22 +38,11 @@ export const Print = () => {
         className="print-content w-[1200px] bg-[#fff] shadow-lg"
       >
         {dropList.length > 0 &&
-          dropList.map((item: any, index: number) => {
+          dropList.map((item: IBaseElement) => {
             if (item.type === IElementType.Text) {
-              return (
-                <TextPrintElement
-                  key={index}
-                  text={item.text}
-                  styles={{
-                    position: 'relative',
-                    top: item.y,
-                    left: item.x,
-                    zIndex: 100,
-                  }}
-                />
-              );
+              return <TextPrintElement key={item.uuid} {...item} />;
             } else if (item.type === IElementType.Image) {
-              return <div key={index}>Image</div>;
+              return <div key={item.uuid}>Image</div>;
             }
           })}
       </div>
