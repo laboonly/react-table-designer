@@ -1,79 +1,107 @@
 import {
-  useDropElementInfoStore,
-  IElementInfo,
-  useDropElementListStore,
+  useSelectElementInfoStore,
+  IBaseElementType,
+  usePrintElementListStore,
+  useSettingModalStore,
 } from '@/store';
-import { useDrag } from 'react-dnd';
-import { ItemTypes } from '@/types/constants';
+import { Textarea } from '@/components/ui/textarea';
+import { Rnd } from 'react-rnd';
+
+interface ITextPropsType {
+  elementInfo: IBaseElementType;
+}
 
 export const TextPrintElement: React.FC<
-  React.PropsWithChildren<IElementInfo>
+  React.PropsWithChildren<ITextPropsType>
 > = (props) => {
-  const { text, x, y, uuid, type } = props;
-  const { dropElementInfo, changeDropElementInfo } = useDropElementInfoStore(
+  const { elementInfo } = props;
+  const { content, styles, uuid } = elementInfo;
+  const { width = 200, height = 60, top, left } = styles;
+
+  const { selectElementInfo, changeSelectElementInfo } =
+    useSelectElementInfoStore((state: any) => state);
+
+  const settingModal = useSettingModalStore((state: any) => state.settingModal);
+  const { updatePrintElement } = usePrintElementListStore(
     (state: any) => state,
   );
-
-  const { updateDropElement } = useDropElementListStore((state: any) => state);
-
-  const [{ isDragging }, drag] = useDrag(
-    () => ({
-      type: ItemTypes.KNIGHT,
-      end(item, monitor) {
-        try {
-          let top = 0,
-            left = 0;
-          if (monitor.didDrop()) {
-            const dropRes = monitor.getDropResult() as any; //获取拖拽对象所处容器的数据
-            if (dropRes) {
-              top = dropRes.top;
-              left = dropRes.left;
-            }
-            // 选择性添加元素
-            updateDropElement({
-              type,
-              uuid,
-              text,
-              x: x + left,
-              y: y + top,
-            });
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      },
-      collect: (monitor) => ({
-        isDragging: !!monitor.isDragging(),
-      }),
-    }),
-    [],
-  );
+  const isElementEdit =
+    selectElementInfo.uuid === uuid && selectElementInfo.isEdit;
 
   const setEditingElement = () => {
-    changeDropElementInfo({
-      text,
-      x,
-      y,
-      uuid,
+    changeSelectElementInfo({
+      ...elementInfo,
       isEdit: true,
     });
   };
 
-  const isElementEdit = dropElementInfo.uuid === uuid && dropElementInfo.isEdit;
+  const valueChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    updatePrintElement({
+      ...elementInfo,
+      content: e.target.value,
+    });
+    changeSelectElementInfo({
+      ...elementInfo,
+      isEdit: true,
+      content: e.target.value,
+    });
+  };
 
   return (
-    <div
-      ref={drag}
+    <Rnd
       id={uuid}
+      default={{ x: left as number, y: top as number, width, height }}
+      size={{ width: (width as number) + 10, height: (height as number) + 10 }}
+      disableDragging={selectElementInfo.isEdit}
+      position={{ x: left as number, y: top as number }}
+      onDragStop={(_, d) => {
+        updatePrintElement({
+          ...elementInfo,
+          styles: {
+            ...styles,
+            left: d.x,
+            top: d.y,
+          },
+        });
+      }}
+      onResizeStop={(e, direction, ref, delta, position) => {
+        updatePrintElement({
+          ...elementInfo,
+          styles: {
+            ...styles,
+            width: parseInt(ref.style.width),
+            height: parseInt(ref.style.height),
+          },
+        });
+      }}
       style={{
-        position: 'relative',
-        top: y,
-        left: x,
-        zIndex: 100,
+        border: settingModal ? '1px solid #ddd' : 'none',
+        // padding: '10px 10px',
+        cursor: 'move',
+        wordWrap: 'break-word',
+        textAlign: 'left',
+        color: styles.color,
+        fontSize: styles.fontSize,
       }}
       onClick={setEditingElement}
     >
-      {isElementEdit ? <input type="text" value={text} /> : <p>{text}</p>}
-    </div>
+      {/* <div
+        style={{
+          width: '100%',
+          height: '100%',
+        }}
+      > */}
+      {isElementEdit ? (
+        <Textarea
+          style={{ padding: '0px 0px', fontSize: styles.fontSize }}
+          value={content}
+          onChange={(e) => valueChange(e)}
+          className="h-full w-full rounded-none"
+        />
+      ) : (
+        <p>{content}</p>
+      )}
+      {/* </div> */}
+    </Rnd>
   );
 };

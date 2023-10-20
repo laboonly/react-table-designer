@@ -1,39 +1,33 @@
 import { ImageIcon } from '@radix-ui/react-icons';
 import { Button } from '@/components/ui/button';
 import { useDrag } from 'react-dnd';
-import { ItemTypes } from '@/types/constants';
-import { useDropElementListStore, defalutImageElement } from '@/store';
+import { ItemTypes } from '@/store/constants';
+import { usePrintElementListStore, defalutImageElement } from '@/store';
 
-interface IImageProps {
-  index: number;
-}
-
-export const ImageElement: React.FC<React.PropsWithChildren<IImageProps>> = ({
-  index,
-}) => {
-  const addDropElement = useDropElementListStore(
+export const ImageElement: React.FC<React.PropsWithChildren> = () => {
+  const addPrintElement = usePrintElementListStore(
     (state: any) => state.addDropElement,
   );
 
-  const [{ isDragging }, drag] = useDrag(
+  const [, drag] = useDrag(
     () => ({
       type: ItemTypes.KNIGHT,
       end(item, monitor) {
-        console.log('item---->', item, monitor.didDrop());
         let top = 0,
           left = 0;
         if (monitor.didDrop()) {
           const dropRes = monitor.getDropResult() as any; //获取拖拽对象所处容器的数据
-          console.log('dropRes---->', dropRes);
           if (dropRes) {
             top = dropRes.top;
             left = dropRes.left;
           }
-
-          addDropElement({
+          addPrintElement({
             ...defalutImageElement,
-            x: left,
-            y: top,
+            styles: {
+              ...defalutImageElement.styles,
+              width: left,
+              height: top,
+            },
           });
         }
       },

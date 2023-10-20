@@ -1,13 +1,12 @@
 import { TextIcon } from '@radix-ui/react-icons';
 import { Button } from '@/components/ui/button';
 import { useDrag } from 'react-dnd';
-import { ItemTypes } from '@/types/constants';
+import { ItemTypes } from '@/store/constants';
 import { useState } from 'react';
-import { defalutTextElement, useDropElementListStore } from '@/store';
+import { defalutTextElement, usePrintElementListStore } from '@/store';
 import { v4 as uuidv4 } from 'uuid';
 
 interface ITextProps {
-  index: number;
   text?: string;
   style?: any;
 }
@@ -19,14 +18,12 @@ export const TextElement: React.FC<React.PropsWithChildren<ITextProps>> = (
   const [offsetX, setOffsetX] = useState(0);
   const [offsetY, setOffsetY] = useState(0);
 
-  const addDropElement = useDropElementListStore(
-    (state: any) => state.addDropElement,
-  );
+  const { addPrintElement } = usePrintElementListStore((state: any) => state);
 
-  const [{ isDragging }, drag] = useDrag(
+  const [, drag] = useDrag(
     () => ({
       type: ItemTypes.KNIGHT,
-      end(item, monitor) {
+      end(_, monitor) {
         let top = 0,
           left = 0;
         if (monitor.didDrop()) {
@@ -36,10 +33,13 @@ export const TextElement: React.FC<React.PropsWithChildren<ITextProps>> = (
             left = dropRes.left;
           }
           // 选择性添加元素
-          addDropElement({
+          addPrintElement({
             ...defalutTextElement,
-            x: left,
-            y: top,
+            styles: {
+              ...defalutTextElement.styles,
+              left: left,
+              top: top,
+            },
             uuid: uuidv4(),
           });
         } else {

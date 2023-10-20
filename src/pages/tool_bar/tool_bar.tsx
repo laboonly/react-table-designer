@@ -15,12 +15,24 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { useElementStore } from '@/store';
+import { useSettingModalStore, useSelectElementInfoStore } from '@/store';
 
 export const ToolBar = () => {
-  const changeElmentShow = useElementStore(
-    (state: any) => state.changeElmentShow,
+  const { settingModal, changeSettingModal } = useSettingModalStore(
+    (state: any) => state,
   );
+  const { selectElementInfo, changeSelectElementInfo } =
+    useSelectElementInfoStore((state: any) => state);
+
+  const setSeettingModal = () => {
+    changeSettingModal();
+
+    changeSelectElementInfo({
+      ...selectElementInfo,
+      isEdit: !settingModal,
+    });
+  };
+
   return (
     <div className="mx-[16px] flex justify-between border-b-2 border-gray-400 py-[8px]">
       <div className="flex justify-start space-x-4">
@@ -46,7 +58,7 @@ export const ToolBar = () => {
         </div>
       </div>
       <div className="flex justify-end space-x-4">
-        <Button variant="ghost" onClick={changeElmentShow}>
+        <Button variant="ghost" onClick={() => setSeettingModal()}>
           <Pencil2Icon className="w-4.h mr-2" />
           Edit Layout
         </Button>
