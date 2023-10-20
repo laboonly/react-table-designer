@@ -13,3 +13,5 @@ export const textElementInputList = [
   'fontWeight',
   'lineHeight',
 ];
+
+export const ImageElementInputList = ['src', 'width', 'height', 'left', 'top'];

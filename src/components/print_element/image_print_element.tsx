@@ -4,18 +4,18 @@ import {
   usePrintElementListStore,
   useSettingModalStore,
 } from '@/store';
-import { Textarea } from '@/components/ui/textarea';
 import { Rnd } from 'react-rnd';
+import { Textarea } from '@/components/ui/textarea';
 
-interface ITextPropsType {
+interface IImagePropsType {
   elementInfo: IBaseElementType;
 }
 
-export const TextPrintElement: React.FC<
-  React.PropsWithChildren<ITextPropsType>
+export const ImagePrintElement: React.FC<
+  React.PropsWithChildren<IImagePropsType>
 > = (props) => {
   const { elementInfo } = props;
-  const { content, styles, uuid } = elementInfo;
+  const { src, styles, uuid } = elementInfo;
   const { width = 200, height = 60, top, left } = styles;
 
   const { selectElementInfo, changeSelectElementInfo } =
@@ -38,12 +38,12 @@ export const TextPrintElement: React.FC<
   const valueChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     updatePrintElement({
       ...elementInfo,
-      content: e.target.value,
+      src: e.target.value,
     });
     changeSelectElementInfo({
       ...elementInfo,
       isEdit: true,
-      content: e.target.value,
+      src: e.target.value,
     });
   };
 
@@ -52,7 +52,7 @@ export const TextPrintElement: React.FC<
       id={uuid}
       default={{ x: left as number, y: top as number, width, height }}
       size={{ width: (width as number) + 10, height: (height as number) + 10 }}
-      disableDragging={selectElementInfo.isEdit}
+      disableDragging={isElementEdit}
       position={{ x: left as number, y: top as number }}
       onDragStop={(_, d) => {
         updatePrintElement({
@@ -78,23 +78,22 @@ export const TextPrintElement: React.FC<
         border: settingModal ? '1px solid #ddd' : 'none',
         // padding: '10px 10px',
         cursor: 'move',
-        wordWrap: 'break-word',
-        textAlign: 'left',
-        color: styles.color,
-        fontSize: styles.fontSize,
       }}
       onClick={setEditingElement}
     >
-      {isElementEdit ? (
+      {isElementEdit && (
         <Textarea
-          style={{ padding: '0px 0px', fontSize: styles.fontSize }}
-          value={content}
+          style={{
+            position: 'absolute',
+            padding: '0px 0px',
+            fontSize: styles.fontSize,
+          }}
+          value={src}
           onChange={(e) => valueChange(e)}
           className="h-full w-full rounded-none"
         />
-      ) : (
-        <p>{content}</p>
       )}
+      <img className="h-full w-full rounded-none" src={src} />
     </Rnd>
   );
 };

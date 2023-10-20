@@ -60,7 +60,7 @@ export const ToolBar = () => {
       <div className="flex justify-end space-x-4">
         <Button variant="ghost" onClick={() => setSeettingModal()}>
           <Pencil2Icon className="w-4.h mr-2" />
-          Edit Layout
+          {settingModal ? 'Cancel Edit Layput' : 'Edit Layout'}
         </Button>
         <Button variant="ghost">
           <PlayIcon className="w-4.h mr-2" />

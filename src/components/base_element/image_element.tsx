@@ -3,16 +3,20 @@ import { Button } from '@/components/ui/button';
 import { useDrag } from 'react-dnd';
 import { ItemTypes } from '@/store/constants';
 import { usePrintElementListStore, defalutImageElement } from '@/store';
+import { v4 as uuidv4 } from 'uuid';
+import { useState } from 'react';
 
 export const ImageElement: React.FC<React.PropsWithChildren> = () => {
   const addPrintElement = usePrintElementListStore(
-    (state: any) => state.addDropElement,
+    (state: any) => state.addPrintElement,
   );
+  const [offsetX, setOffsetX] = useState(0);
+  const [offsetY, setOffsetY] = useState(0);
 
   const [, drag] = useDrag(
     () => ({
       type: ItemTypes.KNIGHT,
-      end(item, monitor) {
+      end(_, monitor) {
         let top = 0,
           left = 0;
         if (monitor.didDrop()) {
@@ -25,10 +29,14 @@ export const ImageElement: React.FC<React.PropsWithChildren> = () => {
             ...defalutImageElement,
             styles: {
               ...defalutImageElement.styles,
-              width: left,
-              height: top,
+              left: left,
+              top: top,
             },
+            uuid: uuidv4(),
           });
+        } else {
+          setOffsetX(0);
+          setOffsetY(0);
         }
       },
       collect: (monitor) => ({
@@ -43,6 +51,8 @@ export const ImageElement: React.FC<React.PropsWithChildren> = () => {
       ref={drag}
       id="imageElementId"
       style={{
+        top: `${offsetY}px`,
+        left: `${offsetX}px`,
         position: 'relative',
         zIndex: 100,
       }}

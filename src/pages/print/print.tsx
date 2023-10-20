@@ -7,7 +7,10 @@ import {
   useSelectElementInfoStore,
   useSheetShow,
 } from '@/store';
-import { TextPrintElement } from '@/components/print_element';
+import {
+  TextPrintElement,
+  ImagePrintElement,
+} from '@/components/print_element';
 
 const findAttributeId: any = (element: any) => {
   // 如果当前元素包含了所需属性，返回该属性的值
@@ -72,7 +75,7 @@ export const Print = () => {
             if (item.type === IElementType.Text) {
               return <TextPrintElement key={item.uuid} elementInfo={item} />;
             } else if (item.type === IElementType.Image) {
-              return <div key={item.uuid}>Image</div>;
+              return <ImagePrintElement key={item.uuid} elementInfo={item} />;
             }
           })}
       </div>

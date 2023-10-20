@@ -11,24 +11,28 @@ export const Home = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="flex justify-start bg-gray-100">
-        {settingModal && (
-          <div className="border-r-1 flex w-[280px] flex-col border-gray-700  bg-[#fff] px-2 py-10">
-            <div className="h-[300px]">
-              <h2 className="mb-4">Static elements</h2>
-              <BaseElementsContent />
-            </div>
-            <div className="flex flex-col">
-              <h2 className="mb-4">Fields from your table data</h2>
-            </div>
-          </div>
-        )}
-        <div className="grow">
+      <>
+        <div className="fixed z-50 w-full bg-[#fff]">
           <ToolBar />
-          <Print />
         </div>
-        {settingModal && <StyleSetting />}
-      </div>
+        <div className="flex  justify-start bg-gray-100 pt-[54px]">
+          {settingModal && (
+            <div className="border-r-1 flex w-[280px] min-w-[200px] flex-col  border-gray-700 bg-[#fff] px-2 py-[20px]">
+              <div className="h-[300px]">
+                <h2 className="mb-4">Static elements</h2>
+                <BaseElementsContent />
+              </div>
+              <div className="flex flex-col">
+                <h2 className="mb-4">Fields from your table data</h2>
+              </div>
+            </div>
+          )}
+          <div className="grow">
+            <Print />
+          </div>
+          {settingModal && <StyleSetting />}
+        </div>
+      </>
     </DndProvider>
   );
 };

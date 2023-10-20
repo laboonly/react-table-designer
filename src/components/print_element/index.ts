@@ -1,3 +1,2 @@
-import { TextPrintElement } from './text_print_element';
-
-export { TextPrintElement };
+export * from './text_print_element';
+export * from './image_print_element';

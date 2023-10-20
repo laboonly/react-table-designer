@@ -29,9 +29,10 @@ export const defalutImageElement: IBaseElementType = {
   styles: {
     left: 0,
     top: 0,
-    width: 50,
-    height: 50,
+    width: 100,
+    height: 100,
   },
+  src: 'https://t7.baidu.com/it/u=1595072465,3644073269&fm=193&f=GIF',
 };
 
 // 默认元素列表
