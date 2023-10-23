@@ -18,15 +18,14 @@ export const ImagePrintElement: React.FC<
   const { src, styles, uuid } = elementInfo;
   const { width = 200, height = 60, top, left } = styles;
 
-  const { selectElementInfo, changeSelectElementInfo } =
-    useSelectElementInfoStore((state: any) => state);
+  const { changeSelectElementInfo } = useSelectElementInfoStore(
+    (state: any) => state,
+  );
 
   const settingModal = useSettingModalStore((state: any) => state.settingModal);
   const { updatePrintElement } = usePrintElementListStore(
     (state: any) => state,
   );
-  const isElementEdit =
-    selectElementInfo.uuid === uuid && selectElementInfo.isEdit;
 
   const setEditingElement = () => {
     changeSelectElementInfo({
@@ -35,24 +34,11 @@ export const ImagePrintElement: React.FC<
     });
   };
 
-  const valueChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    updatePrintElement({
-      ...elementInfo,
-      src: e.target.value,
-    });
-    changeSelectElementInfo({
-      ...elementInfo,
-      isEdit: true,
-      src: e.target.value,
-    });
-  };
-
   return (
     <Rnd
       id={uuid}
       default={{ x: left as number, y: top as number, width, height }}
       size={{ width: (width as number) + 10, height: (height as number) + 10 }}
-      disableDragging={isElementEdit}
       position={{ x: left as number, y: top as number }}
       onDragStop={(_, d) => {
         updatePrintElement({
@@ -81,18 +67,6 @@ export const ImagePrintElement: React.FC<
       }}
       onClick={setEditingElement}
     >
-      {isElementEdit && (
-        <Textarea
-          style={{
-            position: 'absolute',
-            padding: '0px 0px',
-            fontSize: styles.fontSize,
-          }}
-          value={src}
-          onChange={(e) => valueChange(e)}
-          className="h-full w-full rounded-none"
-        />
-      )}
       <img className="h-full w-full rounded-none" src={src} />
     </Rnd>
   );

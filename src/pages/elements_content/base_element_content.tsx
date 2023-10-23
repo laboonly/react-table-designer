@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { TextElement, ImageElement } from '../../components/base_element';
 import { useDragElementStore, IElementType } from '../../store';
+import { sourceElementTypes } from '@/store/constants';
 
 export const BaseElementsContent = () => {
   const dragList = useDragElementStore((state: any) => state.dragList);
@@ -14,7 +15,13 @@ export const BaseElementsContent = () => {
     <div className="flex flex-col space-y-4">
       {dragList.map((item: any, index: number) => {
         if (item.type === IElementType.Text) {
-          return <TextElement key={index} text={item.text} />;
+          return (
+            <TextElement
+              key={index}
+              content={item.content}
+              sourceType={sourceElementTypes.Base}
+            />
+          );
         } else if (item.type === IElementType.Image) {
           return <ImageElement key={index} />;
         }

@@ -8,16 +8,18 @@ import {
 } from '@radix-ui/react-icons';
 
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+  useSettingModalStore,
+  useSelectElementInfoStore,
+  useTableRecordData,
+} from '@/store';
+import ReactToPrint from 'react-to-print';
 
-import { useSettingModalStore, useSelectElementInfoStore } from '@/store';
+interface IToolBarProps {
+  printRef: any;
+}
 
-export const ToolBar = () => {
+export const ToolBar = (props: IToolBarProps) => {
+  const { printRef } = props;
   const { settingModal, changeSettingModal } = useSettingModalStore(
     (state: any) => state,
   );
@@ -33,26 +35,43 @@ export const ToolBar = () => {
     });
   };
 
+  const { recordIndex, setRecordIndex, recordsTotal } = useTableRecordData(
+    (state: any) => state,
+  );
+
+  const canNext = recordIndex < recordsTotal - 1;
+  const canPre = recordIndex > 0;
+
+  const nextRecord = () => {
+    if (recordIndex < recordsTotal - 1) {
+      setRecordIndex(recordIndex + 1);
+    }
+  };
+
+  const preRecord = () => {
+    if (recordIndex > 0) {
+      setRecordIndex(recordIndex - 1);
+    }
+  };
+
   return (
     <div className="mx-[16px] flex justify-between border-b-2 border-gray-400 py-[8px]">
       <div className="flex justify-start space-x-4">
-        <Select>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="View" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="light">base View</SelectItem>
-            <SelectItem value="dark">Grid View</SelectItem>
-            <SelectItem value="system">Gantt View</SelectItem>
-          </SelectContent>
-        </Select>
         <div className="flex justify-start">
-          <Button variant="ghost">
+          <Button
+            variant="ghost"
+            disabled={!canPre}
+            onClick={() => preRecord()}
+          >
             <ChevronLeftIcon className="w-4.h" />
-            Next Rcord
+            Previous Record
           </Button>
-          <Button variant="ghost">
-            Next Rcord
+          <Button
+            variant="ghost"
+            disabled={!canNext}
+            onClick={() => nextRecord()}
+          >
+            Next Record
             <ChevronRightIcon className="w-4.h" />
           </Button>
         </div>
@@ -66,10 +85,18 @@ export const ToolBar = () => {
           <PlayIcon className="w-4.h mr-2" />
           Present
         </Button>
-        <Button variant="ghost">
-          <CameraIcon className="w-4.h mr-2" />
-          Print
-        </Button>
+        <ReactToPrint
+          trigger={() => (
+            <Button variant="ghost">
+              <CameraIcon
+                className="w-4.h mr-2"
+                // onClick={() => innerHtmlPrint()}
+              />
+              Print
+            </Button>
+          )}
+          content={() => printRef.current}
+        ></ReactToPrint>
       </div>
     </div>
   );

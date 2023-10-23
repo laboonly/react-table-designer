@@ -1,3 +1,5 @@
+import { sourceElementTypes } from './constants';
+
 export enum IElementType {
   Text = 'Text',
   Image = 'Image',
@@ -10,6 +12,8 @@ export interface IBaseElementType {
   src?: string;
   uuid?: string;
   isEdit?: boolean;
+  sourceType?: sourceElementTypes;
+  fieldId?: string;
 }
 
 export const defalutTextElement: IBaseElementType = {

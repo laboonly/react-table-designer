@@ -3,6 +3,9 @@ import {
   IBaseElementType,
   usePrintElementListStore,
   useSettingModalStore,
+  sourceElementTypes,
+  usePrintRecordElementListStore,
+  useTableRecordData,
 } from '@/store';
 import { Textarea } from '@/components/ui/textarea';
 import { Rnd } from 'react-rnd';
@@ -15,7 +18,7 @@ export const TextPrintElement: React.FC<
   React.PropsWithChildren<ITextPropsType>
 > = (props) => {
   const { elementInfo } = props;
-  const { content, styles, uuid } = elementInfo;
+  const { content, styles, uuid, sourceType, fieldId } = elementInfo;
   const { width = 200, height = 60, top, left } = styles;
 
   const { selectElementInfo, changeSelectElementInfo } =
@@ -25,6 +28,13 @@ export const TextPrintElement: React.FC<
   const { updatePrintElement } = usePrintElementListStore(
     (state: any) => state,
   );
+
+  const { updatePrintRecordElement } = usePrintRecordElementListStore(
+    (state: any) => state,
+  );
+
+  const { recordIndex, records } = useTableRecordData((state: any) => state);
+
   const isElementEdit =
     selectElementInfo.uuid === uuid && selectElementInfo.isEdit;
 
@@ -55,24 +65,46 @@ export const TextPrintElement: React.FC<
       disableDragging={selectElementInfo.isEdit}
       position={{ x: left as number, y: top as number }}
       onDragStop={(_, d) => {
-        updatePrintElement({
-          ...elementInfo,
-          styles: {
-            ...styles,
-            left: d.x,
-            top: d.y,
-          },
-        });
+        if (sourceType === sourceElementTypes.Base) {
+          updatePrintElement({
+            ...elementInfo,
+            styles: {
+              ...styles,
+              left: d.x,
+              top: d.y,
+            },
+          });
+        } else {
+          updatePrintRecordElement({
+            ...elementInfo,
+            styles: {
+              ...styles,
+              left: d.x,
+              top: d.y,
+            },
+          });
+        }
       }}
       onResizeStop={(e, direction, ref, delta, position) => {
-        updatePrintElement({
-          ...elementInfo,
-          styles: {
-            ...styles,
-            width: parseInt(ref.style.width),
-            height: parseInt(ref.style.height),
-          },
-        });
+        if (sourceType === sourceElementTypes.Base) {
+          updatePrintElement({
+            ...elementInfo,
+            styles: {
+              ...styles,
+              width: parseInt(ref.style.width),
+              height: parseInt(ref.style.height),
+            },
+          });
+        } else {
+          updatePrintRecordElement({
+            ...elementInfo,
+            styles: {
+              ...styles,
+              width: parseInt(ref.style.width),
+              height: parseInt(ref.style.height),
+            },
+          });
+        }
       }}
       style={{
         border: settingModal ? '1px solid #ddd' : 'none',
@@ -85,15 +117,21 @@ export const TextPrintElement: React.FC<
       }}
       onClick={setEditingElement}
     >
-      {isElementEdit ? (
-        <Textarea
-          style={{ padding: '0px 0px', fontSize: styles.fontSize }}
-          value={content}
-          onChange={(e) => valueChange(e)}
-          className="h-full w-full rounded-none"
-        />
+      {sourceType !== sourceElementTypes.Table ? (
+        <>
+          {isElementEdit ? (
+            <Textarea
+              style={{ padding: '0px 0px', fontSize: styles.fontSize }}
+              value={content}
+              onChange={(e) => valueChange(e)}
+              className="h-full w-full rounded-none"
+            />
+          ) : (
+            <p>{content}</p>
+          )}
+        </>
       ) : (
-        <p>{content}</p>
+        fieldId && <p>{records[recordIndex].fields[fieldId]}</p>
       )}
     </Rnd>
   );

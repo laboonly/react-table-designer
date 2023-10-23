@@ -6,6 +6,7 @@ import {
   IBaseElementType,
   useSelectElementInfoStore,
   useSheetShow,
+  usePrintRecordElementListStore,
 } from '@/store';
 import {
   TextPrintElement,
@@ -27,7 +28,14 @@ const findAttributeId: any = (element: any) => {
   }
 };
 
-export const Print = () => {
+interface IPrintPropsType {
+  printRef: React.LegacyRef<HTMLDivElement> | undefined;
+}
+
+export const Print: React.FC<React.PropsWithChildren<IPrintPropsType>> = (
+  props,
+) => {
+  const { printRef } = props;
   const [, drop] = useDrop(
     () => ({
       accept: ItemTypes.KNIGHT,
@@ -52,26 +60,39 @@ export const Print = () => {
   const { selectElementInfo, changeSelectElementInfo } =
     useSelectElementInfoStore((state: any) => state);
 
+  const { printRecordList } = usePrintRecordElementListStore(
+    (state: any) => state,
+  );
+
   const initEditElement = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const tagetId = findAttributeId(e.target);
-    if (!tagetId || tagetId === 'root') {
+    const targetId = findAttributeId(e.target);
+    if (!targetId || targetId === 'root' || targetId === 'print') {
       changeSelectElementInfo({ ...selectElementInfo, isEdit: false });
       closeSheet();
     }
   };
 
   return (
-    <div className="container flex justify-center p-[20px]">
+    <div className="container flex justify-center p-[20px]" ref={drop}>
       <div
-        ref={drop}
+        id="print"
+        ref={printRef}
         style={{
           position: 'relative',
         }}
-        className="print-content w-[1200px] bg-[#fff] shadow-lg"
+        className="print-content h-[1627px] w-[1150px]  bg-[#fff]"
         onClick={(e) => initEditElement(e)}
       >
         {printList.length > 0 &&
           printList.map((item: IBaseElementType) => {
+            if (item.type === IElementType.Text) {
+              return <TextPrintElement key={item.uuid} elementInfo={item} />;
+            } else if (item.type === IElementType.Image) {
+              return <ImagePrintElement key={item.uuid} elementInfo={item} />;
+            }
+          })}
+        {printRecordList.length > 0 &&
+          printRecordList.map((item: IBaseElementType) => {
             if (item.type === IElementType.Text) {
               return <TextPrintElement key={item.uuid} elementInfo={item} />;
             } else if (item.type === IElementType.Image) {

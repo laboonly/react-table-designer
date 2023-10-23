@@ -2,16 +2,21 @@ import { ImageIcon } from '@radix-ui/react-icons';
 import { Button } from '@/components/ui/button';
 import { useDrag } from 'react-dnd';
 import { ItemTypes } from '@/store/constants';
-import { usePrintElementListStore, defalutImageElement } from '@/store';
+import {
+  usePrintElementListStore,
+  defalutImageElement,
+  usePrintAreaPosition,
+} from '@/store';
 import { v4 as uuidv4 } from 'uuid';
-import { useState } from 'react';
+import { useRef } from 'react';
 
 export const ImageElement: React.FC<React.PropsWithChildren> = () => {
   const addPrintElement = usePrintElementListStore(
     (state: any) => state.addPrintElement,
   );
-  const [offsetX, setOffsetX] = useState(0);
-  const [offsetY, setOffsetY] = useState(0);
+  const elementRef = useRef<HTMLDivElement>(null);
+
+  const position = usePrintAreaPosition((state: any) => state.position);
 
   const [, drag] = useDrag(
     () => ({
@@ -25,18 +30,21 @@ export const ImageElement: React.FC<React.PropsWithChildren> = () => {
             top = dropRes.top;
             left = dropRes.left;
           }
+          const offsetX = elementRef.current?.offsetLeft
+            ? elementRef.current?.offsetLeft
+            : 0;
+          const offsetY = elementRef.current?.offsetTop
+            ? elementRef.current?.offsetTop
+            : 0;
           addPrintElement({
             ...defalutImageElement,
             styles: {
               ...defalutImageElement.styles,
-              left: left,
-              top: top,
+              left: left + offsetX - position.left,
+              top: top + offsetY - position.top,
             },
             uuid: uuidv4(),
           });
-        } else {
-          setOffsetX(0);
-          setOffsetY(0);
         }
       },
       collect: (monitor) => ({
@@ -47,20 +55,20 @@ export const ImageElement: React.FC<React.PropsWithChildren> = () => {
   );
 
   return (
-    <div
-      ref={drag}
-      id="imageElementId"
-      style={{
-        top: `${offsetY}px`,
-        left: `${offsetX}px`,
-        position: 'relative',
-        zIndex: 100,
-      }}
-    >
-      <Button className="w-[100%] justify-start" variant="outline">
-        <ImageIcon className="w-4.h mr-2" />
-        Image
-      </Button>
+    <div ref={elementRef}>
+      <div
+        ref={drag}
+        id="imageElementId"
+        style={{
+          position: 'relative',
+          zIndex: 100,
+        }}
+      >
+        <Button className="w-[100%] justify-start" variant="outline">
+          <ImageIcon className="w-4.h mr-2" />
+          Image
+        </Button>
+      </div>
     </div>
   );
 };
