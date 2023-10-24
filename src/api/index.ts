@@ -5,6 +5,7 @@ export const getTableRecordsData = (tableId: string, viewId: string) => {
     params: {
       viewId: viewId,
       fieldKeyType: 'id',
+      cellFormat: 'text',
     },
   });
 };

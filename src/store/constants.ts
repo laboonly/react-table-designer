@@ -19,7 +19,12 @@ export const textElementInputList = [
   'lineHeight',
 ];
 
-export const textfeildType = ['singleLineText', 'number', 'singleSelect'];
+export const textfeildType = [
+  'singleLineText',
+  'number',
+  'singleSelect',
+  'longText',
+];
 export const imagefeildTypeMap = ['attachment'];
 
 export const ImageElementInputList = ['src', 'width', 'height', 'left', 'top'];

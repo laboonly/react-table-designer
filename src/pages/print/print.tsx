@@ -7,6 +7,7 @@ import {
   useSelectElementInfoStore,
   useSheetShow,
   usePrintRecordElementListStore,
+  useSettingModalStore,
 } from '@/store';
 import {
   TextPrintElement,
@@ -59,6 +60,7 @@ export const Print: React.FC<React.PropsWithChildren<IPrintPropsType>> = (
   const { printList } = usePrintElementListStore((state: any) => state);
   const { selectElementInfo, changeSelectElementInfo } =
     useSelectElementInfoStore((state: any) => state);
+  const { settingModal } = useSettingModalStore((state: any) => state);
 
   const { printRecordList } = usePrintRecordElementListStore(
     (state: any) => state,
@@ -77,12 +79,25 @@ export const Print: React.FC<React.PropsWithChildren<IPrintPropsType>> = (
       <div
         id="print"
         ref={printRef}
-        style={{
-          position: 'relative',
-        }}
-        className="print-content h-[1627px] w-[1150px]  bg-[#fff]"
+        className="print-content relative h-[1627px] w-[1150px]  bg-[#fff]"
         onClick={(e) => initEditElement(e)}
       >
+        {settingModal && (
+          <div
+            className="h-[1627px] w-[1150px]"
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              background:
+                'linear-gradient(90deg,rgba(0,0,0,.1) 1px,transparent 0),linear-gradient(1turn,rgba(0,0,0,.1) 1px,transparent 0)',
+              backgroundSize: '10px 10px',
+              backgroundPosition: '0 0',
+              border: 'border: 1px dashed hsla(0,0%,66.7%,.7)',
+              opacity: 1,
+            }}
+          ></div>
+        )}
         {printList.length > 0 &&
           printList.map((item: IBaseElementType) => {
             if (item.type === IElementType.Text) {
