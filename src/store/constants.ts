@@ -8,11 +8,11 @@ export enum sourceElementTypes {
 }
 
 export const textElementInputList = [
-  'content',
   'width',
   'height',
   'left',
   'top',
+  'content',
   'color',
   'fontSize',
   'fontWeight',

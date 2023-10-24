@@ -11,6 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { useMemo } from 'react';
 import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
 
 export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
   const { selectElementInfo, changeSelectElementInfo } =
@@ -62,11 +63,11 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
   };
 
   return (
-    <div className="border-r-1 flex w-[280px] min-w-[200px] flex-col  border-gray-700 bg-[#fff] px-[10px] py-[20px]">
+    <div className="border-r-1 relative flex w-[280px] min-w-[200px] flex-col  border-gray-700 bg-[#fff] px-[10px] py-[20px]">
       {selectElementInfo.uuid && (
         <>
           <h2 className="mb-4">Element Setting</h2>
-          <div>
+          <div className="grid grid-cols-2 gap-4">
             {inputList.map((item: string) => {
               switch (item) {
                 case 'content':
@@ -74,8 +75,8 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
                   if (selectElementInfo.sourceType === sourceElementTypes.Table)
                     return null;
                   return (
-                    <div key={item} className="mb-4 flex flex-col">
-                      <label className="mb-2">{item}:</label>
+                    <div key={item} className="col-span-2 mb-4 flex flex-col">
+                      <Label className="mb-2 mr-4">{item}:</Label>
                       <Textarea
                         value={selectElementInfo[item]}
                         disabled={!selectElementInfo.isEdit}
@@ -92,7 +93,7 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
                 case 'fontSize':
                   return (
                     <div key={item} className="mb-4 flex flex-col">
-                      <label className="mb-2">{item}: </label>
+                      <Label className="mb-2 mr-4">{item}: </Label>
                       <Input
                         type="number"
                         disabled={!selectElementInfo.isEdit}
@@ -111,7 +112,7 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
                 case 'color':
                   return (
                     <div key={item} className="mb-4 flex flex-col">
-                      <label className="mb-2">{item}: </label>
+                      <Label className="mb-2 mr-4">{item}: </Label>
                       <Input
                         type="color"
                         disabled={!selectElementInfo.isEdit}
@@ -127,16 +128,20 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
                       />
                     </div>
                   );
+                // case 'textAlign':
+                //   return (
+
+                //   )
               }
             })}
-            <Button
-              className="w-[100%] justify-start"
-              variant="outline"
-              onClick={() => deleteElement(selectElementInfo.uuid)}
-            >
-              Delete Element
-            </Button>
           </div>
+          <Button
+            className="bottom-0 mt-20 w-[100%] justify-start"
+            variant="outline"
+            onClick={() => deleteElement(selectElementInfo.uuid)}
+          >
+            Delete Element
+          </Button>
         </>
       )}
     </div>
