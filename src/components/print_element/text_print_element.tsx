@@ -9,6 +9,7 @@ import {
 } from '@/store';
 import { Textarea } from '@/components/ui/textarea';
 import { Rnd } from 'react-rnd';
+import { useMemo } from 'react';
 
 interface ITextPropsType {
   elementInfo: IBaseElementType;
@@ -35,8 +36,13 @@ export const TextPrintElement: React.FC<
 
   const { recordIndex, records } = useTableRecordData((state: any) => state);
 
-  const isElementEdit =
-    selectElementInfo.uuid === uuid && selectElementInfo.isEdit;
+  const isElementEdit = useMemo(() => {
+    console.log('selectElementInfo', selectElementInfo);
+    if (!selectElementInfo) {
+      return false;
+    }
+    return selectElementInfo.uuid === uuid && selectElementInfo.isEdit;
+  }, [selectElementInfo]);
 
   const setEditingElement = () => {
     changeSelectElementInfo({
@@ -62,7 +68,7 @@ export const TextPrintElement: React.FC<
       id={uuid}
       default={{ x: left as number, y: top as number, width, height }}
       size={{ width: (width as number) + 10, height: (height as number) + 10 }}
-      disableDragging={selectElementInfo.isEdit}
+      disableDragging={isElementEdit}
       position={{ x: left as number, y: top as number }}
       onDragStop={(_, d) => {
         if (sourceType === sourceElementTypes.Base) {

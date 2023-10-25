@@ -1,39 +1,11 @@
 import { TextElement } from '@/components/base_element';
 import { useTableRecordData, useTableFieldData } from '@/store';
 import { sourceElementTypes, textfeildType } from '@/store/constants';
-import { getQueryParamsString } from '@/lib/utils';
-import axios from 'axios';
-import { useEffect } from 'react';
-import { getTableRecordsData, getTablefieldsData } from '@/api';
 
 export const RecordElementContent = () => {
-  const { recordIndex, records, setTableRecordsData } = useTableRecordData(
-    (state: any) => state,
-  );
+  const { recordIndex, records } = useTableRecordData((state: any) => state);
 
-  const { fieldMap, setTableFieldData } = useTableFieldData(
-    (state: any) => state,
-  );
-
-  useEffect(() => {
-    const tableId = getQueryParamsString('tableid');
-    const viewId = getQueryParamsString('viewid');
-    if (!tableId || !viewId) return;
-    axios.defaults.headers.common['Authorization'] =
-      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzcmZ3RzdIc3NCd1giLCJpYXQiOjE2OTc3OTgyOTgsImV4cCI6MTY5OTUyNjI5OH0.cpxWVRFz0k5yF-DX5nD1LmYQyi26FXfxrfNiowA_4j8';
-    getTableRecordsData(tableId, viewId).then((res: any) => {
-      setTableRecordsData(res.data.records);
-    });
-
-    getTablefieldsData(tableId, viewId).then((res: any) => {
-      const fields = res.data;
-      const fieldMap = new Map();
-      fields.forEach((item: any) => {
-        fieldMap.set(item.id, item);
-      });
-      setTableFieldData(fieldMap);
-    });
-  }, [setTableRecordsData, setTableFieldData]);
+  const { fieldMap } = useTableFieldData((state: any) => state);
 
   return (
     <div className="flex flex-col space-y-4">
