@@ -50,13 +50,12 @@ export const TextElement: React.FC<React.PropsWithChildren<ITextProps>> = (
             : 0;
           // 选择性添加元素
           if (sourceType === sourceElementTypes.Base) {
-            console.log('elementRef', elementRef.current?.offsetLeft);
             addPrintElement({
               ...defalutTextElement,
               styles: {
                 ...defalutTextElement.styles,
-                left: left + offsetX - position.left,
-                top: top + offsetY - position.top,
+                left: left + offsetX - position.left + position.scrollLeft,
+                top: top + offsetY - position.top + position.scrollTop,
               },
               content: content,
               sourceType: sourceElementTypes.Base,
@@ -68,8 +67,8 @@ export const TextElement: React.FC<React.PropsWithChildren<ITextProps>> = (
               ...defalutTextElement,
               styles: {
                 ...defalutTextElement.styles,
-                left: left + offsetX - position.left,
-                top: top + offsetY - position.top,
+                left: left + offsetX - position.left + position.scrollLeft,
+                top: top + offsetY - position.top + position.scrollTop,
               },
               content: content,
               uuid: uuidv4(),
@@ -83,7 +82,7 @@ export const TextElement: React.FC<React.PropsWithChildren<ITextProps>> = (
         isDragging: !!monitor.isDragging(),
       }),
     }),
-    [],
+    [position],
   );
 
   return (

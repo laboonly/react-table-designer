@@ -71,7 +71,6 @@ export const useSelectElementInfoStore = create((set) => ({
   selectElementInfo: null as IBaseElementType | null,
   changeSelectElementInfo: (elementInfo: IBaseElementType) =>
     set((state: any) => {
-      console.log('selectElementInfo', elementInfo);
       return {
         selectElementInfo: { ...elementInfo },
         changeSelectElementInfo: state.changeSelectElementInfo,
@@ -180,11 +179,24 @@ export const usePrintRecordElementListStore = create(
   ),
 );
 
+interface IPrintPosition {
+  x: number;
+  y: number;
+  scrollLeft: number;
+  scrollTop: number;
+}
+
 // 打印区域的坐标
 export const usePrintAreaPosition = create((set) => ({
   position: {
     x: 0,
     y: 0,
+    scrollLeft: 0,
+    scrollTop: 0,
   },
-  setPrintAreaPosition: (position: any) => set({ position }),
+  setPrintAreaPosition: (newPosition: IPrintPosition) =>
+    set(() => {
+      console.log('newPosition---->', newPosition);
+      return { position: { ...newPosition } };
+    }),
 }));

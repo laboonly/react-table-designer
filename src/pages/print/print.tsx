@@ -75,11 +75,11 @@ export const Print: React.FC<React.PropsWithChildren<IPrintPropsType>> = (
   };
 
   return (
-    <div className="container flex justify-center p-[20px]" ref={drop}>
+    <div className="flexjustify-center container h-full p-[20px]" ref={drop}>
       <div
         id="print"
         ref={printRef}
-        className="print-content relative h-[1627px] w-[1150px]  bg-[#fff]"
+        className="print-content relative h-full  overflow-y-scroll bg-[#fff]"
         onClick={(e) => initEditElement(e)}
       >
         {settingModal && (

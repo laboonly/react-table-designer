@@ -10,7 +10,7 @@ import {
 import { BaseElementsContent } from './pages/elements_content/base_element_content';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
-import { useWindowSize } from 'react-use';
+import { useWindowSize, useScroll } from 'react-use';
 import { RecordElementContent } from './pages/record_element_content';
 import { useEffect, useRef } from 'react';
 import { getQueryParamsString } from '@/lib/utils';
@@ -22,6 +22,7 @@ export const Home = () => {
   const printRef = useRef<HTMLDivElement>(null);
   const { setPrintAreaPosition } = usePrintAreaPosition((state: any) => state);
   const { width, height } = useWindowSize();
+  const { x: scrollLeft, y: scrollTop } = useScroll(printRef);
 
   const { setTableRecordsData } = useTableRecordData((state: any) => state);
 
@@ -50,19 +51,30 @@ export const Home = () => {
   useEffect(() => {
     if (printRef.current) {
       const { offsetTop, offsetLeft } = printRef.current;
-      console.log('offsetTop--->', offsetTop, offsetLeft);
-      setPrintAreaPosition({ top: offsetTop, left: offsetLeft });
+      console.log(
+        'offsetTop--->',
+        offsetTop,
+        offsetLeft,
+        scrollTop,
+        scrollLeft,
+      );
+      setPrintAreaPosition({
+        top: offsetTop,
+        left: offsetLeft,
+        scrollTop,
+        scrollLeft,
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [width, height]);
+  }, [width, height, scrollLeft, scrollTop]);
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <>
+      <div className="h-screen">
         <div className="fixed z-50 w-full bg-[#fff]">
           <ToolBar printRef={printRef} />
         </div>
-        <div className="flex  justify-start bg-gray-100 pt-[54px]">
+        <div className="flex h-full justify-start bg-gray-100 pt-[54px]">
           {settingModal && (
             <div className="border-r-1 flex w-[280px] min-w-[200px] flex-col  border-gray-700 bg-[#fff] px-2 py-[20px]">
               <div className="h-[300px]">
@@ -75,12 +87,12 @@ export const Home = () => {
               </div>
             </div>
           )}
-          <div className="grow">
+          <div className="h-full grow">
             <Print printRef={printRef} />
           </div>
           {settingModal && <StyleSetting />}
         </div>
-      </>
+      </div>
     </DndProvider>
   );
 };

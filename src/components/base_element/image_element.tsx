@@ -40,8 +40,8 @@ export const ImageElement: React.FC<React.PropsWithChildren> = () => {
             ...defalutImageElement,
             styles: {
               ...defalutImageElement.styles,
-              left: left + offsetX - position.left,
-              top: top + offsetY - position.top,
+              left: left + offsetX - position.left + position.scrollLeft,
+              top: top + offsetY - position.top + position.scrollTop,
             },
             uuid: uuidv4(),
           });
