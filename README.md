@@ -8,40 +8,17 @@
 
 ## Introduction
 
-A starter [Vite](https://vitejs.dev/) template having:
+A react table designer
 
 - React
 - TypeScript
 - Vite
 - Tailwind CSS
-- Multiple eslint & prettier plugins installed
+- react-dnd
+- react-rnd
+- zustand
 
-> **Note**
-> 
-> This code repository may occasionally update its dependency versions. If the dependency versions in the latest code do not meet your expectations, please go to [Tags](https://github.com/RoyRao2333/template-vite-react-ts-tailwind/tags) section to download a previous version of this template. I will display the dependencies used in each Tag, please choose the one you need.
-> 
-> 这个代码仓库可能会不定期更新其依赖包的版本。如果最新代码中依赖的版本不符合你的期望，请移步[Tags](https://github.com/RoyRao2333/template-vite-react-ts-tailwind/tags)下载之前的模板。每个Tag中使用的依赖都会展示在Tag详情中，请选择你需要的版本。
-
-> **Warning**
-> 
-> The latest code of this template has updated TypeScript to version 5.0+. If you need TypeScript 4.x, please use [this release](https://github.com/RoyRao2333/template-vite-react-ts-tailwind/releases/tag/release-2023.03.08).
-> 
-> 该模板的最新代码中，已经将TypeScript的版本更新到了5.0+。如果你需要TypeScript 4.x，请使用[这个版本](https://github.com/RoyRao2333/template-vite-react-ts-tailwind/releases/tag/release-2023.03.08)。
-
-## Install
-
-> This project uses [node](http://nodejs.org) and a package manager ([npm](https://npmjs.com), [yarn](https://yarnpkg.com/) or [pnpm](https://pnpm.io/)). Go check them out if you don't have them locally installed.
-
-Then you need a copy of this repository. You can [download](https://github.com/RoyRao2333/template-vite-react-ts-tailwind) a copy as zip but [degit](https://github.com/Rich-Harris/degit) is recommended.
-
-After you installed degit, please excute the following commandd:
-
-```sh
-$ cd path-to-save-your-project
-$ degit royrao2333/template-vite-react-ts-tailwind your-project-name
-```
-
-After getting a copy of this repository, you can use your package manager to install dependecies:
+## Install:
 
 ```sh
 $ cd path-to-your-project
@@ -62,7 +39,6 @@ $ pnpm run dev
 # yarn run dev
 ```
 
-> We've already implemented some recommended configurations in ```.eslintrc.js```, ```.eslintignore```, ```.prettierrc.js``` and ```.prettierignore```. Feel free to edit them if you have your own preferences.
 
 ## Related Efforts
 
@@ -71,7 +47,7 @@ $ pnpm run dev
 
 ## Contributing
 
-Feel free to dive in! [Open an issue](https://github.com/RoyRao2333/template-vite-react-ts-tailwind) or submit PRs.
+Feel free to dive in! [Open an issue](https://github.com/laboonly/react-table-designer) or submit PRs.
 
 ## License
 
