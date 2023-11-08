@@ -1,11 +1,15 @@
 import { useEffect } from 'react';
 import { TextElement, ImageElement } from '../../components/base_element';
-import { useDragElementStore, IElementType } from '../../store';
+import { useDragElementStore, IElementType, IDragElementType } from '@/store';
 import { sourceElementTypes } from '@/store/constants';
 
 export const BaseElementsContent = () => {
-  const dragList = useDragElementStore((state: any) => state.dragList);
-  const initDargList = useDragElementStore((state: any) => state.initDargList);
+  const dragList = useDragElementStore(
+    (state: IDragElementType) => state.dragList,
+  );
+  const initDargList = useDragElementStore(
+    (state: IDragElementType) => state.initDargList,
+  );
   useEffect(() => {
     if (dragList.length === 0) {
       initDargList();

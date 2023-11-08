@@ -6,6 +6,10 @@ import {
   sourceElementTypes,
   usePrintRecordElementListStore,
   useTableRecordData,
+  IPrintElementListType,
+  ISelectElementInfoType,
+  ITableRecordDataStoreType,
+  IPrintRecordElementListType,
 } from '@/store';
 import { Textarea } from '@/components/ui/textarea';
 import { Rnd } from 'react-rnd';
@@ -23,21 +27,22 @@ export const TextPrintElement: React.FC<
   const { width = 200, height = 60, top, left } = styles;
 
   const { selectElementInfo, changeSelectElementInfo } =
-    useSelectElementInfoStore((state: any) => state);
+    useSelectElementInfoStore((state: ISelectElementInfoType) => state);
 
   const settingModal = useSettingModalStore((state: any) => state.settingModal);
   const { updatePrintElement } = usePrintElementListStore(
-    (state: any) => state,
+    (state: IPrintElementListType) => state,
   );
 
   const { updatePrintRecordElement } = usePrintRecordElementListStore(
-    (state: any) => state,
+    (state: IPrintRecordElementListType) => state,
   );
 
-  const { recordIndex, records } = useTableRecordData((state: any) => state);
+  const { recordIndex, records } = useTableRecordData(
+    (state: ITableRecordDataStoreType) => state,
+  );
 
   const isElementEdit = useMemo(() => {
-    console.log('selectElementInfo', selectElementInfo);
     if (!selectElementInfo) {
       return false;
     }
@@ -130,7 +135,7 @@ export const TextPrintElement: React.FC<
               style={{ padding: '0px 0px', fontSize: styles.fontSize }}
               value={content}
               onChange={(e) => valueChange(e)}
-              className="h-full w-full rounded-none"
+              className="w-full.h rounded-none"
             />
           ) : (
             <p>{content}</p>

@@ -11,6 +11,8 @@ import {
   useSettingModalStore,
   useSelectElementInfoStore,
   useTableRecordData,
+  ISelectElementInfoType,
+  ITableRecordDataStoreType,
 } from '@/store';
 import ReactToPrint from 'react-to-print';
 
@@ -24,9 +26,10 @@ export const ToolBar = (props: IToolBarProps) => {
     (state: any) => state,
   );
   const { selectElementInfo, changeSelectElementInfo } =
-    useSelectElementInfoStore((state: any) => state);
+    useSelectElementInfoStore((state: ISelectElementInfoType) => state);
 
   const setSeettingModal = () => {
+    if (!selectElementInfo) return;
     changeSettingModal();
 
     changeSelectElementInfo({
@@ -36,7 +39,7 @@ export const ToolBar = (props: IToolBarProps) => {
   };
 
   const { recordIndex, setRecordIndex, recordsTotal } = useTableRecordData(
-    (state: any) => state,
+    (state: ITableRecordDataStoreType) => state,
   );
 
   const canNext = recordIndex < recordsTotal - 1;

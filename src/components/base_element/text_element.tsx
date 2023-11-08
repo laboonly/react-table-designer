@@ -8,6 +8,9 @@ import {
   usePrintElementListStore,
   usePrintRecordElementListStore,
   usePrintAreaPosition,
+  IPrintElementListType,
+  IPrintRecordElementListType,
+  IPrintAreaPositionStoreType,
 } from '@/store';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -23,11 +26,15 @@ export const TextElement: React.FC<React.PropsWithChildren<ITextProps>> = (
 ) => {
   const { content = 'Text', style, sourceType, fieldId } = props;
 
-  const { addPrintElement } = usePrintElementListStore((state: any) => state);
-  const { addPrintRecordElement } = usePrintRecordElementListStore(
-    (state: any) => state,
+  const { addPrintElement } = usePrintElementListStore(
+    (state: IPrintElementListType) => state,
   );
-  const position = usePrintAreaPosition((state: any) => state.position);
+  const { addPrintRecordElement } = usePrintRecordElementListStore(
+    (state: IPrintRecordElementListType) => state,
+  );
+  const position = usePrintAreaPosition(
+    (state: IPrintAreaPositionStoreType) => state.position,
+  );
   const elementRef = useRef<HTMLDivElement>(null);
 
   const [, drag] = useDrag(

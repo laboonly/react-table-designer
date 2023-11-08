@@ -3,9 +3,10 @@ import {
   IBaseElementType,
   usePrintElementListStore,
   useSettingModalStore,
+  IPrintElementListType,
+  ISelectElementInfoType,
 } from '@/store';
 import { Rnd } from 'react-rnd';
-import { Textarea } from '@/components/ui/textarea';
 
 interface IImagePropsType {
   elementInfo: IBaseElementType;
@@ -19,12 +20,12 @@ export const ImagePrintElement: React.FC<
   const { width = 200, height = 60, top, left } = styles;
 
   const { changeSelectElementInfo } = useSelectElementInfoStore(
-    (state: any) => state,
+    (state: ISelectElementInfoType) => state,
   );
 
   const settingModal = useSettingModalStore((state: any) => state.settingModal);
   const { updatePrintElement } = usePrintElementListStore(
-    (state: any) => state,
+    (state: IPrintElementListType) => state,
   );
 
   const setEditingElement = () => {
@@ -67,7 +68,7 @@ export const ImagePrintElement: React.FC<
       }}
       onClick={setEditingElement}
     >
-      <img className="h-full w-full rounded-none" src={src} />
+      <img className="w-full h-full rounded-none" src={src} />
     </Rnd>
   );
 };

@@ -6,6 +6,10 @@ import {
   usePrintAreaPosition,
   useTableFieldData,
   useTableRecordData,
+  ISettingModalType,
+  ITableRecordDataStoreType,
+  ITableFieldDataStoreType,
+  IPrintAreaPositionStoreType,
 } from './store';
 import { BaseElementsContent } from './pages/elements_content/base_element_content';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -18,15 +22,23 @@ import axios from 'axios';
 import { getTableRecordsData, getTablefieldsData } from '@/api';
 
 export const Home = () => {
-  const settingModal = useSettingModalStore((state: any) => state.settingModal);
+  const settingModal = useSettingModalStore(
+    (state: ISettingModalType) => state.settingModal,
+  );
   const printRef = useRef<HTMLDivElement>(null);
-  const { setPrintAreaPosition } = usePrintAreaPosition((state: any) => state);
+  const { setPrintAreaPosition } = usePrintAreaPosition(
+    (state: IPrintAreaPositionStoreType) => state,
+  );
   const { width, height } = useWindowSize();
   const { x: scrollLeft, y: scrollTop } = useScroll(printRef);
 
-  const { setTableRecordsData } = useTableRecordData((state: any) => state);
+  const { setTableRecordsData } = useTableRecordData(
+    (state: ITableRecordDataStoreType) => state,
+  );
 
-  const { setTableFieldData } = useTableFieldData((state: any) => state);
+  const { setTableFieldData } = useTableFieldData(
+    (state: ITableFieldDataStoreType) => state,
+  );
 
   useEffect(() => {
     const tableId = getQueryParamsString('tableid');

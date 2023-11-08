@@ -6,6 +6,9 @@ import {
   IElementType,
   sourceElementTypes,
   usePrintRecordElementListStore,
+  IPrintElementListType,
+  ISelectElementInfoType,
+  IPrintRecordElementListType,
 } from '@/store';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
@@ -15,16 +18,19 @@ import { Label } from '@/components/ui/label';
 
 export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
   const { selectElementInfo, changeSelectElementInfo } =
-    useSelectElementInfoStore((state: any) => state);
+    useSelectElementInfoStore((state: ISelectElementInfoType) => state);
 
   const { updatePrintElement, deletePrintElement } = usePrintElementListStore(
-    (state: any) => state,
+    (state: IPrintElementListType) => state,
   );
 
   const { updatePrintRecordElement, deletePrintRecordElement } =
-    usePrintRecordElementListStore((state: any) => state);
+    usePrintRecordElementListStore(
+      (state: IPrintRecordElementListType) => state,
+    );
 
   const inputList = useMemo(() => {
+    if (!selectElementInfo) return [];
     switch (selectElementInfo.type) {
       case IElementType.Text:
         return textElementInputList;
@@ -36,7 +42,7 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
   }, [selectElementInfo]);
 
   const valueChange = (e: React.ChangeEvent, changeInfo: any) => {
-    if (selectElementInfo.sourceType === sourceElementTypes.Table) {
+    if (selectElementInfo?.sourceType === sourceElementTypes.Table) {
       updatePrintRecordElement({
         ...selectElementInfo,
         ...changeInfo,
@@ -53,18 +59,19 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
     });
   };
 
-  const deleteElement = (uuid: string) => {
-    if (selectElementInfo.sourceType === sourceElementTypes.Table) {
+  const deleteElement = (uuid: string | undefined) => {
+    if (!uuid) return;
+    if (selectElementInfo?.sourceType === sourceElementTypes.Table) {
       deletePrintRecordElement(uuid);
     } else {
       deletePrintElement(uuid);
     }
-    changeSelectElementInfo({});
+    changeSelectElementInfo(null);
   };
 
   return (
     <div className="border-r-1 relative flex w-[280px] min-w-[200px] flex-col  border-gray-700 bg-[#fff] px-[10px] py-[20px]">
-      {selectElementInfo.uuid && (
+      {selectElementInfo?.uuid && (
         <>
           <h2 className="mb-4">Element Setting</h2>
           <div className="grid grid-cols-2 gap-4">
@@ -75,7 +82,7 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
                   if (selectElementInfo.sourceType === sourceElementTypes.Table)
                     return null;
                   return (
-                    <div key={item} className="col-span-2 mb-4 flex flex-col">
+                    <div key={item} className="flex flex-col col-span-2 mb-4">
                       <Label className="mb-2 mr-4">{item}:</Label>
                       <Textarea
                         value={selectElementInfo[item]}
@@ -92,7 +99,7 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
                 case 'left':
                 case 'fontSize':
                   return (
-                    <div key={item} className="mb-4 flex flex-col">
+                    <div key={item} className="flex flex-col mb-4">
                       <Label className="mb-2 mr-4">{item}: </Label>
                       <Input
                         type="number"
@@ -111,7 +118,7 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
                   );
                 case 'color':
                   return (
-                    <div key={item} className="mb-4 flex flex-col">
+                    <div key={item} className="flex flex-col mb-4">
                       <Label className="mb-2 mr-4">{item}: </Label>
                       <Input
                         type="color"

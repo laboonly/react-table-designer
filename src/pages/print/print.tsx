@@ -8,6 +8,10 @@ import {
   useSheetShow,
   usePrintRecordElementListStore,
   useSettingModalStore,
+  IPrintElementListType,
+  ISelectElementInfoType,
+  ISheetShowStoreType,
+  IPrintRecordElementListType,
 } from '@/store';
 import {
   TextPrintElement,
@@ -55,21 +59,27 @@ export const Print: React.FC<React.PropsWithChildren<IPrintPropsType>> = (
     [],
   );
 
-  const { closeSheet } = useSheetShow((state: any) => state);
+  const { closeSheet } = useSheetShow((state: ISheetShowStoreType) => state);
 
-  const { printList } = usePrintElementListStore((state: any) => state);
+  const { printList } = usePrintElementListStore(
+    (state: IPrintElementListType) => state,
+  );
   const { selectElementInfo, changeSelectElementInfo } =
-    useSelectElementInfoStore((state: any) => state);
+    useSelectElementInfoStore((state: ISelectElementInfoType) => state);
   const { settingModal } = useSettingModalStore((state: any) => state);
 
   const { printRecordList } = usePrintRecordElementListStore(
-    (state: any) => state,
+    (state: IPrintRecordElementListType) => state,
   );
 
   const initEditElement = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const targetId = findAttributeId(e.target);
     if (!targetId || targetId === 'root' || targetId === 'print') {
-      changeSelectElementInfo({ ...selectElementInfo, isEdit: false });
+      changeSelectElementInfo(
+        selectElementInfo === null
+          ? null
+          : { ...selectElementInfo, isEdit: false },
+      );
       closeSheet();
     }
   };

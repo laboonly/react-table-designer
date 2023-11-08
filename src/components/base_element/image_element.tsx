@@ -6,17 +6,21 @@ import {
   usePrintElementListStore,
   defalutImageElement,
   usePrintAreaPosition,
+  IPrintElementListType,
+  IPrintAreaPositionStoreType,
 } from '@/store';
 import { v4 as uuidv4 } from 'uuid';
 import { useRef } from 'react';
 
 export const ImageElement: React.FC<React.PropsWithChildren> = () => {
   const addPrintElement = usePrintElementListStore(
-    (state: any) => state.addPrintElement,
+    (state: IPrintElementListType) => state.addPrintElement,
   );
   const elementRef = useRef<HTMLDivElement>(null);
 
-  const position = usePrintAreaPosition((state: any) => state.position);
+  const position = usePrintAreaPosition(
+    (state: IPrintAreaPositionStoreType) => state.position,
+  );
 
   const [, drag] = useDrag(
     () => ({
