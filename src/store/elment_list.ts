@@ -205,7 +205,7 @@ export const usePrintRecordElementListStore =
           }),
         deletePrintRecordElement: (uuid: string) =>
           set((state: IPrintRecordElementListType) => {
-            let index = 0;
+            let index = -1;
             state.printRecordList.forEach(
               (element: IBaseElementType, i: number) => {
                 if (element.uuid === uuid) {
@@ -213,10 +213,13 @@ export const usePrintRecordElementListStore =
                 }
               },
             );
-            const newstate = produce(state.printRecordList, (draftState) => {
-              draftState.splice(index, 1);
-            });
-            return { printRecordList: newstate };
+            if (index !== -1) {
+              const newstate = produce(state.printRecordList, (draftState) => {
+                draftState.splice(index, 1);
+              });
+              return { printRecordList: newstate };
+            }
+            return { printRecordList: state.printRecordList };
           }),
       }),
       {
