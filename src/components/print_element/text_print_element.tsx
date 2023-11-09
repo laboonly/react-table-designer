@@ -121,7 +121,7 @@ export const TextPrintElement: React.FC<
         }
       }}
       style={{
-        border: settingModal ? '1px solid #ddd' : 'none',
+        border: settingModal ? '1px solid #020617' : 'none',
         // padding: '10px 10px',
         cursor: 'move',
         wordWrap: 'break-word',
@@ -142,7 +142,7 @@ export const TextPrintElement: React.FC<
               }}
               value={content}
               onChange={(e) => valueChange(e)}
-              className="w-full.h rounded-none"
+              className="w-full h-full rounded-none"
             />
           ) : (
             <p>{content}</p>

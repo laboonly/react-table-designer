@@ -21,8 +21,10 @@ export const defalutTextElement: IBaseElementType = {
   styles: {
     left: 0,
     top: 0,
-    width: 264,
-    height: 36,
+    width: 294,
+    height: 66,
+    fontSize: 14,
+    textAlign: 'left',
   },
   content: 'Text',
   isEdit: false,

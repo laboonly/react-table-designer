@@ -71,7 +71,7 @@ export const ImagePrintElement: React.FC<
       }}
       onClick={setEditingElement}
     >
-      <img className="w-full h-full rounded-none" src={src} />
+      <img className="w-full h-full rounded-none" src={src} draggable="false" />
     </Rnd>
   );
 };
