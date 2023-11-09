@@ -12,6 +12,7 @@ import {
   ISelectElementInfoType,
   ISheetShowStoreType,
   IPrintRecordElementListType,
+  ISettingModalType,
 } from '@/store';
 import {
   TextPrintElement,
@@ -66,7 +67,9 @@ export const Print: React.FC<React.PropsWithChildren<IPrintPropsType>> = (
   );
   const { selectElementInfo, changeSelectElementInfo } =
     useSelectElementInfoStore((state: ISelectElementInfoType) => state);
-  const { settingModal } = useSettingModalStore((state: any) => state);
+  const { settingModal } = useSettingModalStore(
+    (state: ISettingModalType) => state,
+  );
 
   const { printRecordList } = usePrintRecordElementListStore(
     (state: IPrintRecordElementListType) => state,

@@ -5,6 +5,7 @@ import {
   useSettingModalStore,
   IPrintElementListType,
   ISelectElementInfoType,
+  ISettingModalType,
 } from '@/store';
 import { Rnd } from 'react-rnd';
 
@@ -23,7 +24,9 @@ export const ImagePrintElement: React.FC<
     (state: ISelectElementInfoType) => state,
   );
 
-  const settingModal = useSettingModalStore((state: any) => state.settingModal);
+  const settingModal = useSettingModalStore(
+    (state: ISettingModalType) => state.settingModal,
+  );
   const { updatePrintElement } = usePrintElementListStore(
     (state: IPrintElementListType) => state,
   );

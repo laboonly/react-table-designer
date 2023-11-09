@@ -13,6 +13,7 @@ import {
   useTableRecordData,
   ISelectElementInfoType,
   ITableRecordDataStoreType,
+  ISettingModalType,
 } from '@/store';
 import ReactToPrint from 'react-to-print';
 
@@ -23,15 +24,15 @@ interface IToolBarProps {
 export const ToolBar = (props: IToolBarProps) => {
   const { printRef } = props;
   const { settingModal, changeSettingModal } = useSettingModalStore(
-    (state: any) => state,
+    (state: ISettingModalType) => state,
   );
   const { selectElementInfo, changeSelectElementInfo } =
     useSelectElementInfoStore((state: ISelectElementInfoType) => state);
 
   const setSeettingModal = () => {
-    if (!selectElementInfo) return;
     changeSettingModal();
 
+    if (!selectElementInfo) return;
     changeSelectElementInfo({
       ...selectElementInfo,
       isEdit: !settingModal,

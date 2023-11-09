@@ -10,6 +10,7 @@ import {
   ISelectElementInfoType,
   ITableRecordDataStoreType,
   IPrintRecordElementListType,
+  ISettingModalType,
 } from '@/store';
 import { Textarea } from '@/components/ui/textarea';
 import { Rnd } from 'react-rnd';
@@ -29,7 +30,9 @@ export const TextPrintElement: React.FC<
   const { selectElementInfo, changeSelectElementInfo } =
     useSelectElementInfoStore((state: ISelectElementInfoType) => state);
 
-  const settingModal = useSettingModalStore((state: any) => state.settingModal);
+  const settingModal = useSettingModalStore(
+    (state: ISettingModalType) => state.settingModal,
+  );
   const { updatePrintElement } = usePrintElementListStore(
     (state: IPrintElementListType) => state,
   );
