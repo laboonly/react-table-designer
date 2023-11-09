@@ -125,9 +125,9 @@ export const TextPrintElement: React.FC<
         // padding: '10px 10px',
         cursor: 'move',
         wordWrap: 'break-word',
-        textAlign: 'left',
         color: styles.color,
         fontSize: styles.fontSize,
+        textAlign: styles.textAlign,
       }}
       onClick={setEditingElement}
     >
@@ -135,7 +135,11 @@ export const TextPrintElement: React.FC<
         <>
           {isElementEdit ? (
             <Textarea
-              style={{ padding: '0px 0px', fontSize: styles.fontSize }}
+              style={{
+                padding: '0px 0px',
+                fontSize: styles.fontSize,
+                textAlign: styles.textAlign,
+              }}
               value={content}
               onChange={(e) => valueChange(e)}
               className="w-full.h rounded-none"

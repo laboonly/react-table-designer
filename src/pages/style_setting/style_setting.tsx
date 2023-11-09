@@ -15,6 +15,13 @@ import { Input } from '@/components/ui/input';
 import { useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
   const { selectElementInfo, changeSelectElementInfo } =
@@ -41,7 +48,8 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
     }
   }, [selectElementInfo]);
 
-  const valueChange = (e: React.ChangeEvent, changeInfo: any) => {
+  const valueChange = (changeInfo: any) => {
+    console.log('changeInfo', changeInfo);
     if (selectElementInfo?.sourceType === sourceElementTypes.Table) {
       updatePrintRecordElement({
         ...selectElementInfo,
@@ -88,7 +96,7 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
                         value={selectElementInfo[item]}
                         disabled={!selectElementInfo.isEdit}
                         onChange={(e) =>
-                          valueChange(e, { [item]: e.target.value })
+                          valueChange({ [item]: e.target.value })
                         }
                       />
                     </div>
@@ -106,7 +114,7 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
                         disabled={!selectElementInfo.isEdit}
                         value={selectElementInfo.styles[item]}
                         onChange={(e) =>
-                          valueChange(e, {
+                          valueChange({
                             styles: {
                               ...selectElementInfo.styles,
                               [item]: parseInt(e.target.value),
@@ -125,7 +133,7 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
                         disabled={!selectElementInfo.isEdit}
                         value={selectElementInfo.styles[item]}
                         onChange={(e) =>
-                          valueChange(e, {
+                          valueChange({
                             styles: {
                               ...selectElementInfo.styles,
                               [item]: e.target.value,
@@ -135,10 +143,32 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
                       />
                     </div>
                   );
-                // case 'textAlign':
-                //   return (
-
-                //   )
+                case 'textAlign':
+                  return (
+                    <div key={item} className="flex flex-col mb-4">
+                      <Label className="mb-2 mr-4">{item}: </Label>
+                      <Select
+                        onValueChange={(value) =>
+                          valueChange({
+                            styles: {
+                              ...selectElementInfo.styles,
+                              [item]: value,
+                            },
+                          })
+                        }
+                        defaultValue={selectElementInfo.styles[item]}
+                      >
+                        <SelectTrigger className="w-[180px]">
+                          <SelectValue placeholder="Text Align" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="left">Left</SelectItem>
+                          <SelectItem value="center">Center</SelectItem>
+                          <SelectItem value="right">Right</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  );
               }
             })}
           </div>

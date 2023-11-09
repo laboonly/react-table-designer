@@ -17,6 +17,7 @@ export const textElementInputList = [
   'fontSize',
   'fontWeight',
   'lineHeight',
+  'textAlign',
 ];
 
 export const textfeildType = [
