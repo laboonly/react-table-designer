@@ -20,6 +20,14 @@ interface ITextPropsType {
   elementInfo: IBaseElementType;
 }
 
+const resizeHandleStyle = {
+  content: '',
+  width: '10px',
+  height: '10px',
+  borderRadius: '50%',
+  backgroundColor: '#020617',
+};
+
 export const TextPrintElement: React.FC<
   React.PropsWithChildren<ITextPropsType>
 > = (props) => {
@@ -78,6 +86,12 @@ export const TextPrintElement: React.FC<
       size={{ width: (width as number) + 10, height: (height as number) + 10 }}
       disableDragging={isElementEdit}
       position={{ x: left as number, y: top as number }}
+      resizeHandleStyles={{
+        bottomLeft: resizeHandleStyle,
+        bottomRight: resizeHandleStyle,
+        topLeft: resizeHandleStyle,
+        topRight: resizeHandleStyle,
+      }}
       onDragStop={(_, d) => {
         if (sourceType === sourceElementTypes.Base) {
           updatePrintElement({
