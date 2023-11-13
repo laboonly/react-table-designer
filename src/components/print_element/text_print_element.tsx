@@ -117,12 +117,14 @@ export const TextPrintElement: React.FC<
           });
         }
       }}
-      onResizeStop={(e, direction, ref, delta, position) => {
+      onResizeStop={(_, direction, ref, delta, position) => {
         if (sourceType === sourceElementTypes.Base) {
           updatePrintElement({
             ...elementInfo,
             styles: {
               ...styles,
+              left: position.x,
+              top: position.y,
               width: parseInt(ref.style.width),
               height: parseInt(ref.style.height),
             },
@@ -132,6 +134,8 @@ export const TextPrintElement: React.FC<
             ...elementInfo,
             styles: {
               ...styles,
+              left: position.x,
+              top: position.y,
               width: parseInt(ref.style.width),
               height: parseInt(ref.style.height),
             },
