@@ -17,7 +17,7 @@ import { v4 as uuidv4 } from 'uuid';
 interface ITextProps {
   sourceType: sourceElementTypes;
   content?: string;
-  style?: any;
+  style?: React.CSSProperties;
   fieldId?: string;
 }
 

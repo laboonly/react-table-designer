@@ -10,6 +10,7 @@ import {
   ITableRecordDataStoreType,
   ITableFieldDataStoreType,
   IPrintAreaPositionStoreType,
+  IRecordsData,
 } from './store';
 import { BaseElementsContent } from './pages/elements_content/base_element_content';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -20,6 +21,10 @@ import { useEffect, useRef } from 'react';
 import { getQueryParamsString } from '@/lib/utils';
 import axios from 'axios';
 import { getTableRecordsData, getTablefieldsData } from '@/api';
+
+interface IFieldsType {
+  id: string;
+}
 
 export const Home = () => {
   const settingModal = useSettingModalStore(
@@ -45,15 +50,17 @@ export const Home = () => {
     const viewId = getQueryParamsString('viewid');
     if (!tableId || !viewId) return;
     axios.defaults.headers.common['Authorization'] =
-      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzcmZ3RzdIc3NCd1giLCJpYXQiOjE2OTc3OTgyOTgsImV4cCI6MTY5OTUyNjI5OH0.cpxWVRFz0k5yF-DX5nD1LmYQyi26FXfxrfNiowA_4j8';
-    getTableRecordsData(tableId, viewId).then((res: any) => {
-      setTableRecordsData(res.data.records);
-    });
+      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzcmZ3RzdIc3NCd1giLCJpYXQiOjE2OTk0MzA2MTQsImV4cCI6MTcwMTE1ODYxNH0.Bt230FO_RzXT0wMWExFRWeKnJvz_-_7jU9FzEKnjseE';
+    getTableRecordsData(tableId, viewId).then(
+      (res: { data: { records: IRecordsData[] } }) => {
+        setTableRecordsData(res.data.records);
+      },
+    );
 
-    getTablefieldsData(tableId, viewId).then((res: any) => {
+    getTablefieldsData(tableId, viewId).then((res: { data: IFieldsType[] }) => {
       const fields = res.data;
       const fieldMap = new Map();
-      fields.forEach((item: any) => {
+      fields.forEach((item: IFieldsType) => {
         fieldMap.set(item.id, item);
       });
       setTableFieldData(fieldMap);
@@ -63,13 +70,7 @@ export const Home = () => {
   useEffect(() => {
     if (printRef.current) {
       const { offsetTop, offsetLeft } = printRef.current;
-      console.log(
-        'offsetTop--->',
-        offsetTop,
-        offsetLeft,
-        scrollTop,
-        scrollLeft,
-      );
+      console.log(offsetTop, offsetLeft, scrollTop, scrollLeft);
       setPrintAreaPosition({
         top: offsetTop,
         left: offsetLeft,

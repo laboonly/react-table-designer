@@ -88,16 +88,16 @@ export const TextPrintElement: React.FC<
       disableDragging={isElementEdit || !settingModal}
       enableResizing={settingModal}
       position={{ x: left as number, y: top as number }}
-      resizeHandleStyles={
-        settingModal
-          ? {
-              bottomLeft: resizeHandleStyle,
-              bottomRight: resizeHandleStyle,
-              topLeft: resizeHandleStyle,
-              topRight: resizeHandleStyle,
-            }
-          : {}
-      }
+      // resizeHandleStyles={
+      //   settingModal
+      //     ? {
+      //         bottomLeft: resizeHandleStyle,
+      //         bottomRight: resizeHandleStyle,
+      //         topLeft: resizeHandleStyle,
+      //         topRight: resizeHandleStyle,
+      //       }
+      //     : {}
+      // }
       onDragStop={(_, d) => {
         if (sourceType === sourceElementTypes.Base) {
           updatePrintElement({

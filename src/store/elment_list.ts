@@ -114,12 +114,17 @@ export const useSheetShow = create<ISheetShowStoreType>()((set) => ({
 }));
 
 // 表格的数据
+export interface IRecordsData {
+  fields: {
+    [key: string]: string;
+  };
+}
 export interface ITableRecordDataStoreType {
   recordIndex: number;
-  records: any[];
+  records: IRecordsData[];
   recordsTotal: number;
   setRecordIndex: (index: number) => void;
-  setTableRecordsData: (data: any) => void;
+  setTableRecordsData: (data: IRecordsData[]) => void;
 }
 
 export const useTableRecordData = create<ITableRecordDataStoreType>()(
@@ -129,7 +134,7 @@ export const useTableRecordData = create<ITableRecordDataStoreType>()(
       records: [],
       recordsTotal: 0,
       setRecordIndex: (index: number) => set({ recordIndex: index }),
-      setTableRecordsData: (data: any) =>
+      setTableRecordsData: (data: IRecordsData[]) =>
         set(() => {
           return {
             records: data,
@@ -147,14 +152,14 @@ export const useTableRecordData = create<ITableRecordDataStoreType>()(
 // 表格的列数据
 export interface ITableFieldDataStoreType {
   fieldMap: Map<string, string>;
-  setTableFieldData: (data: any) => void;
+  setTableFieldData: (data: Map<string, string>) => void;
 }
 
 export const useTableFieldData = create<ITableFieldDataStoreType>()(
   persist(
     (set) => ({
       fieldMap: new Map(),
-      setTableFieldData: (data: any) =>
+      setTableFieldData: (data: Map<string, string>) =>
         set(() => {
           return {
             fieldMap: data,
@@ -231,10 +236,10 @@ export const usePrintRecordElementListStore =
 
 // 打印区域的坐标
 interface IPrintPosition {
-  x: number;
-  y: number;
   scrollLeft: number;
   scrollTop: number;
+  top: number;
+  left: number;
 }
 
 export interface IPrintAreaPositionStoreType {
@@ -245,14 +250,13 @@ export interface IPrintAreaPositionStoreType {
 export const usePrintAreaPosition = create<IPrintAreaPositionStoreType>()(
   (set) => ({
     position: {
-      x: 0,
-      y: 0,
+      top: 0,
+      left: 0,
       scrollLeft: 0,
       scrollTop: 0,
     },
     setPrintAreaPosition: (newPosition: IPrintPosition) =>
       set(() => {
-        console.log('newPosition---->', newPosition);
         return { position: { ...newPosition } };
       }),
   }),
