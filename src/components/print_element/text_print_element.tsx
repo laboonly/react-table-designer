@@ -61,6 +61,7 @@ export const TextPrintElement: React.FC<
   }, [selectElementInfo]);
 
   const setEditingElement = () => {
+    if (!settingModal) return;
     changeSelectElementInfo({
       ...elementInfo,
       isEdit: true,
@@ -84,7 +85,8 @@ export const TextPrintElement: React.FC<
       id={uuid}
       default={{ x: left as number, y: top as number, width, height }}
       size={{ width: (width as number) + 10, height: (height as number) + 10 }}
-      disableDragging={isElementEdit}
+      disableDragging={isElementEdit || !settingModal}
+      enableResizing={settingModal}
       position={{ x: left as number, y: top as number }}
       resizeHandleStyles={
         settingModal
@@ -145,7 +147,7 @@ export const TextPrintElement: React.FC<
       style={{
         border: settingModal ? '1px solid #020617' : 'none',
         // padding: '10px 10px',
-        cursor: 'move',
+        cursor: settingModal ? 'move' : 'default',
         wordWrap: 'break-word',
         color: styles.color,
         fontSize: styles.fontSize,
