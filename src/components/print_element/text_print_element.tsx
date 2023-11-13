@@ -152,6 +152,7 @@ export const TextPrintElement: React.FC<
         color: styles.color,
         fontSize: styles.fontSize,
         textAlign: styles.textAlign,
+        lineHeight: styles.lineHeight,
       }}
       onClick={setEditingElement}
     >
@@ -163,6 +164,7 @@ export const TextPrintElement: React.FC<
                 padding: '0px 0px',
                 fontSize: styles.fontSize,
                 textAlign: styles.textAlign,
+                lineHeight: styles.lineHeight,
               }}
               value={content}
               onChange={(e) => valueChange(e)}

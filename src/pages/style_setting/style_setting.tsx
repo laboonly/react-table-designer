@@ -9,6 +9,8 @@ import {
   IPrintElementListType,
   ISelectElementInfoType,
   IPrintRecordElementListType,
+  fontSizeValue,
+  lineHeightValue,
 } from '@/store';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
@@ -21,6 +23,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  SelectGroup,
 } from '@/components/ui/select';
 
 export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
@@ -105,7 +108,6 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
                 case 'height':
                 case 'top':
                 case 'left':
-                case 'fontSize':
                   return (
                     <div key={item} className="flex flex-col mb-4">
                       <Label className="mb-2 mr-4">{item}: </Label>
@@ -122,6 +124,46 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
                           })
                         }
                       />
+                    </div>
+                  );
+                case 'fontSize':
+                case 'lineHeight':
+                  return (
+                    <div key={item} className="flex flex-col mb-4">
+                      <Label className="mb-2 mr-4">{item}: </Label>
+                      <Select
+                        disabled={!selectElementInfo.isEdit}
+                        onValueChange={(value) =>
+                          valueChange({
+                            styles: {
+                              ...selectElementInfo.styles,
+                              [item]: value,
+                            },
+                          })
+                        }
+                        defaultValue={selectElementInfo.styles[item] as string}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Text Align" />
+                        </SelectTrigger>
+                        <SelectContent className="h-[200px]">
+                          {item === 'fontSize'
+                            ? fontSizeValue.map((value) => {
+                                return (
+                                  <SelectItem key={value} value={value}>
+                                    {value}
+                                  </SelectItem>
+                                );
+                              })
+                            : lineHeightValue.map((value) => {
+                                return (
+                                  <SelectItem key={value} value={value}>
+                                    {value}
+                                  </SelectItem>
+                                );
+                              })}
+                        </SelectContent>
+                      </Select>
                     </div>
                   );
                 case 'color':
@@ -148,6 +190,7 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
                     <div key={item} className="flex flex-col mb-4">
                       <Label className="mb-2 mr-4">{item}: </Label>
                       <Select
+                        disabled={!selectElementInfo.isEdit}
                         onValueChange={(value) =>
                           valueChange({
                             styles: {
@@ -158,7 +201,7 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
                         }
                         defaultValue={selectElementInfo.styles[item]}
                       >
-                        <SelectTrigger className="w-[180px]">
+                        <SelectTrigger>
                           <SelectValue placeholder="Text Align" />
                         </SelectTrigger>
                         <SelectContent>
