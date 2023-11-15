@@ -1,0 +1,19 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "prettier.requireConfig": true,
+  "prettier.configPath": ".prettierrc.js",
+  "editor.indentSize": "tabSize",
+}

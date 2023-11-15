@@ -11,6 +11,7 @@ import {
   IPrintRecordElementListType,
   fontSizeValue,
   lineHeightValue,
+  IBaseElementType,
 } from '@/store';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
@@ -23,7 +24,6 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  SelectGroup,
 } from '@/components/ui/select';
 
 export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
@@ -51,8 +51,10 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
     }
   }, [selectElementInfo]);
 
-  const valueChange = (changeInfo: any) => {
-    console.log('changeInfo', changeInfo);
+  const valueChange = (
+    changeInfo: Pick<IBaseElementType, 'styles' | 'src' | 'content'>,
+  ) => {
+    if (!selectElementInfo) return;
     if (selectElementInfo?.sourceType === sourceElementTypes.Table) {
       updatePrintRecordElement({
         ...selectElementInfo,
@@ -93,13 +95,16 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
                   if (selectElementInfo.sourceType === sourceElementTypes.Table)
                     return null;
                   return (
-                    <div key={item} className="flex flex-col col-span-2 mb-4">
+                    <div key={item} className="col-span-2 mb-4 flex flex-col">
                       <Label className="mb-2 mr-4">{item}:</Label>
                       <Textarea
                         value={selectElementInfo[item]}
                         disabled={!selectElementInfo.isEdit}
                         onChange={(e) =>
-                          valueChange({ [item]: e.target.value })
+                          valueChange({
+                            [item]: e.target.value,
+                            styles: selectElementInfo.styles,
+                          })
                         }
                       />
                     </div>
@@ -109,7 +114,7 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
                 case 'top':
                 case 'left':
                   return (
-                    <div key={item} className="flex flex-col mb-4">
+                    <div key={item} className="mb-4 flex flex-col">
                       <Label className="mb-2 mr-4">{item}: </Label>
                       <Input
                         type="number"
@@ -129,7 +134,7 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
                 case 'fontSize':
                 case 'lineHeight':
                   return (
-                    <div key={item} className="flex flex-col mb-4">
+                    <div key={item} className="mb-4 flex flex-col">
                       <Label className="mb-2 mr-4">{item}: </Label>
                       <Select
                         disabled={!selectElementInfo.isEdit}
@@ -168,7 +173,7 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
                   );
                 case 'color':
                   return (
-                    <div key={item} className="flex flex-col mb-4">
+                    <div key={item} className="mb-4 flex flex-col">
                       <Label className="mb-2 mr-4">{item}: </Label>
                       <Input
                         type="color"
@@ -187,19 +192,19 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
                   );
                 case 'textAlign':
                   return (
-                    <div key={item} className="flex flex-col mb-4">
+                    <div key={item} className="mb-4 flex flex-col">
                       <Label className="mb-2 mr-4">{item}: </Label>
                       <Select
+                        defaultValue={selectElementInfo.styles[item] || 'left'}
                         disabled={!selectElementInfo.isEdit}
                         onValueChange={(value) =>
                           valueChange({
                             styles: {
                               ...selectElementInfo.styles,
-                              [item]: value,
+                              [item]: value as React.CSSProperties['textAlign'],
                             },
                           })
                         }
-                        defaultValue={selectElementInfo.styles[item]}
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Text Align" />

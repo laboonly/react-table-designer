@@ -11,6 +11,7 @@ import {
   ITableFieldDataStoreType,
   IPrintAreaPositionStoreType,
   IRecordsData,
+  IFieldsType,
 } from './store';
 import { BaseElementsContent } from './pages/elements_content/base_element_content';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -21,10 +22,6 @@ import { useEffect, useRef } from 'react';
 import { getQueryParamsString } from '@/lib/utils';
 import axios from 'axios';
 import { getTableRecordsData, getTablefieldsData } from '@/api';
-
-interface IFieldsType {
-  id: string;
-}
 
 export const Home = () => {
   const settingModal = useSettingModalStore(

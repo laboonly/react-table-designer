@@ -150,16 +150,22 @@ export const useTableRecordData = create<ITableRecordDataStoreType>()(
 );
 
 // 表格的列数据
+
+export interface IFieldsType {
+  id: string;
+  name: string;
+  type: string;
+}
 export interface ITableFieldDataStoreType {
-  fieldMap: Map<string, string>;
-  setTableFieldData: (data: Map<string, string>) => void;
+  fieldMap: Map<string, IFieldsType>;
+  setTableFieldData: (data: Map<string, IFieldsType>) => void;
 }
 
 export const useTableFieldData = create<ITableFieldDataStoreType>()(
   persist(
     (set) => ({
       fieldMap: new Map(),
-      setTableFieldData: (data: Map<string, string>) =>
+      setTableFieldData: (data: Map<string, IFieldsType>) =>
         set(() => {
           return {
             fieldMap: data,

@@ -8,6 +8,7 @@ import {
   usePrintAreaPosition,
   IPrintElementListType,
   IPrintAreaPositionStoreType,
+  MyDropResult,
 } from '@/store';
 import { v4 as uuidv4 } from 'uuid';
 import { useRef } from 'react';
@@ -29,7 +30,7 @@ export const ImageElement: React.FC<React.PropsWithChildren> = () => {
         let top = 0,
           left = 0;
         if (monitor.didDrop()) {
-          const dropRes = monitor.getDropResult() as any; //获取拖拽对象所处容器的数据
+          const dropRes = monitor.getDropResult<MyDropResult>(); //获取拖拽对象所处容器的数据
           if (dropRes) {
             top = dropRes.top;
             left = dropRes.left;

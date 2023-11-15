@@ -18,7 +18,7 @@ import {
 import ReactToPrint from 'react-to-print';
 
 interface IToolBarProps {
-  printRef: any;
+  printRef: React.RefObject<HTMLDivElement>;
 }
 
 export const ToolBar = (props: IToolBarProps) => {

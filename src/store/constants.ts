@@ -20,12 +20,13 @@ export const textElementInputList = [
   'textAlign',
 ];
 
-export const textfeildType = [
+export const textFeildType = [
   'singleLineText',
   'number',
   'singleSelect',
   'longText',
 ];
+
 export const imagefeildTypeMap = ['attachment'];
 
 export const ImageElementInputList = ['src', 'width', 'height', 'left', 'top'];

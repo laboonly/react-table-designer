@@ -15,7 +15,7 @@ A react table designer
 ## Install:
 
 ```sh
-$ cd path-to-your-project
+$ cd react-table-designer
 $ pnpm install
 
 # npm install

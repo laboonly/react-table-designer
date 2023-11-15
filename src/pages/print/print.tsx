@@ -19,7 +19,11 @@ import {
   ImagePrintElement,
 } from '@/components/print_element';
 
-const findAttributeId: any = (element: any) => {
+type NullableString = string | null;
+
+const findAttributeId = (
+  element: HTMLElement | HTMLDivElement,
+): NullableString => {
   // 如果当前元素包含了所需属性，返回该属性的值
   if (element.hasAttribute('id')) {
     return element.getAttribute('id');
@@ -45,8 +49,9 @@ export const Print: React.FC<React.PropsWithChildren<IPrintPropsType>> = (
   const [, drop] = useDrop(
     () => ({
       accept: ItemTypes.KNIGHT,
-      drop(_item: any, monitor: any) {
+      drop(_item, monitor) {
         const delta = monitor.getDifferenceFromInitialOffset();
+        if (!delta) return;
         const left = Math.round(delta.x);
         const top = Math.round(delta.y);
         console.log('left', left, 'top', top);
@@ -76,7 +81,7 @@ export const Print: React.FC<React.PropsWithChildren<IPrintPropsType>> = (
   );
 
   const initEditElement = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const targetId = findAttributeId(e.target);
+    const targetId = findAttributeId(e.target as HTMLDivElement);
     if (!targetId || targetId === 'root' || targetId === 'print') {
       changeSelectElementInfo(
         selectElementInfo === null

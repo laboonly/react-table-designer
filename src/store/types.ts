@@ -47,3 +47,8 @@ export const defalutBaseElements: IBaseElementType[] = [
   defalutTextElement,
   defalutImageElement,
 ];
+
+export type MyDropResult = {
+  top: number;
+  left: number;
+};
