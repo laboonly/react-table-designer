@@ -67,7 +67,6 @@ export const Home = () => {
   useEffect(() => {
     if (printRef.current) {
       const { offsetTop, offsetLeft } = printRef.current;
-      console.log(offsetTop, offsetLeft, scrollTop, scrollLeft);
       setPrintAreaPosition({
         top: offsetTop,
         left: offsetLeft,
@@ -75,8 +74,7 @@ export const Home = () => {
         scrollLeft,
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [width, height, scrollLeft, scrollTop]);
+  }, [width, height, scrollLeft, scrollTop, setPrintAreaPosition]);
 
   return (
     <DndProvider backend={HTML5Backend}>

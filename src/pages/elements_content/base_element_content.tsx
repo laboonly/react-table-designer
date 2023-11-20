@@ -32,7 +32,9 @@ export const BaseElementsContent = () => {
             />
           );
         } else if (item.type === IElementType.Image) {
-          return <ImageElement key={index} />;
+          return (
+            <ImageElement key={index} sourceType={sourceElementTypes.Base} />
+          );
         }
       })}
     </div>

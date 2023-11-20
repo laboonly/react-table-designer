@@ -9,7 +9,7 @@ A react table designer
 - Vite
 - Tailwind CSS
 - react-dnd
-- react-rnd
+- react-moveable
 - zustand
 
 ## Install:

@@ -6,8 +6,14 @@ import {
   IPrintElementListType,
   ISelectElementInfoType,
   ISettingModalType,
+  sourceElementTypes,
+  IPrintRecordElementListType,
+  usePrintRecordElementListStore,
 } from '@/store';
-import { Rnd } from 'react-rnd';
+import Moveable from 'react-moveable';
+import { flushSync } from 'react-dom';
+import { useRef } from 'react';
+import { radiansToDegrees } from '@/lib/utils';
 
 interface IImagePropsType {
   elementInfo: IBaseElementType;
@@ -17,8 +23,10 @@ export const ImagePrintElement: React.FC<
   React.PropsWithChildren<IImagePropsType>
 > = (props) => {
   const { elementInfo } = props;
-  const { src, styles, uuid } = elementInfo;
+  const { src, styles, uuid, sourceType, rotate } = elementInfo;
   const { width = 200, height = 60, top, left } = styles;
+
+  const targetRef = useRef<HTMLImageElement>(null);
 
   const { changeSelectElementInfo } = useSelectElementInfoStore(
     (state: ISelectElementInfoType) => state,
@@ -31,6 +39,10 @@ export const ImagePrintElement: React.FC<
     (state: IPrintElementListType) => state,
   );
 
+  const { updatePrintRecordElement } = usePrintRecordElementListStore(
+    (state: IPrintRecordElementListType) => state,
+  );
+
   const setEditingElement = () => {
     changeSelectElementInfo({
       ...elementInfo,
@@ -38,40 +50,86 @@ export const ImagePrintElement: React.FC<
     });
   };
 
+  if (!uuid) return <></>;
   return (
-    <Rnd
-      id={uuid}
-      default={{ x: left as number, y: top as number, width, height }}
-      size={{ width: (width as number) + 10, height: (height as number) + 10 }}
-      position={{ x: left as number, y: top as number }}
-      onDragStop={(_, d) => {
-        updatePrintElement({
-          ...elementInfo,
-          styles: {
-            ...styles,
-            left: d.x,
-            top: d.y,
-          },
-        });
-      }}
-      onResizeStop={(e, direction, ref, delta, position) => {
-        updatePrintElement({
-          ...elementInfo,
-          styles: {
-            ...styles,
-            width: parseInt(ref.style.width),
-            height: parseInt(ref.style.height),
-          },
-        });
-      }}
+    <div
       style={{
-        border: settingModal ? '1px solid #ddd' : 'none',
-        // padding: '10px 10px',
-        cursor: 'move',
+        position: 'absolute',
+        top,
+        left,
       }}
-      onClick={setEditingElement}
     >
-      <img className="w-full h-full rounded-none" src={src} draggable="false" />
-    </Rnd>
+      <div
+        ref={targetRef}
+        style={{
+          position: 'relative',
+          width: width,
+          height: height,
+          backgroundImage: `url(${src})`,
+          backgroundPosition: 'center center',
+          backgroundSize: '100% 100%',
+          transform: `rotate(${rotate}deg)`,
+        }}
+      />
+      <Moveable
+        // options
+        flushSync={flushSync}
+        target={targetRef} // move拖拽对象
+        origin={false} // 显示中心点
+        keepRatio={false} // 保持宽高
+        edge={false} //
+        draggable={settingModal} // 开启拖砖
+        resizable={settingModal} // 开启调整大小
+        rotatable={settingModal} // 开启旋转
+        throttleDrag={0}
+        onRender={(e) => {
+          console.log('onRender');
+          e.target.style.cssText += e.cssText;
+        }}
+        onClick={() => {
+          setEditingElement();
+        }}
+        onRenderEnd={(e) => {
+          console.log(
+            'onRenderEnd',
+            e,
+            e.clientX,
+            e.clientY,
+            left + e.transformObject.translate[0],
+            top + e.transformObject.translate[1],
+          );
+          if (e.isDrag) {
+            e.target.style.transform = `rotate(${radiansToDegrees(
+              e.transformObject.rotate,
+            )}deg)`;
+
+            if (sourceType === sourceElementTypes.Base) {
+              updatePrintElement({
+                ...elementInfo,
+                rotate: radiansToDegrees(e.transformObject.rotate),
+                styles: {
+                  ...styles,
+                  left: left + e.transformObject.translate[0],
+                  top: top + e.transformObject.translate[1],
+                  width: parseInt(e.target.style.width),
+                  height: parseInt(e.target.style.height),
+                },
+              });
+            } else {
+              updatePrintRecordElement({
+                ...elementInfo,
+                styles: {
+                  ...styles,
+                  left: left + e.transformObject.translate[0],
+                  top: top + e.transformObject.translate[1],
+                  width: parseInt(e.target.style.width),
+                  height: parseInt(e.target.style.height),
+                },
+              });
+            }
+          }
+        }}
+      />
+    </div>
   );
 };

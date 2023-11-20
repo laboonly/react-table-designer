@@ -52,7 +52,7 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
   }, [selectElementInfo]);
 
   const valueChange = (
-    changeInfo: Pick<IBaseElementType, 'styles' | 'src' | 'content'>,
+    changeInfo: Pick<IBaseElementType, 'styles' | 'src' | 'content' | 'rotate'>,
   ) => {
     if (!selectElementInfo) return;
     if (selectElementInfo?.sourceType === sourceElementTypes.Table) {
@@ -215,6 +215,23 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
                           <SelectItem value="right">Right</SelectItem>
                         </SelectContent>
                       </Select>
+                    </div>
+                  );
+                case 'rotate':
+                  return (
+                    <div key={item} className="mb-4 flex flex-col">
+                      <Label className="mb-2 mr-4">{item}: </Label>
+                      <Input
+                        type="number"
+                        disabled={!selectElementInfo.isEdit}
+                        value={selectElementInfo[item]}
+                        onChange={(e) =>
+                          valueChange({
+                            [item]: parseInt(e.target.value),
+                            styles: selectElementInfo.styles,
+                          })
+                        }
+                      />
                     </div>
                   );
               }

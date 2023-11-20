@@ -9,13 +9,26 @@ import {
   IPrintElementListType,
   IPrintAreaPositionStoreType,
   MyDropResult,
+  sourceElementTypes,
+  IPrintRecordElementListType,
+  usePrintRecordElementListStore,
 } from '@/store';
 import { v4 as uuidv4 } from 'uuid';
 import { useRef } from 'react';
+interface ITmageProps {
+  sourceType: sourceElementTypes;
+  fieldId?: string;
+}
 
-export const ImageElement: React.FC<React.PropsWithChildren> = () => {
+export const ImageElement: React.FC<React.PropsWithChildren<ITmageProps>> = (
+  props,
+) => {
+  const { sourceType, fieldId } = props;
   const addPrintElement = usePrintElementListStore(
     (state: IPrintElementListType) => state.addPrintElement,
+  );
+  const { addPrintRecordElement } = usePrintRecordElementListStore(
+    (state: IPrintRecordElementListType) => state,
   );
   const elementRef = useRef<HTMLDivElement>(null);
 
@@ -41,15 +54,32 @@ export const ImageElement: React.FC<React.PropsWithChildren> = () => {
           const offsetY = elementRef.current?.offsetTop
             ? elementRef.current?.offsetTop
             : 0;
-          addPrintElement({
-            ...defalutImageElement,
-            styles: {
-              ...defalutImageElement.styles,
-              left: left + offsetX - position.left + position.scrollLeft,
-              top: top + offsetY - position.top + position.scrollTop,
-            },
-            uuid: uuidv4(),
-          });
+
+          if (sourceType === sourceElementTypes.Base) {
+            addPrintElement({
+              ...defalutImageElement,
+              styles: {
+                ...defalutImageElement.styles,
+                left: left + offsetX - position.left + position.scrollLeft,
+                top: top + offsetY - position.top + position.scrollTop,
+              },
+              sourceType: sourceElementTypes.Base,
+              uuid: uuidv4(),
+            });
+          }
+          if (sourceType === sourceElementTypes.Table) {
+            addPrintRecordElement({
+              ...defalutImageElement,
+              styles: {
+                ...defalutImageElement.styles,
+                left: left + offsetX - position.left + position.scrollLeft,
+                top: top + offsetY - position.top + position.scrollTop,
+              },
+              uuid: uuidv4(),
+              sourceType: sourceElementTypes.Table,
+              fieldId: fieldId,
+            });
+          }
         }
       },
       collect: (monitor) => ({

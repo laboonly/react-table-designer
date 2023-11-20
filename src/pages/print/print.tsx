@@ -39,13 +39,14 @@ const findAttributeId = (
 };
 
 interface IPrintPropsType {
-  printRef: React.LegacyRef<HTMLDivElement> | undefined;
+  printRef: React.RefObject<HTMLDivElement>;
 }
 
 export const Print: React.FC<React.PropsWithChildren<IPrintPropsType>> = (
   props,
 ) => {
   const { printRef } = props;
+
   const [, drop] = useDrop(
     () => ({
       accept: ItemTypes.KNIGHT,
@@ -54,7 +55,6 @@ export const Print: React.FC<React.PropsWithChildren<IPrintPropsType>> = (
         if (!delta) return;
         const left = Math.round(delta.x);
         const top = Math.round(delta.y);
-        console.log('left', left, 'top', top);
         return { top, left };
       },
       collect: (monitor) => ({
@@ -72,6 +72,7 @@ export const Print: React.FC<React.PropsWithChildren<IPrintPropsType>> = (
   );
   const { selectElementInfo, changeSelectElementInfo } =
     useSelectElementInfoStore((state: ISelectElementInfoType) => state);
+
   const { settingModal } = useSettingModalStore(
     (state: ISettingModalType) => state,
   );
@@ -80,6 +81,7 @@ export const Print: React.FC<React.PropsWithChildren<IPrintPropsType>> = (
     (state: IPrintRecordElementListType) => state,
   );
 
+  // 重置选择元素
   const initEditElement = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const targetId = findAttributeId(e.target as HTMLDivElement);
     if (!targetId || targetId === 'root' || targetId === 'print') {
@@ -93,7 +95,7 @@ export const Print: React.FC<React.PropsWithChildren<IPrintPropsType>> = (
   };
 
   return (
-    <div className="flexjustify-center container h-full p-[20px]" ref={drop}>
+    <div className="container h-full p-[20px]" ref={drop}>
       <div
         id="print"
         ref={printRef}

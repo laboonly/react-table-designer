@@ -14,6 +14,7 @@ export interface IBaseElementType {
   isEdit?: boolean;
   sourceType?: sourceElementTypes;
   fieldId?: string;
+  rotate?: number;
 }
 
 export const defalutTextElement: IBaseElementType = {
@@ -28,6 +29,7 @@ export const defalutTextElement: IBaseElementType = {
     textAlign: 'left',
   },
   content: 'Text',
+  rotate: 0,
   isEdit: false,
 };
 
@@ -39,6 +41,7 @@ export const defalutImageElement: IBaseElementType = {
     width: 100,
     height: 100,
   },
+  rotate: 0,
   src: 'https://t7.baidu.com/it/u=1595072465,3644073269&fm=193&f=GIF',
 };
 

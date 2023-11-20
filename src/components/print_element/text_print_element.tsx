@@ -13,27 +13,22 @@ import {
   ISettingModalType,
 } from '@/store';
 import { Textarea } from '@/components/ui/textarea';
-import { Rnd } from 'react-rnd';
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
+import Moveable from 'react-moveable';
+import { flushSync } from 'react-dom';
+import { radiansToDegrees } from '@/lib/utils';
 
 interface ITextPropsType {
   elementInfo: IBaseElementType;
 }
 
-const resizeHandleStyle = {
-  content: '',
-  width: '10px',
-  height: '10px',
-  borderRadius: '50%',
-  backgroundColor: '#020617',
-};
-
 export const TextPrintElement: React.FC<
   React.PropsWithChildren<ITextPropsType>
 > = (props) => {
   const { elementInfo } = props;
-  const { content, styles, uuid, sourceType, fieldId } = elementInfo;
+  const { content, styles, uuid, sourceType, fieldId, rotate } = elementInfo;
   const { width = 200, height = 60, top, left } = styles;
+  const targetRef = useRef<HTMLImageElement>(null);
 
   const { selectElementInfo, changeSelectElementInfo } =
     useSelectElementInfoStore((state: ISelectElementInfoType) => state);
@@ -81,102 +76,105 @@ export const TextPrintElement: React.FC<
   };
 
   return (
-    <Rnd
+    <div
       id={uuid}
-      default={{ x: left as number, y: top as number, width, height }}
-      size={{ width: (width as number) + 10, height: (height as number) + 10 }}
-      disableDragging={isElementEdit || !settingModal}
-      enableResizing={settingModal}
-      position={{ x: left as number, y: top as number }}
-      // resizeHandleStyles={
-      //   settingModal
-      //     ? {
-      //         bottomLeft: resizeHandleStyle,
-      //         bottomRight: resizeHandleStyle,
-      //         topLeft: resizeHandleStyle,
-      //         topRight: resizeHandleStyle,
-      //       }
-      //     : {}
-      // }
-      onDragStop={(_, d) => {
-        if (sourceType === sourceElementTypes.Base) {
-          updatePrintElement({
-            ...elementInfo,
-            styles: {
-              ...styles,
-              left: d.x,
-              top: d.y,
-            },
-          });
-        } else {
-          updatePrintRecordElement({
-            ...elementInfo,
-            styles: {
-              ...styles,
-              left: d.x,
-              top: d.y,
-            },
-          });
-        }
-      }}
-      onResizeStop={(_, direction, ref, delta, position) => {
-        if (sourceType === sourceElementTypes.Base) {
-          updatePrintElement({
-            ...elementInfo,
-            styles: {
-              ...styles,
-              left: position.x,
-              top: position.y,
-              width: parseInt(ref.style.width),
-              height: parseInt(ref.style.height),
-            },
-          });
-        } else {
-          updatePrintRecordElement({
-            ...elementInfo,
-            styles: {
-              ...styles,
-              left: position.x,
-              top: position.y,
-              width: parseInt(ref.style.width),
-              height: parseInt(ref.style.height),
-            },
-          });
-        }
-      }}
       style={{
-        border: settingModal ? '1px solid #020617' : 'none',
-        // padding: '10px 10px',
-        cursor: settingModal ? 'move' : 'default',
-        wordWrap: 'break-word',
-        color: styles.color,
-        fontSize: styles.fontSize,
-        textAlign: styles.textAlign,
-        lineHeight: styles.lineHeight,
+        position: 'absolute',
+        top,
+        left,
+        width,
+        height,
+        padding: '10px 10px',
       }}
-      onClick={setEditingElement}
     >
-      {sourceType !== sourceElementTypes.Table ? (
-        <>
-          {isElementEdit ? (
-            <Textarea
-              style={{
-                padding: '0px 0px',
-                fontSize: styles.fontSize,
-                textAlign: styles.textAlign,
-                lineHeight: styles.lineHeight,
-              }}
-              value={content}
-              onChange={(e) => valueChange(e)}
-              className="w-full h-full rounded-none"
-            />
-          ) : (
-            <p>{content}</p>
-          )}
-        </>
-      ) : (
-        fieldId && <p>{records[recordIndex].fields[fieldId]}</p>
-      )}
-    </Rnd>
+      <div
+        ref={targetRef}
+        style={{
+          border: settingModal ? '1px solid #020617' : 'none',
+          cursor: settingModal ? 'move' : 'default',
+          wordWrap: 'break-word',
+          color: styles.color,
+          fontSize: styles.fontSize,
+          textAlign: styles.textAlign,
+          lineHeight: styles.lineHeight,
+          transform: `rotate(${rotate}deg)`,
+        }}
+      >
+        {sourceType !== sourceElementTypes.Table ? (
+          <>
+            {isElementEdit ? (
+              <Textarea
+                style={{
+                  padding: '0px 0px',
+                  fontSize: styles.fontSize,
+                  textAlign: styles.textAlign,
+                  lineHeight: styles.lineHeight,
+                }}
+                value={content}
+                onChange={(e) => valueChange(e)}
+                className="h-full w-full rounded-none"
+              />
+            ) : (
+              <p>{content}</p>
+            )}
+          </>
+        ) : (
+          fieldId && <p>{records[recordIndex].fields[fieldId]}</p>
+        )}
+      </div>
+      <Moveable
+        // options
+        preventDefault={false}
+        flushSync={flushSync}
+        target={targetRef} // move拖拽对象
+        origin={false} // 显示中心点
+        keepRatio={false} // 保持宽高
+        edge={false} //
+        draggable={settingModal} // 开启拖砖
+        resizable={settingModal} // 开启调整大小
+        rotatable={settingModal} // 开启旋转
+        throttleDrag={0}
+        onRender={(e) => {
+          console.log('onRender');
+          e.target.style.cssText += e.cssText;
+        }}
+        onClick={() => {
+          setEditingElement();
+        }}
+        onRenderEnd={(e) => {
+          if (e.isDrag) {
+            e.target.style.transform = `rotate(${radiansToDegrees(
+              e.transformObject.rotate,
+            )}deg)`;
+
+            if (sourceType === sourceElementTypes.Base) {
+              updatePrintElement({
+                ...elementInfo,
+                rotate: radiansToDegrees(e.transformObject.rotate),
+                styles: {
+                  ...styles,
+                  left: left + e.transformObject.translate[0],
+                  top: top + e.transformObject.translate[1],
+                  width: parseInt(e.target.style.width),
+                  height: parseInt(e.target.style.height),
+                },
+              });
+            } else {
+              updatePrintRecordElement({
+                ...elementInfo,
+                rotate: radiansToDegrees(e.transformObject.rotate),
+                styles: {
+                  ...styles,
+                  left: left + e.transformObject.translate[0],
+                  top: top + e.transformObject.translate[1],
+                  width: parseInt(e.target.style.width),
+                  height: parseInt(e.target.style.height),
+                },
+              });
+            }
+          }
+        }}
+      />
+    </div>
   );
 };

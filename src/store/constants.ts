@@ -18,6 +18,7 @@ export const textElementInputList = [
   'fontWeight',
   'lineHeight',
   'textAlign',
+  'rotate',
 ];
 
 export const textFeildType = [
