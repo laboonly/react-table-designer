@@ -135,7 +135,14 @@ export const TextPrintElement: React.FC<
         draggable={settingModal} // 开启拖砖
         resizable={settingModal} // 开启调整大小
         rotatable={settingModal} // 开启旋转
+        zoom={settingModal ? 1 : 0}
         throttleDrag={0}
+        padding={{
+          left: 10,
+          right: 10,
+          top: 10,
+          bottom: 10,
+        }}
         onRender={(e) => {
           console.log('onRender');
           e.target.style.cssText += e.cssText;

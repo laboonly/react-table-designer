@@ -84,7 +84,14 @@ export const ImagePrintElement: React.FC<
         resizable={settingModal} // 开启调整大小
         rotatable={settingModal} // 开启旋转
         useMutationObserver={true}
+        zoom={settingModal ? 1 : 0}
         throttleDrag={0}
+        padding={{
+          left: 10,
+          right: 10,
+          top: 10,
+          bottom: 10,
+        }}
         onRender={(e) => {
           console.log('onRender');
           e.target.style.cssText += e.cssText;
