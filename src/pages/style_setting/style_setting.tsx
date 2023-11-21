@@ -180,7 +180,6 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
                         disabled={!selectElementInfo.isEdit}
                         value={selectElementInfo.styles[item]}
                         onChange={(e) => {
-                          console.log('e---->', e.target.value);
                           valueChange({
                             styles: {
                               ...selectElementInfo.styles,
@@ -224,11 +223,12 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
                       <Label className="mb-2 mr-4">{item}: </Label>
                       <Input
                         type="number"
+                        step="any"
                         disabled={!selectElementInfo.isEdit}
                         value={selectElementInfo[item]}
                         onChange={(e) =>
                           valueChange({
-                            [item]: parseInt(e.target.value),
+                            [item]: parseFloat(e.target.value),
                             styles: selectElementInfo.styles,
                           })
                         }
