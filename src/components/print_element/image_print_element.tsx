@@ -44,6 +44,7 @@ export const ImagePrintElement: React.FC<
   );
 
   const setEditingElement = () => {
+    if (!settingModal) return;
     changeSelectElementInfo({
       ...elementInfo,
       isEdit: true,
@@ -53,6 +54,7 @@ export const ImagePrintElement: React.FC<
   if (!uuid) return <></>;
   return (
     <div
+      id={uuid}
       style={{
         position: 'absolute',
         top,
@@ -81,6 +83,7 @@ export const ImagePrintElement: React.FC<
         draggable={settingModal} // 开启拖砖
         resizable={settingModal} // 开启调整大小
         rotatable={settingModal} // 开启旋转
+        useMutationObserver={true}
         throttleDrag={0}
         onRender={(e) => {
           console.log('onRender');
@@ -118,6 +121,7 @@ export const ImagePrintElement: React.FC<
             } else {
               updatePrintRecordElement({
                 ...elementInfo,
+                rotate: radiansToDegrees(e.transformObject.rotate),
                 styles: {
                   ...styles,
                   left: left + e.transformObject.translate[0],

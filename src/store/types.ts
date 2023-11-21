@@ -27,6 +27,7 @@ export const defalutTextElement: IBaseElementType = {
     fontSize: '9pt',
     lineHeight: '18pt',
     textAlign: 'left',
+    color: '#000000',
   },
   content: 'Text',
   rotate: 0,

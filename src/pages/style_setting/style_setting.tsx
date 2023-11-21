@@ -179,14 +179,15 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
                         type="color"
                         disabled={!selectElementInfo.isEdit}
                         value={selectElementInfo.styles[item]}
-                        onChange={(e) =>
+                        onChange={(e) => {
+                          console.log('e---->', e.target.value);
                           valueChange({
                             styles: {
                               ...selectElementInfo.styles,
                               [item]: e.target.value,
                             },
-                          })
-                        }
+                          });
+                        }}
                       />
                     </div>
                   );

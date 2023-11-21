@@ -28,9 +28,16 @@ export const textFeildType = [
   'longText',
 ];
 
-export const imagefeildTypeMap = ['attachment'];
+export const imageFeildTypeMap = ['attachment'];
 
-export const ImageElementInputList = ['src', 'width', 'height', 'left', 'top'];
+export const ImageElementInputList = [
+  'src',
+  'width',
+  'height',
+  'left',
+  'top',
+  'rotate',
+];
 
 export const fontSizeValue = [
   '8pt',

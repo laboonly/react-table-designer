@@ -89,6 +89,7 @@ export const TextPrintElement: React.FC<
     >
       <div
         ref={targetRef}
+        id={`uuid-${uuid}`}
         style={{
           border: settingModal ? '1px solid #020617' : 'none',
           cursor: settingModal ? 'move' : 'default',
@@ -130,6 +131,7 @@ export const TextPrintElement: React.FC<
         origin={false} // 显示中心点
         keepRatio={false} // 保持宽高
         edge={false} //
+        useMutationObserver={true} // 跟随目标css属性设置而变换
         draggable={settingModal} // 开启拖砖
         resizable={settingModal} // 开启调整大小
         rotatable={settingModal} // 开启旋转
