@@ -1,6 +1,9 @@
 import { Print } from './pages/print/print';
 import { ToolBar } from './pages/tool_bar';
 import { StyleSetting } from './pages/style_setting';
+import { EditToolBar } from '@/pages/edit_tool_bar';
+import { RecordElementContent } from './pages/record_element_content';
+import { BaseElementsContent } from './pages/elements_content/base_element_content';
 import {
   useSettingModalStore,
   usePrintAreaPosition,
@@ -13,11 +16,9 @@ import {
   IRecordsData,
   IFieldsType,
 } from './store';
-import { BaseElementsContent } from './pages/elements_content/base_element_content';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import { useWindowSize, useScroll } from 'react-use';
-import { RecordElementContent } from './pages/record_element_content';
 import { useEffect, useRef } from 'react';
 import { getQueryParamsString } from '@/lib/utils';
 import axios from 'axios';
@@ -95,8 +96,13 @@ export const Home = () => {
               </div>
             </div>
           )}
-          <div className="h-full grow">
-            <Print printRef={printRef} />
+          <div className="relative h-full grow pt-[54px]">
+            <div className="absolute left-0 top-0 w-full">
+              {settingModal && <EditToolBar />}
+            </div>
+            <div className="h-full grow">
+              <Print printRef={printRef} />
+            </div>
           </div>
           {settingModal && <StyleSetting />}
         </div>

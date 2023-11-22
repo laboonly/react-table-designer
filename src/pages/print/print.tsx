@@ -70,6 +70,7 @@ export const Print: React.FC<React.PropsWithChildren<IPrintPropsType>> = (
   const { printList } = usePrintElementListStore(
     (state: IPrintElementListType) => state,
   );
+
   const { selectElementInfo, changeSelectElementInfo } =
     useSelectElementInfoStore((state: ISelectElementInfoType) => state);
 

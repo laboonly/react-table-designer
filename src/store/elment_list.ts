@@ -32,6 +32,8 @@ export interface IPrintElementListType {
   addPrintElement: (elementInfo: IBaseElementType) => void;
   updatePrintElement: (elementInfo: IBaseElementType) => void;
   deletePrintElement: (uuid: string) => void;
+  resetPrintElement: () => void;
+  importPrintElement: (printList: IBaseElementType[]) => void;
 }
 
 export const usePrintElementListStore = create<IPrintElementListType>()(
@@ -70,6 +72,14 @@ export const usePrintElementListStore = create<IPrintElementListType>()(
             draftState.splice(index, 1);
           });
           return { printList: newstate };
+        }),
+      resetPrintElement: () =>
+        set(() => {
+          return { printList: [] };
+        }),
+      importPrintElement: (printList: IBaseElementType[]) =>
+        set(() => {
+          return { printList };
         }),
     }),
     {
@@ -185,6 +195,7 @@ export interface IPrintRecordElementListType {
   addPrintRecordElement: (elementInfo: IBaseElementType) => void;
   updatePrintRecordElement: (elementInfo: IBaseElementType) => void;
   deletePrintRecordElement: (uuid: string) => void;
+  resetPrintRecordList: () => void;
 }
 
 export const usePrintRecordElementListStore =
@@ -231,6 +242,10 @@ export const usePrintRecordElementListStore =
               return { printRecordList: newstate };
             }
             return { printRecordList: state.printRecordList };
+          }),
+        resetPrintRecordList: () =>
+          set(() => {
+            return { printRecordList: [] };
           }),
       }),
       {

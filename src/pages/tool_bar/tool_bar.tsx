@@ -61,24 +61,18 @@ export const ToolBar = (props: IToolBarProps) => {
   return (
     <div className="mx-[16px] flex justify-between border-b-2 border-gray-400 py-[8px]">
       <div className="flex justify-start space-x-4">
-        <div className="flex justify-start">
-          <Button
-            variant="ghost"
-            disabled={!canPre}
-            onClick={() => preRecord()}
-          >
-            <ChevronLeftIcon className="w-4.h" />
-            Previous Record
-          </Button>
-          <Button
-            variant="ghost"
-            disabled={!canNext}
-            onClick={() => nextRecord()}
-          >
-            Next Record
-            <ChevronRightIcon className="w-4.h" />
-          </Button>
-        </div>
+        <Button variant="ghost" disabled={!canPre} onClick={() => preRecord()}>
+          <ChevronLeftIcon className="w-4.h" />
+          Previous Record
+        </Button>
+        <Button
+          variant="ghost"
+          disabled={!canNext}
+          onClick={() => nextRecord()}
+        >
+          Next Record
+          <ChevronRightIcon className="w-4.h" />
+        </Button>
       </div>
       <div className="flex justify-end space-x-4">
         <Button variant="ghost" onClick={() => setSeettingModal()}>
