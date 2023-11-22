@@ -19,7 +19,10 @@ import {
   usePrintRecordElementListStore,
   IPrintRecordElementListType,
   IBaseElementType,
+  ITableRecordDataStoreType,
+  useTableRecordData,
 } from '@/store';
+import { sourceElementTypes } from '@/store/constants';
 
 export const EditToolBar = () => {
   const [fileName, setFileName] = useState<string>();
@@ -35,11 +38,23 @@ export const EditToolBar = () => {
   const { printList, resetPrintElement, importPrintElement } =
     usePrintElementListStore((state: IPrintElementListType) => state);
 
+  const { recordIndex, records } = useTableRecordData(
+    (state: ITableRecordDataStoreType) => state,
+  );
+
   const exportTemplate = () => {
+    const transformRecordList = printRecordList.map((item) => {
+      return {
+        ...item,
+        sourceType: sourceElementTypes.Base,
+        content: records[recordIndex].fields[item.fieldId!],
+      };
+    });
+
     const template = {
-      printList,
-      printRecordList,
+      printList: [...printList, ...transformRecordList],
     };
+
     const blob = new Blob([JSON.stringify(template)], {
       type: 'application/json',
     });
