@@ -4,7 +4,7 @@ import { useDrag } from 'react-dnd';
 import { ItemTypes } from '@/store/constants';
 import {
   usePrintElementListStore,
-  defalutImageElement,
+  defaultImageElement,
   usePrintAreaPosition,
   IPrintElementListType,
   IPrintAreaPositionStoreType,
@@ -57,9 +57,9 @@ export const ImageElement: React.FC<React.PropsWithChildren<ITmageProps>> = (
 
           if (sourceType === sourceElementTypes.Base) {
             addPrintElement({
-              ...defalutImageElement,
+              ...defaultImageElement,
               styles: {
-                ...defalutImageElement.styles,
+                ...defaultImageElement.styles,
                 left: left + offsetX - position.left + position.scrollLeft,
                 top: top + offsetY - position.top + position.scrollTop,
               },
@@ -69,9 +69,9 @@ export const ImageElement: React.FC<React.PropsWithChildren<ITmageProps>> = (
           }
           if (sourceType === sourceElementTypes.Table) {
             addPrintRecordElement({
-              ...defalutImageElement,
+              ...defaultImageElement,
               styles: {
-                ...defalutImageElement.styles,
+                ...defaultImageElement.styles,
                 left: left + offsetX - position.left + position.scrollLeft,
                 top: top + offsetY - position.top + position.scrollTop,
               },

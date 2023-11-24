@@ -4,7 +4,7 @@ import { useDrag } from 'react-dnd';
 import { ItemTypes, sourceElementTypes } from '@/store/constants';
 import { useRef } from 'react';
 import {
-  defalutTextElement,
+  defaultTextElement,
   usePrintElementListStore,
   usePrintRecordElementListStore,
   usePrintAreaPosition,
@@ -59,9 +59,9 @@ export const TextElement: React.FC<React.PropsWithChildren<ITextProps>> = (
           // 选择性添加元素
           if (sourceType === sourceElementTypes.Base) {
             addPrintElement({
-              ...defalutTextElement,
+              ...defaultTextElement,
               styles: {
-                ...defalutTextElement.styles,
+                ...defaultTextElement.styles,
                 left: left + offsetX - position.left + position.scrollLeft,
                 top: top + offsetY - position.top + position.scrollTop,
               },
@@ -72,9 +72,9 @@ export const TextElement: React.FC<React.PropsWithChildren<ITextProps>> = (
           }
           if (sourceType === sourceElementTypes.Table) {
             addPrintRecordElement({
-              ...defalutTextElement,
+              ...defaultTextElement,
               styles: {
-                ...defalutTextElement.styles,
+                ...defaultTextElement.styles,
                 left: left + offsetX - position.left + position.scrollLeft,
                 top: top + offsetY - position.top + position.scrollTop,
               },

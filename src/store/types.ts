@@ -3,6 +3,7 @@ import { sourceElementTypes } from './constants';
 export enum IElementType {
   Text = 'Text',
   Image = 'Image',
+  Table = 'Table',
 }
 
 export interface IBaseElementType {
@@ -17,7 +18,7 @@ export interface IBaseElementType {
   rotate?: number;
 }
 
-export const defalutTextElement: IBaseElementType = {
+export const defaultTextElement: IBaseElementType = {
   type: IElementType.Text,
   styles: {
     left: 0,
@@ -34,7 +35,7 @@ export const defalutTextElement: IBaseElementType = {
   isEdit: false,
 };
 
-export const defalutImageElement: IBaseElementType = {
+export const defaultImageElement: IBaseElementType = {
   type: IElementType.Image,
   styles: {
     left: 0,
@@ -46,10 +47,22 @@ export const defalutImageElement: IBaseElementType = {
   src: 'https://t7.baidu.com/it/u=1595072465,3644073269&fm=193&f=GIF',
 };
 
+export const defaultTableElement: IBaseElementType = {
+  type: IElementType.Table,
+  styles: {
+    left: 0,
+    top: 0,
+    width: 100,
+    height: 100,
+  },
+  rotate: 0,
+};
+
 // 默认元素列表
 export const defalutBaseElements: IBaseElementType[] = [
-  defalutTextElement,
-  defalutImageElement,
+  defaultTextElement,
+  defaultImageElement,
+  defaultTableElement,
 ];
 
 export type MyDropResult = {

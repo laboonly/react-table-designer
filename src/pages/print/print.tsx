@@ -17,6 +17,7 @@ import {
 import {
   TextPrintElement,
   ImagePrintElement,
+  TablePrintElement,
 } from '@/components/print_element';
 
 type NullableString = string | null;
@@ -121,10 +122,13 @@ export const Print: React.FC<React.PropsWithChildren<IPrintPropsType>> = (
         )}
         {printList.length > 0 &&
           printList.map((item: IBaseElementType) => {
-            if (item.type === IElementType.Text) {
-              return <TextPrintElement key={item.uuid} elementInfo={item} />;
-            } else if (item.type === IElementType.Image) {
-              return <ImagePrintElement key={item.uuid} elementInfo={item} />;
+            switch (item.type) {
+              case IElementType.Text:
+                return <TextPrintElement key={item.uuid} elementInfo={item} />;
+              case IElementType.Image:
+                return <ImagePrintElement key={item.uuid} elementInfo={item} />;
+              case IElementType.Table:
+                return <TablePrintElement key={item.uuid} elementInfo={item} />;
             }
           })}
         {printRecordList.length > 0 &&

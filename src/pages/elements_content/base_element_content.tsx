@@ -1,5 +1,9 @@
 import { useEffect } from 'react';
-import { TextElement, ImageElement } from '../../components/base_element';
+import {
+  TextElement,
+  ImageElement,
+  TableElement,
+} from '../../components/base_element';
 import {
   useDragElementStore,
   IElementType,
@@ -23,18 +27,21 @@ export const BaseElementsContent = () => {
   return (
     <div className="flex flex-col space-y-4">
       {dragList.map((item: IBaseElementType, index: number) => {
-        if (item.type === IElementType.Text) {
-          return (
-            <TextElement
-              key={index}
-              content={item.content}
-              sourceType={sourceElementTypes.Base}
-            />
-          );
-        } else if (item.type === IElementType.Image) {
-          return (
-            <ImageElement key={index} sourceType={sourceElementTypes.Base} />
-          );
+        switch (item.type) {
+          case IElementType.Text:
+            return (
+              <TextElement
+                key={index}
+                content={item.content}
+                sourceType={sourceElementTypes.Base}
+              />
+            );
+          case IElementType.Image:
+            return (
+              <ImageElement key={index} sourceType={sourceElementTypes.Base} />
+            );
+          case IElementType.Table:
+            return <TableElement key={index} />;
         }
       })}
     </div>
