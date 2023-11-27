@@ -6,6 +6,13 @@ export enum IElementType {
   Table = 'Table',
 }
 
+interface IHeader {
+  [key: string]: string;
+}
+interface ITableData {
+  header: IHeader;
+  columns: any;
+}
 export interface IBaseElementType {
   type: IElementType;
   styles: React.CSSProperties;
@@ -16,6 +23,7 @@ export interface IBaseElementType {
   sourceType?: sourceElementTypes;
   fieldId?: string;
   rotate?: number;
+  table?: ITableData;
 }
 
 export const defaultTextElement: IBaseElementType = {
@@ -56,6 +64,42 @@ export const defaultTableElement: IBaseElementType = {
     height: 100,
   },
   rotate: 0,
+  table: {
+    header: {
+      1: 'firstName',
+      2: 'lastName',
+      3: 'age',
+      4: 'visits',
+      5: 'status',
+      6: 'progress',
+    },
+    columns: [
+      {
+        firstName: 'tanner',
+        lastName: 'linsley',
+        age: 24,
+        visits: 100,
+        status: 'In Relationship',
+        progress: 50,
+      },
+      {
+        firstName: 'tandy',
+        lastName: 'miller',
+        age: 40,
+        visits: 40,
+        status: 'Single',
+        progress: 80,
+      },
+      {
+        firstName: 'joe',
+        lastName: 'dirte',
+        age: 45,
+        visits: 20,
+        status: 'Complicated',
+        progress: 10,
+      },
+    ],
+  },
 };
 
 // 默认元素列表

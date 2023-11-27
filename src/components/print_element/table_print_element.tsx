@@ -45,6 +45,7 @@ const DimensionViewable = {
           transform: `translate(-50%, 0px)`,
           width: '20px',
           height: '20px',
+          cursor: 'move',
         }}
       ></div>
     );
@@ -53,13 +54,14 @@ const DimensionViewable = {
 
 export const TablePrintElement: React.FC<ITableElementPropsType> = (props) => {
   const { elementInfo } = props;
-  const { styles, uuid, rotate } = elementInfo;
+  const { styles, uuid, rotate, table } = elementInfo;
   const { top, left, width, height } = styles;
   const targetRef = useRef<HTMLImageElement>(null);
 
   const settingModal = useSettingModalStore(
     (state: ISettingModalType) => state.settingModal,
   );
+
   const { selectElementInfo, changeSelectElementInfo } =
     useSelectElementInfoStore((state: ISelectElementInfoType) => state);
 
@@ -118,7 +120,7 @@ export const TablePrintElement: React.FC<ITableElementPropsType> = (props) => {
           setEditingElement();
         }}
       >
-        <TableComponent />
+        {table && <TableComponent elementInfo={elementInfo} />}
       </div>
       <Moveable
         // options
@@ -137,7 +139,7 @@ export const TablePrintElement: React.FC<ITableElementPropsType> = (props) => {
         zoom={settingModal ? 1 : 0}
         throttleDrag={0}
         props={{
-          dimensionViewable: true,
+          dimensionViewable: settingModal,
         }}
         padding={{
           left: 10,

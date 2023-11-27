@@ -5,8 +5,13 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import React, { useState } from 'react';
-import { Person, defaultData } from './makeData';
+import React, { useEffect, useState } from 'react';
+import { Person } from './makeData';
+import {
+  usePrintElementListStore,
+  IPrintElementListType,
+  IBaseElementType,
+} from '@/store';
 
 declare module '@tanstack/react-table' {
   interface TableMeta<TData extends RowData> {
@@ -14,13 +19,17 @@ declare module '@tanstack/react-table' {
   }
 }
 
+interface ITablePropsType {
+  elementInfo: IBaseElementType;
+}
+
 const defaultColumn: Partial<ColumnDef<Person>> = {
-  cell: ({ getValue, row: { index }, column: { id }, table }) => {
+  cell: ({ getValue, row: { index }, column: { id, getSize }, table }) => {
     const initialValue = getValue();
     const [value, setValue] = React.useState(initialValue);
 
     const onBlur = () => {
-      table.potions.meta?.updateData(index, id, value);
+      table.options.meta?.updateData(index, id, value);
     };
 
     React.useEffect(() => {
@@ -29,6 +38,9 @@ const defaultColumn: Partial<ColumnDef<Person>> = {
 
     return (
       <input
+        style={{
+          width: getSize(),
+        }}
         value={value as string}
         onChange={(e) => setValue(e.target.value)}
         onBlur={onBlur}
@@ -37,72 +49,61 @@ const defaultColumn: Partial<ColumnDef<Person>> = {
   },
 };
 
-export const TableComponent: React.FC = () => {
-  const [data, setData] = useState(() => [...defaultData]);
+export const TableComponent: React.FC<ITablePropsType> = (props) => {
+  const { elementInfo } = props;
+  const { table: tableData = { header: {}, columns: [] } } = elementInfo;
+  const [data, setData] = useState([...tableData.columns]);
 
-  const columnHelper = createColumnHelper<Person>();
+  const columnHelper =
+    createColumnHelper<{ [key in keyof tableData.header]: string }>();
 
-  const columns = [
-    columnHelper.accessor('firstName', {
-      cell: (info) => info.getValue(),
+  const columns = Object.keys(tableData.header).map((item) => {
+    return columnHelper.accessor(tableData.header[item], {
       footer: (info) => info.column.id,
-    }),
-    columnHelper.accessor((row) => row.lastName, {
-      id: 'lastName',
-      cell: (info) => <i>{info.getValue()}</i>,
-      header: () => <span>Last Name</span>,
-      footer: (info) => info.column.id,
-    }),
-    columnHelper.accessor('age', {
-      header: () => 'Age',
-      cell: (info) => info.renderValue(),
-      footer: (info) => info.column.id,
-    }),
-    columnHelper.accessor('visits', {
-      header: () => <span>Visits</span>,
-      footer: (info) => info.column.id,
-    }),
-    columnHelper.accessor('status', {
-      header: 'Status',
-      footer: (info) => info.column.id,
-    }),
-    columnHelper.accessor('progress', {
-      header: 'Profile Progress',
-      footer: (info) => info.column.id,
-    }),
-  ];
+    });
+  });
+
+  const { updatePrintElement } = usePrintElementListStore(
+    (state: IPrintElementListType) => state,
+  );
+
+  const updateTableElement = (newData: any) => {
+    updatePrintElement({
+      ...elementInfo,
+      table: {
+        ...tableData,
+        columns: newData,
+      },
+    });
+  };
 
   const table = useReactTable({
+    defaultColumn,
     columns,
     data,
-    defaultColumn,
+    enableColumnResizing: true,
     columnResizeMode: 'onChange',
     getCoreRowModel: getCoreRowModel(),
     meta: {
       updateData: (rowIndex, columnId, value) => {
-        setData((old) => {
-          return old.map((row, index) => {
-            if (index === rowIndex) {
-              return {
-                ...old[rowIndex]!,
-                [columnId]: value,
-              };
-            }
-            return row;
-          });
+        const newData = data.map((row, index) => {
+          if (index === rowIndex) {
+            return {
+              ...data[rowIndex]!,
+              [columnId]: value,
+            };
+          }
+          return row;
         });
+        setData(newData);
+        updateTableElement(newData);
       },
     },
   });
 
   return (
-    <table
-      className="w-full border-collapse border border-black"
-      // style={{
-      //   width: width,
-      // }}
-    >
-      <thead>
+    <table className="w-full border-collapse border border-black">
+      <thead className="w-full">
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
@@ -120,22 +121,17 @@ export const TableComponent: React.FC = () => {
                       header.column.columnDef.header,
                       header.getContext(),
                     )}
-                <div
-                  {...{
-                    onMouseDown: header.getResizeHandler(),
-                    onTouchStart: header.getResizeHandler(),
-                    className: `resizer ${
-                      header.column.getIsResizing() ? 'isResizing' : ''
-                    }`,
-                    // style: {
-                    //   transform: header.column.getIsResizing()
-                    //     ? `translateX(${
-                    //         table.getState().columnSizingInfo.deltaOffset
-                    //       }px)`
-                    //     : '',
-                    // },
-                  }}
-                />
+                {header.column.getCanResize() && (
+                  <div
+                    {...{
+                      onMouseDown: header.getResizeHandler(),
+                      onTouchStart: header.getResizeHandler(),
+                      className: `resizer ${
+                        header.column.getIsResizing() ? 'isResizing' : ''
+                      }`,
+                    }}
+                  />
+                )}
               </th>
             ))}
           </tr>
