@@ -30,8 +30,16 @@ export const textFeildType = [
 
 export const imageFeildTypeMap = ['attachment'];
 
-export const ImageElementInputList = [
+export const imageElementInputList = [
   'src',
+  'width',
+  'height',
+  'left',
+  'top',
+  'rotate',
+];
+
+export const tableElementInputList = [
   'width',
   'height',
   'left',

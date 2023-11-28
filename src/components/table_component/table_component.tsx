@@ -5,7 +5,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Person } from './makeData';
 import {
   usePrintElementListStore,
@@ -40,6 +40,7 @@ const defaultColumn: Partial<ColumnDef<Person>> = {
       <input
         style={{
           width: getSize(),
+          textAlign: 'center',
         }}
         value={value as string}
         onChange={(e) => setValue(e.target.value)}
@@ -57,11 +58,18 @@ export const TableComponent: React.FC<ITablePropsType> = (props) => {
   const columnHelper =
     createColumnHelper<{ [key in keyof tableData.header]: string }>();
 
-  const columns = Object.keys(tableData.header).map((item) => {
-    return columnHelper.accessor(tableData.header[item], {
-      footer: (info) => info.column.id,
+  const columns = useMemo(() => {
+    console.log('elementInfo', elementInfo);
+    return Object.keys(tableData.header).map((item) => {
+      return columnHelper.accessor(tableData.header[item], {
+        footer: (info) => info.column.id,
+      });
     });
-  });
+  }, [tableData.header]);
+
+  useEffect(() => {
+    setData([...tableData.columns]);
+  }, [tableData]);
 
   const { updatePrintElement } = usePrintElementListStore(
     (state: IPrintElementListType) => state,
@@ -102,7 +110,12 @@ export const TableComponent: React.FC<ITablePropsType> = (props) => {
   });
 
   return (
-    <table className="w-full border-collapse border border-black">
+    <table
+      className="w-full border-collapse border border-black"
+      style={{
+        textAlign: 'center',
+      }}
+    >
       <thead className="w-full">
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id}>

@@ -99,7 +99,7 @@ export const TablePrintElement: React.FC<ITableElementPropsType> = (props) => {
         top,
         left,
         width,
-        height,
+        // height,
         padding: '10px 10px',
       }}
     >
@@ -139,7 +139,7 @@ export const TablePrintElement: React.FC<ITableElementPropsType> = (props) => {
         zoom={settingModal ? 1 : 0}
         throttleDrag={0}
         props={{
-          dimensionViewable: settingModal,
+          dimensionViewable: true,
         }}
         padding={{
           left: 10,

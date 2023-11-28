@@ -2,7 +2,8 @@ import {
   useSelectElementInfoStore,
   usePrintElementListStore,
   textElementInputList,
-  ImageElementInputList,
+  imageElementInputList,
+  tableElementInputList,
   IElementType,
   sourceElementTypes,
   usePrintRecordElementListStore,
@@ -25,6 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { TableElementSetting } from './table_element_setting';
 
 export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
   const { selectElementInfo, changeSelectElementInfo } =
@@ -45,7 +47,9 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
       case IElementType.Text:
         return textElementInputList;
       case IElementType.Image:
-        return ImageElementInputList;
+        return imageElementInputList;
+      case IElementType.Table:
+        return tableElementInputList;
       default:
         return [];
     }
@@ -238,6 +242,9 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
               }
             })}
           </div>
+          {selectElementInfo.type === IElementType.Table && (
+            <TableElementSetting selectElementInfo={selectElementInfo} />
+          )}
           <Button
             className="bottom-0 mt-20 w-[100%] justify-start"
             variant="outline"
