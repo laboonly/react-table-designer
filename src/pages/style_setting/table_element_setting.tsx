@@ -130,7 +130,7 @@ export const TableElementSetting: React.FC<ITableElementSettingProps> = (
         <Label className="mb-10 mr-4">Rows: </Label>
         {table.columns.map((item, index) => {
           return (
-            <div key={item} className="mb-4 flex items-center">
+            <div key={index} className="mb-4 flex items-center">
               <Input disabled={true} value={item[table.header[0]]} />
               <CardStackMinusIcon
                 className="w-4.h mr-2"

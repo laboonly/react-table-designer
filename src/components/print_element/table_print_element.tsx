@@ -23,13 +23,14 @@ const DimensionViewable = {
   events: [],
   render(moveable: MoveableManagerInterface<any, any>, React: Renderer) {
     // const rect = moveable.getRect();
-
+    const { uuid } = moveable.props;
     // Add key (required)
     // Add class prefix moveable-(required)
     return (
       <div
         key={'dimension-viewer'}
         className={'moveable-dimension'}
+        id={`move-${uuid}`}
         style={{
           position: 'absolute',
           left: `-30px`,
@@ -88,8 +89,8 @@ export const TablePrintElement: React.FC<ITableElementPropsType> = (props) => {
   const [dragTarget, setDragTarget] = useState<HTMLElement>();
 
   useEffect(() => {
-    setDragTarget(document.querySelector<HTMLElement>('.moveable-dimension')!);
-  }, []);
+    setDragTarget(document.querySelector<HTMLElement>(`#move-${uuid}`)!);
+  }, [uuid]);
 
   return (
     <div
@@ -140,6 +141,7 @@ export const TablePrintElement: React.FC<ITableElementPropsType> = (props) => {
         throttleDrag={0}
         props={{
           dimensionViewable: true,
+          uuid: uuid,
         }}
         padding={{
           left: 10,
