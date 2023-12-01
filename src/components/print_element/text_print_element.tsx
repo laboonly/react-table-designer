@@ -22,9 +22,7 @@ interface ITextPropsType {
   elementInfo: IBaseElementType;
 }
 
-export const TextPrintElement: React.FC<
-  React.PropsWithChildren<ITextPropsType>
-> = (props) => {
+export const TextPrintElement: React.FC<ITextPropsType> = (props) => {
   const { elementInfo } = props;
   const { content, styles, uuid, sourceType, fieldId, rotate } = elementInfo;
   const { width = 200, height = 60, top, left } = styles;

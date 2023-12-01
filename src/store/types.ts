@@ -4,6 +4,7 @@ export enum IElementType {
   Text = 'Text',
   Image = 'Image',
   Table = 'Table',
+  Pdf = 'Pdf',
 }
 
 interface IHeader {
@@ -24,6 +25,7 @@ export interface IBaseElementType {
   fieldId?: string;
   rotate?: number;
   table?: ITableData;
+  pdfFile?: ArrayBuffer;
 }
 
 export const defaultTextElement: IBaseElementType = {
@@ -90,11 +92,23 @@ export const defaultTableElement: IBaseElementType = {
   },
 };
 
+export const deletePdfElement: IBaseElementType = {
+  type: IElementType.Pdf,
+  styles: {
+    left: 0,
+    top: 0,
+    width: 500,
+    height: 500,
+  },
+  rotate: 0,
+};
+
 // 默认元素列表
 export const defalutBaseElements: IBaseElementType[] = [
   defaultTextElement,
   defaultImageElement,
   defaultTableElement,
+  deletePdfElement,
 ];
 
 export type MyDropResult = {

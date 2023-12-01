@@ -4,6 +4,7 @@ import {
   textElementInputList,
   imageElementInputList,
   tableElementInputList,
+  pdfElementInputList,
   IElementType,
   sourceElementTypes,
   usePrintRecordElementListStore,
@@ -27,6 +28,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { TableElementSetting } from './table_element_setting';
+import { PdfElementSetting } from './pdf_element_setting';
 
 export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
   const { selectElementInfo, changeSelectElementInfo } =
@@ -50,6 +52,8 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
         return imageElementInputList;
       case IElementType.Table:
         return tableElementInputList;
+      case IElementType.Pdf:
+        return pdfElementInputList;
       default:
         return [];
     }
@@ -244,6 +248,9 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
           </div>
           {selectElementInfo.type === IElementType.Table && (
             <TableElementSetting selectElementInfo={selectElementInfo} />
+          )}
+          {selectElementInfo.type === IElementType.Pdf && (
+            <PdfElementSetting selectElementInfo={selectElementInfo} />
           )}
           <Button
             className="bottom-0 mt-20 w-[100%] justify-start"

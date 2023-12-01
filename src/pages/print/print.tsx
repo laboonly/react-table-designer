@@ -18,6 +18,7 @@ import {
   TextPrintElement,
   ImagePrintElement,
   TablePrintElement,
+  PdfPrintElement,
 } from '@/components/print_element';
 
 type NullableString = string | null;
@@ -106,7 +107,7 @@ export const Print: React.FC<React.PropsWithChildren<IPrintPropsType>> = (
       >
         {settingModal && (
           <div
-            className="h-[1627px] w-[1150px]"
+            className="h-[1627px] w-full"
             style={{
               position: 'absolute',
               top: 0,
@@ -129,6 +130,8 @@ export const Print: React.FC<React.PropsWithChildren<IPrintPropsType>> = (
                 return <ImagePrintElement key={item.uuid} elementInfo={item} />;
               case IElementType.Table:
                 return <TablePrintElement key={item.uuid} elementInfo={item} />;
+              case IElementType.Pdf:
+                return <PdfPrintElement key={item.uuid} elementInfo={item} />;
             }
           })}
         {printRecordList.length > 0 &&

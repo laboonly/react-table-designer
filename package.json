@@ -1,5 +1,5 @@
 {
-  "name": "template-vite-react-ts-tailwind",
+  "name": "react-table-designer",
   "private": true,
   "version": "0.0.0",
   "scripts": {
@@ -13,6 +13,8 @@
     "@radix-ui/react-label": "2.0.2",
     "@radix-ui/react-select": "2.0.0",
     "@radix-ui/react-slot": "1.0.2",
+    "@react-pdf-viewer/core": "3.7.0",
+    "@react-pdf-viewer/default-layout": "3.7.0",
     "@tanstack/react-table": "8.10.7",
     "axios": "1.5.1",
     "class-variance-authority": "0.7.0",
@@ -24,6 +26,7 @@
     "react-dnd-html5-backend": "16.0.1",
     "react-dom": "18.2.0",
     "react-moveable": "0.55.0",
+    "react-pdf": "7.5.1",
     "react-to-print": "2.14.15",
     "react-use": "17.4.0",
     "tailwind-merge": "1.14.0",
