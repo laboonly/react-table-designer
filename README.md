@@ -45,4 +45,4 @@ Feel free to dive in! [Open an issue](https://github.com/laboonly/react-table-de
 
 ## License
 
-[MIT](LICENSE) © Roy Rao
+[MIT](LICENSE)
