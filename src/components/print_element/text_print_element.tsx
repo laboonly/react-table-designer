@@ -17,7 +17,7 @@ import { useMemo, useRef } from 'react';
 import Moveable from 'react-moveable';
 import { flushSync } from 'react-dom';
 import { radiansToDegrees } from '@/lib/utils';
-
+import ReactHtmlParser from 'react-html-parser';
 interface ITextPropsType {
   elementInfo: IBaseElementType;
 }
@@ -114,11 +114,17 @@ export const TextPrintElement: React.FC<ITextPropsType> = (props) => {
                 className="h-full w-full rounded-none"
               />
             ) : (
-              <p>{content}</p>
+              <div>{ReactHtmlParser(`<p>${content}</p>`)}</div>
             )}
           </>
         ) : (
-          fieldId && <p>{records[recordIndex].fields[fieldId]}</p>
+          fieldId && (
+            <div>
+              {ReactHtmlParser(
+                `<p>${records[recordIndex].fields[fieldId]}</p>`,
+              )}
+            </div>
+          )
         )}
       </div>
       <Moveable

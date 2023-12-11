@@ -98,7 +98,7 @@ export const Print = forwardRef<HTMLDivElement, unknown>(function Print(
       <div
         id="print"
         ref={ref}
-        className="print-content relative h-full  overflow-y-scroll bg-[#fff]"
+        className="print-content relative h-full  overflow-scroll bg-[#fff]"
         onClick={(e) => initEditElement(e)}
       >
         {settingModal && (
