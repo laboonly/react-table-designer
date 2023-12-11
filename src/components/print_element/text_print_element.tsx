@@ -114,12 +114,14 @@ export const TextPrintElement: React.FC<ITextPropsType> = (props) => {
                 className="h-full w-full rounded-none"
               />
             ) : (
-              <div>{ReactHtmlParser(`<p>${content}</p>`)}</div>
+              <div style={{ whiteSpace: 'pre-wrap' }}>
+                {ReactHtmlParser(`<p>${content}</p>`)}
+              </div>
             )}
           </>
         ) : (
           fieldId && (
-            <div>
+            <div style={{ whiteSpace: 'pre-wrap' }}>
               {ReactHtmlParser(
                 `<p>${records[recordIndex].fields[fieldId]}</p>`,
               )}
