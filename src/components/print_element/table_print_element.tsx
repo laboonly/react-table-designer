@@ -1,8 +1,8 @@
-import Moveable, { MoveableManagerInterface, Renderer } from 'react-moveable';
+import Moveable, { MoveableManagerInterface } from 'react-moveable';
 import { flushSync } from 'react-dom';
 import { radiansToDegrees } from '@/lib/utils';
 import { IBaseElementType } from '@/store';
-import { useRef, useMemo, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import {
   ISettingModalType,
   useSettingModalStore,
@@ -21,7 +21,7 @@ const DimensionViewable = {
   name: 'dimensionViewable',
   props: [],
   events: [],
-  render(moveable: MoveableManagerInterface<any, any>, React: Renderer) {
+  render(moveable: MoveableManagerInterface<any, any>) {
     // const rect = moveable.getRect();
     const { uuid } = moveable.props;
     // Add key (required)
@@ -56,26 +56,20 @@ const DimensionViewable = {
 export const TablePrintElement: React.FC<ITableElementPropsType> = (props) => {
   const { elementInfo } = props;
   const { styles, uuid, rotate, table } = elementInfo;
-  const { top, left, width, height } = styles;
+  const { top, left, width } = styles;
   const targetRef = useRef<HTMLImageElement>(null);
 
   const settingModal = useSettingModalStore(
     (state: ISettingModalType) => state.settingModal,
   );
 
-  const { selectElementInfo, changeSelectElementInfo } =
-    useSelectElementInfoStore((state: ISelectElementInfoType) => state);
+  const { changeSelectElementInfo } = useSelectElementInfoStore(
+    (state: ISelectElementInfoType) => state,
+  );
 
   const { updatePrintElement } = usePrintElementListStore(
     (state: IPrintElementListType) => state,
   );
-
-  const isElementEdit = useMemo(() => {
-    if (!selectElementInfo) {
-      return false;
-    }
-    return selectElementInfo.uuid === uuid && selectElementInfo.isEdit;
-  }, [selectElementInfo]);
 
   const setEditingElement = () => {
     console.log('setEditingElement');

@@ -25,6 +25,7 @@ export const PdfElementSetting: React.FC<IPdfElementSettingProps> = (props) => {
 
   const handFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
+    if (!file) return;
     const reader = new FileReader();
     reader.onload = function (e: ProgressEvent<FileReader>) {
       if (!e.target) return;
@@ -33,7 +34,6 @@ export const PdfElementSetting: React.FC<IPdfElementSettingProps> = (props) => {
 
       // 将 Base64 编码的 PDF 数据存储在 JSON 对象中
       const pdfObject = { pdfData: pdfBase64 };
-      console.log('file----->', pdfObject);
 
       try {
         updatePrintElement({

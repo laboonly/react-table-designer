@@ -25,7 +25,7 @@ export interface IBaseElementType {
   fieldId?: string;
   rotate?: number;
   table?: ITableData;
-  pdfFile?: ArrayBuffer;
+  pdfFile?: { pdfData: string };
 }
 
 export const defaultTextElement: IBaseElementType = {

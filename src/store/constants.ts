@@ -47,13 +47,7 @@ export const tableElementInputList = [
   'rotate',
 ];
 
-export const pdfElementInputList = [
-  'width',
-  'height',
-  'left',
-  'top',
-  'rotate',
-];
+export const pdfElementInputList = ['width', 'height', 'left', 'top', 'rotate'];
 
 export const fontSizeValue = [
   '8pt',

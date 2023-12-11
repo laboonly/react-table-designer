@@ -1,12 +1,12 @@
 import {
   ColumnDef,
+  RowData,
   createColumnHelper,
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
 import React, { useEffect, useMemo, useState } from 'react';
-import { Person } from './makeData';
 import {
   usePrintElementListStore,
   IPrintElementListType,
@@ -23,15 +23,22 @@ interface ITablePropsType {
   elementInfo: IBaseElementType;
 }
 
-const defaultColumn: Partial<ColumnDef<Person>> = {
+type TableData = {
+  header: Record<string, unknown>;
+  columns: Array<unknown>;
+};
+
+const defaultColumn: Partial<ColumnDef<any>> = {
   cell: ({ getValue, row: { index }, column: { id, getSize }, table }) => {
     const initialValue = getValue();
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [value, setValue] = React.useState(initialValue);
 
     const onBlur = () => {
       table.options.meta?.updateData(index, id, value);
     };
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     React.useEffect(() => {
       setValue(initialValue);
     }, [initialValue]);
@@ -56,10 +63,9 @@ export const TableComponent: React.FC<ITablePropsType> = (props) => {
   const [data, setData] = useState([...tableData.columns]);
 
   const columnHelper =
-    createColumnHelper<{ [key in keyof tableData.header]: string }>();
+    createColumnHelper<{ [key in keyof TableData['header']]: string }>();
 
   const columns = useMemo(() => {
-    console.log('elementInfo', elementInfo);
     return Object.keys(tableData.header).map((item) => {
       return columnHelper.accessor(tableData.header[item], {
         footer: (info) => info.column.id,

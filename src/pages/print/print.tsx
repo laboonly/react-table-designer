@@ -41,7 +41,10 @@ const findAttributeId = (
   }
 };
 
-export const Print: React.FC = forwardRef(function Print(props, ref) {
+export const Print = forwardRef<HTMLDivElement, unknown>(function Print(
+  _,
+  ref,
+) {
   const [, drop] = useDrop(
     () => ({
       accept: ItemTypes.KNIGHT,

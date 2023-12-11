@@ -30,12 +30,13 @@ export const TableElementSetting: React.FC<ITableElementSettingProps> = (
     (state: IPrintElementListType) => state,
   );
 
-  const setTableHeader = (old, changeInfo) => {
+  const setTableHeader = (old: string, changeInfo: any) => {
     console.log('setHeader');
     updatePrintElement({
       ...selectElementInfo,
       table: {
         ...selectElementInfo.table,
+        columns: selectElementInfo.table?.columns,
         header: {
           ...table.header,
           [old]: changeInfo,
@@ -46,6 +47,7 @@ export const TableElementSetting: React.FC<ITableElementSettingProps> = (
       ...selectElementInfo,
       table: {
         ...selectElementInfo.table,
+        columns: selectElementInfo.table?.columns,
         header: {
           ...table.header,
           [old]: changeInfo,
@@ -56,7 +58,7 @@ export const TableElementSetting: React.FC<ITableElementSettingProps> = (
 
   // 增加行
   const addRow = () => {
-    const newRow = {};
+    const newRow: Record<string, any> = {};
     Object.keys(table.header).forEach((item) => {
       const columnKey = table.header[item];
       newRow[columnKey] = '';
@@ -69,7 +71,7 @@ export const TableElementSetting: React.FC<ITableElementSettingProps> = (
   };
 
   // 删除行
-  const deleteRow = (rowIndex) => {
+  const deleteRow = (rowIndex: number) => {
     const newElementInfo = produce(selectElementInfo, (draftState) => {
       draftState.table?.columns.splice(rowIndex, 1);
     });
@@ -78,7 +80,7 @@ export const TableElementSetting: React.FC<ITableElementSettingProps> = (
   };
 
   // 删除列
-  const deleteColumn = (item) => {
+  const deleteColumn = (item: string) => {
     const newElementInfo = produce(selectElementInfo, (draftState) => {
       delete draftState.table?.header[item];
     });
@@ -128,7 +130,7 @@ export const TableElementSetting: React.FC<ITableElementSettingProps> = (
       </Button>
       <div className="mt-5">
         <Label className="mb-10 mr-4">Rows: </Label>
-        {table.columns.map((item, index) => {
+        {table.columns.map((item: any, index: number) => {
           return (
             <div key={index} className="mb-4 flex items-center">
               <Input disabled={true} value={item[table.header[0]]} />
