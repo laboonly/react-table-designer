@@ -15,7 +15,8 @@ import {
   ITableRecordDataStoreType,
   ISettingModalType,
 } from '@/store';
-import ReactToPrint from 'react-to-print';
+import { useReactToPrint } from 'react-to-print';
+import { useCallback } from 'react';
 
 interface IToolBarProps {
   printRef: React.RefObject<HTMLDivElement>;
@@ -57,6 +58,18 @@ export const ToolBar = (props: IToolBarProps) => {
       setRecordIndex(recordIndex - 1);
     }
   };
+  const reactToPrintContent = useCallback(() => {
+    console.log('printRef.current---->', printRef.current);
+    return printRef.current;
+  }, [printRef.current]);
+
+  const handlePrint = useReactToPrint({
+    content: reactToPrintContent,
+    onBeforeGetContent: () => {
+      console.log('reactToPrintContent--->', printRef.current);
+    },
+    pageStyle: '@page { size: 210mm 296mm; }',
+  });
 
   return (
     <div className="mx-[16px] flex justify-between border-b-2 border-gray-400 py-[8px]">
@@ -77,24 +90,17 @@ export const ToolBar = (props: IToolBarProps) => {
       <div className="flex justify-end space-x-4">
         <Button variant="ghost" onClick={() => setSeettingModal()}>
           <Pencil2Icon className="w-4.h mr-2" />
-          {settingModal ? 'Cancel Edit Layput' : 'Edit Layout'}
+          {settingModal ? 'Cancel Edit Layout' : 'Edit Layout'}
         </Button>
         <Button variant="ghost">
           <PlayIcon className="w-4.h mr-2" />
           Present
         </Button>
-        <ReactToPrint
-          trigger={() => (
-            <Button variant="ghost">
-              <CameraIcon
-                className="w-4.h mr-2"
-                // onClick={() => innerHtmlPrint()}
-              />
-              Print
-            </Button>
-          )}
-          content={() => printRef.current}
-        ></ReactToPrint>
+
+        <Button variant="ghost" onClick={() => handlePrint()}>
+          <CameraIcon className="w-4.h mr-2" />
+          Print
+        </Button>
       </div>
     </div>
   );

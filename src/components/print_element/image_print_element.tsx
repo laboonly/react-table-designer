@@ -55,6 +55,7 @@ export const ImagePrintElement: React.FC<
   return (
     <div
       id={uuid}
+      className="printElement"
       style={{
         position: 'absolute',
         top,

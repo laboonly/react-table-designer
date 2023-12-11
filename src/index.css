@@ -124,4 +124,12 @@ tr {
   }
 }
 
+@media print {
+  @page {
+    size: 210mm 296mm;
+  }
+  .print-content {
+    overflow: visible;
+  }
+}
 

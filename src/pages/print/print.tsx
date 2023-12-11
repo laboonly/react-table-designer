@@ -20,6 +20,7 @@ import {
   TablePrintElement,
   PdfPrintElement,
 } from '@/components/print_element';
+import { forwardRef } from 'react';
 
 type NullableString = string | null;
 
@@ -40,15 +41,7 @@ const findAttributeId = (
   }
 };
 
-interface IPrintPropsType {
-  printRef: React.RefObject<HTMLDivElement>;
-}
-
-export const Print: React.FC<React.PropsWithChildren<IPrintPropsType>> = (
-  props,
-) => {
-  const { printRef } = props;
-
+export const Print: React.FC = forwardRef(function Print(props, ref) {
   const [, drop] = useDrop(
     () => ({
       accept: ItemTypes.KNIGHT,
@@ -101,7 +94,7 @@ export const Print: React.FC<React.PropsWithChildren<IPrintPropsType>> = (
     <div className="container h-full p-[20px]" ref={drop}>
       <div
         id="print"
-        ref={printRef}
+        ref={ref}
         className="print-content relative h-full  overflow-y-scroll bg-[#fff]"
         onClick={(e) => initEditElement(e)}
       >
@@ -145,4 +138,4 @@ export const Print: React.FC<React.PropsWithChildren<IPrintPropsType>> = (
       </div>
     </div>
   );
-};
+});

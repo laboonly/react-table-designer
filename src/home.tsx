@@ -101,7 +101,7 @@ export const Home = () => {
               {settingModal && <EditToolBar />}
             </div>
             <div className="h-full grow">
-              <Print printRef={printRef} />
+              <Print ref={printRef} />
             </div>
           </div>
           {settingModal && <StyleSetting />}

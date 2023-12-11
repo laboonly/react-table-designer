@@ -127,7 +127,7 @@ export const TablePrintElement: React.FC<ITableElementPropsType> = (props) => {
         // options
         preventDefault={false}
         flushSync={flushSync}
-        target={targetRef} // move拖拽对象
+        target={settingModal ? targetRef : null} // move拖拽对象
         origin={false} // 显示中心点
         keepRatio={false} // 保持宽高
         edge={false} //

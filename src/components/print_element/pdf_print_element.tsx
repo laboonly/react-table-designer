@@ -9,7 +9,7 @@ import {
 } from '@/store';
 import Moveable from 'react-moveable';
 import { flushSync } from 'react-dom';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { radiansToDegrees } from '@/lib/utils';
 import { Worker, Viewer } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
@@ -67,14 +67,18 @@ export const PdfPrintElement: React.FC<
           textAlign: 'center',
         }}
       >
-        <Worker
-          workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}
-        >
-          <Viewer
-            key={width}
-            fileUrl={`data:application/pdf;base64,${pdfFile.pdfData}`}
-          />
-        </Worker>
+        {pdfFile?.pdfData ? (
+          <Worker
+            workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}
+          >
+            <Viewer
+              key={width}
+              fileUrl={`data:application/pdf;base64,${pdfFile.pdfData}`}
+            />
+          </Worker>
+        ) : (
+          <p>please upload pdf file</p>
+        )}
       </div>
       <Moveable
         // options
