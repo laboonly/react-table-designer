@@ -1,4 +1,4 @@
-import { ItemTypes } from '@/store/constants';
+import { ItemTypes, paperSizeList } from '@/store/constants';
 import { useDrop } from 'react-dnd';
 import {
   usePrintElementListStore,
@@ -13,6 +13,8 @@ import {
   ISheetShowStoreType,
   IPrintRecordElementListType,
   ISettingModalType,
+  usePaperSizeStore,
+  IPaperSizeModalType,
 } from '@/store';
 import {
   TextPrintElement,
@@ -23,6 +25,8 @@ import {
 import { forwardRef } from 'react';
 
 type NullableString = string | null;
+
+type PaperSize = 'A3' | 'A4' | 'A5' | 'A6' | 'B3' | 'B4' | 'B5';
 
 const findAttributeId = (
   element: HTMLElement | HTMLDivElement,
@@ -80,6 +84,10 @@ export const Print = forwardRef<HTMLDivElement, unknown>(function Print(
     (state: IPrintRecordElementListType) => state,
   );
 
+  const { paperSize } = usePaperSizeStore(
+    (state: IPaperSizeModalType) => state,
+  );
+
   // 重置选择元素
   const initEditElement = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const targetId = findAttributeId(e.target as HTMLDivElement);
@@ -94,12 +102,16 @@ export const Print = forwardRef<HTMLDivElement, unknown>(function Print(
   };
 
   return (
-    <div className="container h-full p-[20px]" ref={drop}>
+    <div className="relative flex justify-center p-[20px]" ref={drop}>
       <div
         id="print"
         ref={ref}
-        className="print-content relative h-full  overflow-scroll bg-[#fff]"
+        className="print-content relative overflow-scroll bg-[#fff]"
         onClick={(e) => initEditElement(e)}
+        style={{
+          width: paperSizeList[paperSize as PaperSize].width,
+          height: paperSizeList[paperSize as PaperSize].height,
+        }}
       >
         {settingModal && (
           <div

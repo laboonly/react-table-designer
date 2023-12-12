@@ -21,14 +21,14 @@ export const textElementInputList = [
   'rotate',
 ];
 
-export const textFeildType = [
+export const textFieldType = [
   'singleLineText',
   'number',
   'singleSelect',
   'longText',
 ];
 
-export const imageFeildTypeMap = ['attachment'];
+export const imageFieldTypeMap = ['attachment'];
 
 export const imageElementInputList = [
   'src',
@@ -111,3 +111,36 @@ export const lineHeightValue = [
   '35.25pt',
   '36pt',
 ];
+
+export const paperSizeList = {
+  A3: {
+    width: '297mm',
+    height: '420mm',
+  },
+  A4: {
+    width: '210mm',
+    height: '297mm',
+  },
+  A5: {
+    width: '148mm',
+    height: '210mm',
+  },
+  A6: {
+    width: '105mm',
+    height: '148mm',
+  },
+  B3: {
+    width: '500mm',
+    height: '351mm',
+  },
+  B4: {
+    width: '257mm',
+    height: '364mm',
+  },
+  B5: {
+    width: '182mm',
+    height: '257mm',
+  },
+};
+
+export const paperSizeOption = ['A3', 'A4', 'A5', 'A6', 'B3', 'B4', 'B5'];

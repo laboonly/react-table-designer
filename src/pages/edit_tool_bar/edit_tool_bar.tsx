@@ -21,8 +21,17 @@ import {
   IBaseElementType,
   ITableRecordDataStoreType,
   useTableRecordData,
+  usePaperSizeStore,
+  IPaperSizeModalType,
 } from '@/store';
-import { sourceElementTypes } from '@/store/constants';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { sourceElementTypes, paperSizeList } from '@/store/constants';
 
 export const EditToolBar = () => {
   const [fileName, setFileName] = useState<string>();
@@ -40,6 +49,10 @@ export const EditToolBar = () => {
 
   const { recordIndex, records } = useTableRecordData(
     (state: ITableRecordDataStoreType) => state,
+  );
+
+  const { paperSize, changePaperSize } = usePaperSizeStore(
+    (state: IPaperSizeModalType) => state,
   );
 
   const exportTemplate = () => {
@@ -170,6 +183,26 @@ export const EditToolBar = () => {
           <Button variant="ghost" onClick={clearAllElement}>
             Clear all element
           </Button>
+          <div className="flex w-[200px] items-center ">
+            <Label className="w-[150px]">Paper size: </Label>
+            <Select
+              onValueChange={(value) => changePaperSize(value)}
+              defaultValue={paperSize}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Text Align" />
+              </SelectTrigger>
+              <SelectContent className="h-[200px]">
+                {Object.keys(paperSizeList).map((value) => {
+                  return (
+                    <SelectItem key={value} value={value}>
+                      {value}
+                    </SelectItem>
+                  );
+                })}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </div>
     </div>

@@ -5,7 +5,7 @@ import {
   ITableRecordDataStoreType,
   ITableFieldDataStoreType,
 } from '@/store';
-import { sourceElementTypes, textFeildType } from '@/store/constants';
+import { sourceElementTypes, textFieldType } from '@/store/constants';
 
 export const RecordElementContent = () => {
   const { recordIndex, records } = useTableRecordData(
@@ -23,7 +23,7 @@ export const RecordElementContent = () => {
         Object.keys(records[recordIndex].fields).map(
           (item: string, index: number) => {
             const field = fieldMap.get(item);
-            if (field && textFeildType.includes(field?.type)) {
+            if (field && textFieldType.includes(field?.type)) {
               return (
                 <TextElement
                   key={index}
