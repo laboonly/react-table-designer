@@ -114,6 +114,10 @@ tr {
   overflow: hidden!important;
 }
 
+.moveable-control-box {
+  z-index: 49!important;
+}
+
 @media (hover: hover) {
   .resizer {
     opacity: 0;
