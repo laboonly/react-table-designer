@@ -7,12 +7,14 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 export interface ISettingModalType {
   settingModal: boolean;
   changeSettingModal: () => void;
+  closeSettingModal: () => void;
 }
 
 export const useSettingModalStore = create<ISettingModalType>()((set) => ({
   settingModal: false,
   changeSettingModal: () =>
     set((state: ISettingModalType) => ({ settingModal: !state.settingModal })),
+  closeSettingModal: () => set(() => ({ settingModal: false })),
 }));
 
 // 拖拽元素列表

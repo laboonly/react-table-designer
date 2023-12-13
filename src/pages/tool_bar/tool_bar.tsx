@@ -24,9 +24,8 @@ interface IToolBarProps {
 
 export const ToolBar = (props: IToolBarProps) => {
   const { printRef } = props;
-  const { settingModal, changeSettingModal } = useSettingModalStore(
-    (state: ISettingModalType) => state,
-  );
+  const { settingModal, changeSettingModal, closeSettingModal } =
+    useSettingModalStore((state: ISettingModalType) => state);
   const { selectElementInfo, changeSelectElementInfo } =
     useSelectElementInfoStore((state: ISelectElementInfoType) => state);
 
@@ -59,17 +58,19 @@ export const ToolBar = (props: IToolBarProps) => {
     }
   };
   const reactToPrintContent = useCallback(() => {
-    console.log('printRef.current---->', printRef.current);
     return printRef.current;
   }, [printRef.current]);
 
-  const handlePrint = useReactToPrint({
+  const print = useReactToPrint({
     content: reactToPrintContent,
-    onBeforeGetContent: () => {
-      console.log('reactToPrintContent--->', printRef.current);
-    },
-    pageStyle: '@page { size: 210mm 296mm; }',
   });
+
+  const handlePrint = () => {
+    closeSettingModal();
+    queueMicrotask(() => {
+      print();
+    });
+  };
 
   return (
     <div className="mx-[16px] flex justify-between border-b-2 border-gray-400 py-[8px]">
