@@ -115,3 +115,5 @@ export type MyDropResult = {
   top: number;
   left: number;
 };
+
+export type PaperSize = 'A3' | 'A4' | 'A5' | 'A6' | 'B3' | 'B4' | 'B5';

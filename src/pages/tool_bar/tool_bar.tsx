@@ -14,9 +14,13 @@ import {
   ISelectElementInfoType,
   ITableRecordDataStoreType,
   ISettingModalType,
+  usePaperSizeStore,
+  IPaperSizeModalType,
+  PaperSize,
 } from '@/store';
 import { useReactToPrint } from 'react-to-print';
 import { useCallback } from 'react';
+import { paperSizeList } from '@/store';
 
 interface IToolBarProps {
   printRef: React.RefObject<HTMLDivElement>;
@@ -43,6 +47,10 @@ export const ToolBar = (props: IToolBarProps) => {
     (state: ITableRecordDataStoreType) => state,
   );
 
+  const { paperSize } = usePaperSizeStore(
+    (state: IPaperSizeModalType) => state,
+  );
+
   const canNext = recordIndex < recordsTotal - 1;
   const canPre = recordIndex > 0;
 
@@ -63,6 +71,9 @@ export const ToolBar = (props: IToolBarProps) => {
 
   const print = useReactToPrint({
     content: reactToPrintContent,
+    pageStyle: `@page {size: ${paperSizeList[paperSize as PaperSize].width} ${
+      paperSizeList[paperSize as PaperSize].height
+    };}`,
   });
 
   const handlePrint = () => {

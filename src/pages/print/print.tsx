@@ -15,6 +15,7 @@ import {
   ISettingModalType,
   usePaperSizeStore,
   IPaperSizeModalType,
+  PaperSize,
 } from '@/store';
 import {
   TextPrintElement,
@@ -23,10 +24,9 @@ import {
   PdfPrintElement,
 } from '@/components/print_element';
 import { forwardRef } from 'react';
+import { HorizontaRulerCanvas, VerticalRulerCanvas } from '@/pages/ruler';
 
 type NullableString = string | null;
-
-type PaperSize = 'A3' | 'A4' | 'A5' | 'A6' | 'B3' | 'B4' | 'B5';
 
 const findAttributeId = (
   element: HTMLElement | HTMLDivElement,
@@ -102,54 +102,76 @@ export const Print = forwardRef<HTMLDivElement, unknown>(function Print(
   };
 
   return (
-    <div className="relative flex justify-center p-[20px]" ref={drop}>
-      <div
-        id="print"
-        ref={ref}
-        className="print-content relative overflow-scroll bg-[#fff]"
-        onClick={(e) => initEditElement(e)}
-        style={{
-          width: paperSizeList[paperSize as PaperSize].width,
-          height: paperSizeList[paperSize as PaperSize].height,
-        }}
-      >
-        {settingModal && (
-          <div
-            className="h-[1627px] w-full"
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              background:
-                'linear-gradient(90deg,rgba(0,0,0,.1) 1px,transparent 0),linear-gradient(1turn,rgba(0,0,0,.1) 1px,transparent 0)',
-              backgroundSize: '10px 10px',
-              backgroundPosition: '0 0',
-              border: 'border: 1px dashed hsla(0,0%,66.7%,.7)',
-              opacity: 1,
-            }}
-          ></div>
-        )}
-        {printList.length > 0 &&
-          printList.map((item: IBaseElementType) => {
-            switch (item.type) {
-              case IElementType.Text:
+    <div
+      className="relative flex h-full w-full justify-center overflow-scroll p-[20px]"
+      ref={drop}
+    >
+      <div className="relative">
+        <div className="absolute left-0 top-[-15px]">
+          <HorizontaRulerCanvas
+            width={paperSizeList[paperSize as PaperSize].width}
+          />
+        </div>
+        <div className="absolute left-[-15px] top-0">
+          <VerticalRulerCanvas
+            width={paperSizeList[paperSize as PaperSize].height}
+          />
+        </div>
+
+        <div
+          id="print"
+          ref={ref}
+          className="print-content relative overflow-scroll bg-[#fff]"
+          onClick={(e) => initEditElement(e)}
+          style={{
+            width: paperSizeList[paperSize as PaperSize].width,
+            height: paperSizeList[paperSize as PaperSize].height,
+          }}
+        >
+          {settingModal && (
+            <div
+              className="h-full w-full"
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                background:
+                  'linear-gradient(90deg,rgba(0,0,0,.1) 1px,transparent 0),linear-gradient(1turn,rgba(0,0,0,.1) 1px,transparent 0)',
+                backgroundSize: '5mm 5mm',
+                backgroundPosition: '0 0',
+                border: 'border: 1px dashed hsla(0,0%,66.7%,.7)',
+                opacity: 1,
+              }}
+            ></div>
+          )}
+          {printList.length > 0 &&
+            printList.map((item: IBaseElementType) => {
+              switch (item.type) {
+                case IElementType.Text:
+                  return (
+                    <TextPrintElement key={item.uuid} elementInfo={item} />
+                  );
+                case IElementType.Image:
+                  return (
+                    <ImagePrintElement key={item.uuid} elementInfo={item} />
+                  );
+                case IElementType.Table:
+                  return (
+                    <TablePrintElement key={item.uuid} elementInfo={item} />
+                  );
+                case IElementType.Pdf:
+                  return <PdfPrintElement key={item.uuid} elementInfo={item} />;
+              }
+            })}
+          {printRecordList.length > 0 &&
+            printRecordList.map((item: IBaseElementType) => {
+              if (item.type === IElementType.Text) {
                 return <TextPrintElement key={item.uuid} elementInfo={item} />;
-              case IElementType.Image:
+              } else if (item.type === IElementType.Image) {
                 return <ImagePrintElement key={item.uuid} elementInfo={item} />;
-              case IElementType.Table:
-                return <TablePrintElement key={item.uuid} elementInfo={item} />;
-              case IElementType.Pdf:
-                return <PdfPrintElement key={item.uuid} elementInfo={item} />;
-            }
-          })}
-        {printRecordList.length > 0 &&
-          printRecordList.map((item: IBaseElementType) => {
-            if (item.type === IElementType.Text) {
-              return <TextPrintElement key={item.uuid} elementInfo={item} />;
-            } else if (item.type === IElementType.Image) {
-              return <ImagePrintElement key={item.uuid} elementInfo={item} />;
-            }
-          })}
+              }
+            })}
+        </div>
       </div>
     </div>
   );
