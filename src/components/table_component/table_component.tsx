@@ -48,6 +48,7 @@ const defaultColumn: Partial<ColumnDef<any>> = {
         style={{
           width: getSize(),
           textAlign: 'center',
+          backgroundColor: 'transparent',
         }}
         value={value as string}
         onChange={(e) => setValue(e.target.value)}
