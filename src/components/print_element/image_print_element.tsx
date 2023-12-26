@@ -27,6 +27,7 @@ export const ImagePrintElement: React.FC<
   const { width = 200, height = 60, top, left } = styles;
 
   const targetRef = useRef<HTMLImageElement>(null);
+  const moveableRef = useRef<Moveable>(null);
 
   const { changeSelectElementInfo } = useSelectElementInfoStore(
     (state: ISelectElementInfoType) => state,
@@ -77,6 +78,8 @@ export const ImagePrintElement: React.FC<
       <Moveable
         // options
         flushSync={flushSync}
+        ref={moveableRef}
+        // container={document.getElementById('print')}
         target={targetRef} // move拖拽对象
         origin={false} // 显示中心点
         keepRatio={false} // 保持宽高
@@ -87,6 +90,11 @@ export const ImagePrintElement: React.FC<
         useMutationObserver={true}
         zoom={settingModal ? 1 : 0}
         throttleDrag={0}
+        snappable={true}
+        snapDirections={{ top: true, left: true, bottom: false, right: false }}
+        verticalGuidelines={[50, 150, 250, 450, 550]}
+        horizontalGuidelines={[0, 100, 200, 400, 500]}
+        elementGuidelines={['.guideLine']}
         padding={{
           left: 10,
           right: 10,
@@ -94,21 +102,12 @@ export const ImagePrintElement: React.FC<
           bottom: 10,
         }}
         onRender={(e) => {
-          console.log('onRender');
           e.target.style.cssText += e.cssText;
         }}
         onClick={() => {
           setEditingElement();
         }}
         onRenderEnd={(e) => {
-          console.log(
-            'onRenderEnd',
-            e,
-            e.clientX,
-            e.clientY,
-            left + e.transformObject.translate[0],
-            top + e.transformObject.translate[1],
-          );
           if (e.isDrag) {
             e.target.style.transform = `rotate(${radiansToDegrees(
               e.transformObject.rotate,

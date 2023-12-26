@@ -57,6 +57,13 @@ export const TextElement: React.FC<React.PropsWithChildren<ITextProps>> = (
             ? elementRef.current?.offsetTop
             : 0;
           // 选择性添加元素
+          console.log(
+            'left element---->',
+            left,
+            offsetX,
+            position.left,
+            position.scrollLeft,
+          );
           if (sourceType === sourceElementTypes.Base) {
             addPrintElement({
               ...defaultTextElement,

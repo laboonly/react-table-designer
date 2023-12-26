@@ -23,8 +23,9 @@ import {
   TablePrintElement,
   PdfPrintElement,
 } from '@/components/print_element';
-import { forwardRef } from 'react';
+import { FC, useMemo } from 'react';
 import { HorizontaRulerCanvas, VerticalRulerCanvas } from '@/pages/ruler';
+import { extractNumberFromLengthString } from '@/lib/utils';
 
 type NullableString = string | null;
 
@@ -45,10 +46,12 @@ const findAttributeId = (
   }
 };
 
-export const Print = forwardRef<HTMLDivElement, unknown>(function Print(
-  _,
-  ref,
-) {
+interface IPrintProps {
+  printRef: React.RefObject<HTMLDivElement>;
+}
+
+export const Print: FC<IPrintProps> = (props) => {
+  const { printRef } = props;
   const [, drop] = useDrop(
     () => ({
       accept: ItemTypes.KNIGHT,
@@ -101,6 +104,26 @@ export const Print = forwardRef<HTMLDivElement, unknown>(function Print(
     }
   };
 
+  const { paperWidth, paperHeight, guideWidthMap, guideHeightMap } =
+    useMemo(() => {
+      const width = paperSizeList[paperSize as PaperSize].width;
+      const height = paperSizeList[paperSize as PaperSize].height;
+      const guideWidthMap = Array.from(
+        { length: extractNumberFromLengthString(width) / 5 },
+        (_, index) => index * 5,
+      );
+      const guideHeightMap = Array.from(
+        { length: extractNumberFromLengthString(height) / 5 },
+        (_, index) => index * 5,
+      );
+      return {
+        paperWidth: width,
+        paperHeight: height,
+        guideWidthMap,
+        guideHeightMap,
+      };
+    }, [paperSize]);
+
   return (
     <div
       className="relative flex h-full w-full justify-center overflow-scroll p-[20px]"
@@ -108,41 +131,53 @@ export const Print = forwardRef<HTMLDivElement, unknown>(function Print(
     >
       <div className="relative">
         <div className="absolute left-0 top-[-15px]">
-          <HorizontaRulerCanvas
-            width={paperSizeList[paperSize as PaperSize].width}
-          />
+          <HorizontaRulerCanvas width={paperWidth} />
         </div>
         <div className="absolute left-[-15px] top-0">
-          <VerticalRulerCanvas
-            width={paperSizeList[paperSize as PaperSize].height}
-          />
+          <VerticalRulerCanvas width={paperHeight} />
         </div>
 
         <div
           id="print"
-          ref={ref}
-          className="print-content relative overflow-scroll bg-[#fff]"
+          ref={printRef}
+          className="print-content relative  bg-[#fff]"
           onClick={(e) => initEditElement(e)}
           style={{
-            width: paperSizeList[paperSize as PaperSize].width,
-            height: paperSizeList[paperSize as PaperSize].height,
+            width: paperWidth,
+            height: paperHeight,
           }}
         >
           {settingModal && (
-            <div
-              className="h-full w-full"
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                background:
-                  'linear-gradient(90deg,rgba(0,0,0,.1) 1px,transparent 0),linear-gradient(1turn,rgba(0,0,0,.1) 1px,transparent 0)',
-                backgroundSize: '5mm 5mm',
-                backgroundPosition: '0 0',
-                border: 'border: 1px dashed hsla(0,0%,66.7%,.7)',
-                opacity: 1,
-              }}
-            ></div>
+            <div className="h-full w-full">
+              {guideWidthMap.map((item) => {
+                return (
+                  <div
+                    className="guideLine h-full w-[1px]"
+                    key={item}
+                    style={{
+                      position: 'absolute',
+                      top: '0',
+                      left: `${item}mm`,
+                      backgroundColor: 'hsla(0,0%,66.7%,.7)',
+                    }}
+                  />
+                );
+              })}
+              {guideHeightMap.map((item) => {
+                return (
+                  <div
+                    className="guideLine h-[1px] w-full"
+                    key={item}
+                    style={{
+                      position: 'absolute',
+                      left: '0',
+                      top: `${item}mm`,
+                      backgroundColor: 'hsla(0,0%,66.7%,.7)',
+                    }}
+                  />
+                );
+              })}
+            </div>
           )}
           {printList.length > 0 &&
             printList.map((item: IBaseElementType) => {
@@ -175,4 +210,4 @@ export const Print = forwardRef<HTMLDivElement, unknown>(function Print(
       </div>
     </div>
   );
-});
+};

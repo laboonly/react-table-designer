@@ -89,6 +89,7 @@ export const TablePrintElement: React.FC<ITableElementPropsType> = (props) => {
   return (
     <div
       id={uuid}
+      className="printElement"
       style={{
         position: 'absolute',
         top,
@@ -144,7 +145,6 @@ export const TablePrintElement: React.FC<ITableElementPropsType> = (props) => {
           bottom: 10,
         }}
         onRender={(e) => {
-          console.log('onRender');
           e.target.style.cssText += e.cssText;
         }}
         onRenderEnd={(e) => {

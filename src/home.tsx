@@ -67,10 +67,9 @@ export const Home = () => {
 
   useEffect(() => {
     if (printRef.current) {
-      const { offsetTop, offsetLeft } = printRef.current;
       setPrintAreaPosition({
-        top: offsetTop,
-        left: offsetLeft,
+        top: printRef.current.getBoundingClientRect().top,
+        left: printRef.current.getBoundingClientRect().left,
         scrollTop,
         scrollLeft,
       });
@@ -101,7 +100,7 @@ export const Home = () => {
               {settingModal && <EditToolBar />}
             </div>
             <div className="h-full grow">
-              <Print ref={printRef} />
+              <Print printRef={printRef} />
             </div>
           </div>
           {settingModal && <StyleSetting />}

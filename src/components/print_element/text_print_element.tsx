@@ -76,6 +76,7 @@ export const TextPrintElement: React.FC<ITextPropsType> = (props) => {
   return (
     <div
       id={uuid}
+      className="printElement"
       style={{
         position: 'absolute',
         top,
