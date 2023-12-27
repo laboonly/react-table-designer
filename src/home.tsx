@@ -9,11 +9,15 @@ import {
   usePrintAreaPosition,
   ISettingModalType,
   IPrintAreaPositionStoreType,
+  useTableRecordData,
+  ITableRecordDataStoreType,
 } from './store';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import { useWindowSize, useScroll } from 'react-use';
 import { useEffect, useRef } from 'react';
+import { Button } from '@/components/ui/button';
+import { ChevronRightIcon, ChevronLeftIcon } from '@radix-ui/react-icons';
 
 export const Home = () => {
   const settingModal = useSettingModalStore(
@@ -37,6 +41,24 @@ export const Home = () => {
     }
   }, [width, height, scrollLeft, scrollTop, setPrintAreaPosition]);
 
+  const { recordIndex, setRecordIndex, recordsTotal } = useTableRecordData(
+    (state: ITableRecordDataStoreType) => state,
+  );
+  const canNext = recordIndex < recordsTotal - 1;
+  const canPre = recordIndex > 0;
+
+  const nextRecord = () => {
+    if (recordIndex < recordsTotal - 1) {
+      setRecordIndex(recordIndex + 1);
+    }
+  };
+
+  const preRecord = () => {
+    if (recordIndex > 0) {
+      setRecordIndex(recordIndex - 1);
+    }
+  };
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="h-screen">
@@ -52,6 +74,24 @@ export const Home = () => {
               </div>
               <div className="flex flex-col">
                 <h2 className="mb-4">Fields from your table data</h2>
+                <div className="flex justify-center space-x-4">
+                  <Button
+                    variant="ghost"
+                    disabled={!canPre}
+                    onClick={() => preRecord()}
+                  >
+                    <ChevronLeftIcon className="w-4.h" />
+                    Previous
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    disabled={!canNext}
+                    onClick={() => nextRecord()}
+                  >
+                    Next
+                    <ChevronRightIcon className="w-4.h" />
+                  </Button>
+                </div>
                 <RecordElementContent />
               </div>
             </div>
