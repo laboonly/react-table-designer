@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const getTableRecordsData = (tableId: string, viewId: string) => {
-  return axios.get(`https://dev.teable.io/api/table/${tableId}/record`, {
+  return axios.get(``, {
     params: {
       viewId: viewId,
       fieldKeyType: 'id',
@@ -11,7 +11,7 @@ export const getTableRecordsData = (tableId: string, viewId: string) => {
 };
 
 export const getTablefieldsData = (tableId: string, viewId: string) => {
-  return axios.get(`https://dev.teable.io/api/table/${tableId}/field`, {
+  return axios.get(``, {
     params: {
       viewId: viewId,
     },

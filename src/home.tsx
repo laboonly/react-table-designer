@@ -7,22 +7,13 @@ import { BaseElementsContent } from './pages/elements_content/base_element_conte
 import {
   useSettingModalStore,
   usePrintAreaPosition,
-  useTableFieldData,
-  useTableRecordData,
   ISettingModalType,
-  ITableRecordDataStoreType,
-  ITableFieldDataStoreType,
   IPrintAreaPositionStoreType,
-  IRecordsData,
-  IFieldsType,
 } from './store';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import { useWindowSize, useScroll } from 'react-use';
 import { useEffect, useRef } from 'react';
-import { getQueryParamsString } from '@/lib/utils';
-import axios from 'axios';
-import { getTableRecordsData, getTablefieldsData } from '@/api';
 
 export const Home = () => {
   const settingModal = useSettingModalStore(
@@ -34,36 +25,6 @@ export const Home = () => {
   );
   const { width, height } = useWindowSize();
   const { x: scrollLeft, y: scrollTop } = useScroll(printRef);
-
-  const { setTableRecordsData } = useTableRecordData(
-    (state: ITableRecordDataStoreType) => state,
-  );
-
-  const { setTableFieldData } = useTableFieldData(
-    (state: ITableFieldDataStoreType) => state,
-  );
-
-  useEffect(() => {
-    const tableId = getQueryParamsString('tableid');
-    const viewId = getQueryParamsString('viewid');
-    if (!tableId || !viewId) return;
-    axios.defaults.headers.common['Authorization'] =
-      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzcmZ3RzdIc3NCd1giLCJpYXQiOjE2OTk0MzA2MTQsImV4cCI6MTcwMTE1ODYxNH0.Bt230FO_RzXT0wMWExFRWeKnJvz_-_7jU9FzEKnjseE';
-    getTableRecordsData(tableId, viewId).then(
-      (res: { data: { records: IRecordsData[] } }) => {
-        setTableRecordsData(res.data.records);
-      },
-    );
-
-    getTablefieldsData(tableId, viewId).then((res: { data: IFieldsType[] }) => {
-      const fields = res.data;
-      const fieldMap = new Map();
-      fields.forEach((item: IFieldsType) => {
-        fieldMap.set(item.id, item);
-      });
-      setTableFieldData(fieldMap);
-    });
-  }, [setTableRecordsData, setTableFieldData]);
 
   useEffect(() => {
     if (printRef.current) {
