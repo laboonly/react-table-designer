@@ -66,7 +66,7 @@ export const Home = () => {
         <div className="fixed z-50 w-full bg-[#fff]">
           <ToolBar printRef={printRef} />
         </div>
-        <div className="flex h-full justify-start bg-gray-100 pt-[54px]">
+        <div className="mx-[16px] flex h-full justify-start bg-gray-100 pt-[54px]">
           {settingModal && (
             <div className="border-r-1 flex w-[280px] min-w-[200px] flex-col  border-gray-700 bg-[#fff] px-2 py-[20px]">
               <div className="h-[300px]">

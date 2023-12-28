@@ -58,7 +58,8 @@ export const ToolBar = (props: IToolBarProps) => {
   };
 
   return (
-    <div className="mx-[16px] flex justify-end border-b-2 border-gray-400 py-[8px]">
+    <div className="mx-[16px] flex justify-between justify-items-center border-b-2 border-gray-400 py-[8px]">
+      <h1 className="leading-[36px]">Page Designer</h1>
       <div className="flex justify-end space-x-4">
         <Button variant="ghost" onClick={() => setSeettingModal()}>
           <Pencil2Icon className="w-4.h mr-2" />
@@ -68,7 +69,6 @@ export const ToolBar = (props: IToolBarProps) => {
           <PlayIcon className="w-4.h mr-2" />
           Present
         </Button>
-
         <Button variant="ghost" onClick={() => handlePrint()}>
           <CameraIcon className="w-4.h mr-2" />
           Print
