@@ -58,7 +58,7 @@ export const ToolBar = (props: IToolBarProps) => {
   };
 
   return (
-    <div className="mx-[16px] flex justify-between border-b-2 border-gray-400 py-[8px]">
+    <div className="mx-[16px] flex justify-end border-b-2 border-gray-400 py-[8px]">
       <div className="flex justify-end space-x-4">
         <Button variant="ghost" onClick={() => setSeettingModal()}>
           <Pencil2Icon className="w-4.h mr-2" />

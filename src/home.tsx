@@ -2,6 +2,7 @@ import { Print } from './pages/print/print';
 import { ToolBar } from './pages/tool_bar';
 import { StyleSetting } from './pages/style_setting';
 import { EditToolBar } from '@/pages/edit_tool_bar';
+import { EditLeftToolBar } from '@/pages/edit_left_tool_bar';
 import { RecordElementContent } from './pages/record_element_content';
 import { BaseElementsContent } from './pages/elements_content/base_element_content';
 import {
@@ -17,7 +18,7 @@ import { DndProvider } from 'react-dnd';
 import { useWindowSize, useScroll } from 'react-use';
 import { useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { ChevronRightIcon, ChevronLeftIcon } from '@radix-ui/react-icons';
+import '@icon-park/react/styles/index.css';
 
 export const Home = () => {
   const settingModal = useSettingModalStore(
@@ -74,22 +75,20 @@ export const Home = () => {
               </div>
               <div className="flex flex-col">
                 <h2 className="mb-4">Fields from your table data</h2>
-                <div className="flex justify-center space-x-4">
+                <div className="flex justify-center space-x-2">
                   <Button
-                    variant="ghost"
+                    className="w-[150px]"
                     disabled={!canPre}
                     onClick={() => preRecord()}
                   >
-                    <ChevronLeftIcon className="w-4.h" />
                     Previous
                   </Button>
                   <Button
-                    variant="ghost"
+                    className="w-[150px]"
                     disabled={!canNext}
                     onClick={() => nextRecord()}
                   >
                     Next
-                    <ChevronRightIcon className="w-4.h" />
                   </Button>
                 </div>
                 <RecordElementContent />
@@ -102,6 +101,9 @@ export const Home = () => {
             </div>
             <div className="h-full grow">
               <Print printRef={printRef} />
+            </div>
+            <div className="absolute left-0 top-[52px] h-full">
+              {settingModal && <EditLeftToolBar />}
             </div>
           </div>
           {settingModal && <StyleSetting />}
