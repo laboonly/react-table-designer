@@ -18,6 +18,8 @@ import { DndProvider } from 'react-dnd';
 import { useWindowSize, useScroll } from 'react-use';
 import { useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
+import { useTranslation } from 'react-i18next';
+
 import '@icon-park/react/styles/index.css';
 
 export const Home = () => {
@@ -60,6 +62,8 @@ export const Home = () => {
     }
   };
 
+  const { t } = useTranslation();
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="h-screen">
@@ -70,25 +74,25 @@ export const Home = () => {
           {settingModal && (
             <div className="border-r-1 flex w-[280px] min-w-[200px] flex-col  border-gray-700 bg-[#fff] px-2 py-[20px]">
               <div className="h-[300px]">
-                <h2 className="mb-4">Static elements</h2>
+                <h2 className="mb-4">{t('base_elements')}</h2>
                 <BaseElementsContent />
               </div>
               <div className="flex flex-col">
-                <h2 className="mb-4">Fields from your table data</h2>
+                <h2 className="mb-4">{t('table_elements')}</h2>
                 <div className="flex justify-center space-x-2">
                   <Button
                     className="w-[150px]"
                     disabled={!canPre}
                     onClick={() => preRecord()}
                   >
-                    Previous
+                    {t('previous')}
                   </Button>
                   <Button
                     className="w-[150px]"
                     disabled={!canNext}
                     onClick={() => nextRecord()}
                   >
-                    Next
+                    {t('next')}
                   </Button>
                 </div>
                 <RecordElementContent />

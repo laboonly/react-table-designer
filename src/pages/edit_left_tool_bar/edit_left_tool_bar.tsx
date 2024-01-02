@@ -30,6 +30,7 @@ import { useState } from 'react';
 import { saveAs } from 'file-saver';
 import { sourceElementTypes } from '@/store/constants';
 import { Label } from '@/components/ui/label';
+import { useTranslation } from 'react-i18next';
 
 export const EditLeftToolBar = () => {
   const [fileName, setFileName] = useState<string>();
@@ -48,6 +49,8 @@ export const EditLeftToolBar = () => {
   const { recordIndex, records } = useTableRecordData(
     (state: ITableRecordDataStoreType) => state,
   );
+
+  const { t } = useTranslation();
 
   const exportTemplate = () => {
     const transformRecordList = printRecordList.map((item) => {
@@ -113,7 +116,7 @@ export const EditLeftToolBar = () => {
                   <Save theme="outline" size="24" fill="#333" />
                 </TooltipTrigger>
                 <TooltipContent side="right">
-                  <p>Save template</p>
+                  <p>{t('save_template')}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -121,15 +124,13 @@ export const EditLeftToolBar = () => {
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Save template</DialogTitle>
-            <DialogDescription>
-              Make changes to your profile name here.
-            </DialogDescription>
+            <DialogTitle>{t('save_template')}</DialogTitle>
+            <DialogDescription>{t('save_template_content')}</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="name" className="text-right">
-                File Name
+                {t('file_name')}
               </Label>
               <Input
                 id="name"
@@ -144,7 +145,7 @@ export const EditLeftToolBar = () => {
           </div>
           <DialogFooter>
             <Button type="submit" onClick={exportTemplate}>
-              Save template
+              {t('save')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -158,7 +159,7 @@ export const EditLeftToolBar = () => {
                   <UploadThree theme="outline" size="24" fill="#333" />
                 </TooltipTrigger>
                 <TooltipContent side="right">
-                  <p>Import template</p>
+                  <p>{t('import_template')}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -166,13 +167,15 @@ export const EditLeftToolBar = () => {
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Import template</DialogTitle>
-            <DialogDescription>Import to your template here.</DialogDescription>
+            <DialogTitle>{t('import_template')}</DialogTitle>
+            <DialogDescription>
+              {t('import_template_content')}
+            </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="name" className="text-right">
-                File Name
+                {t('file_name')}
               </Label>
               <Input
                 id="file"
@@ -185,7 +188,7 @@ export const EditLeftToolBar = () => {
           <DialogFooter>
             <DialogClose asChild>
               <Button type="submit" onClick={confirmedImport}>
-                Import template
+                {t('confirmed')}
               </Button>
             </DialogClose>
           </DialogFooter>
@@ -205,7 +208,7 @@ export const EditLeftToolBar = () => {
               </Button>
             </TooltipTrigger>
             <TooltipContent side="right">
-              <p>Clear all element</p>
+              <p>{t('clear_all_element')}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>

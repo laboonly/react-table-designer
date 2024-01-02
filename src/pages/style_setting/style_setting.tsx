@@ -29,8 +29,11 @@ import {
 } from '@/components/ui/select';
 import { TableElementSetting } from './table_element_setting';
 import { PdfElementSetting } from './pdf_element_setting';
+import { useTranslation } from 'react-i18next';
 
 export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
+  const { t } = useTranslation();
+
   const { selectElementInfo, changeSelectElementInfo } =
     useSelectElementInfoStore((state: ISelectElementInfoType) => state);
 
@@ -94,7 +97,7 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
     <div className="border-r-1 relative flex w-[280px] min-w-[200px] flex-col  border-gray-700 bg-[#fff] px-[10px] py-[20px]">
       {selectElementInfo?.uuid && (
         <>
-          <h2 className="mb-4">Element Setting</h2>
+          <h2 className="mb-4">{t('element_setting')}</h2>
           <div className="grid grid-cols-2 gap-4">
             {inputList.map((item: string) => {
               switch (item) {
@@ -253,11 +256,11 @@ export const StyleSetting: React.FC<React.PropsWithChildren> = () => {
             <PdfElementSetting selectElementInfo={selectElementInfo} />
           )}
           <Button
-            className="bottom-0 mt-20 w-[100%] justify-start"
+            className="bottom-0 mt-20 w-[100%]"
             variant="outline"
             onClick={() => deleteElement(selectElementInfo.uuid)}
           >
-            Delete Element
+            {t('delete_element')}
           </Button>
         </>
       )}

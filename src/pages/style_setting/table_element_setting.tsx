@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import { produce } from 'immer';
 import { CardStackMinusIcon } from '@radix-ui/react-icons';
 import { nanoid } from 'nanoid';
+import { useTranslation } from 'react-i18next';
 
 interface ITableElementSettingProps {
   selectElementInfo: IBaseElementType;
@@ -21,6 +22,8 @@ export const TableElementSetting: React.FC<ITableElementSettingProps> = (
 ) => {
   const { selectElementInfo } = props;
   const { table = { header: {}, columns: [] } } = selectElementInfo;
+
+  const { t } = useTranslation();
 
   const { changeSelectElementInfo } = useSelectElementInfoStore(
     (state: ISelectElementInfoType) => state,
@@ -122,11 +125,11 @@ export const TableElementSetting: React.FC<ITableElementSettingProps> = (
         );
       })}
       <Button
-        className="bottom-0 mt-5 w-[100%] justify-start"
+        className="bottom-0 mt-5 w-[100%]"
         variant="outline"
         onClick={addColumn}
       >
-        add field
+        {t('add_field')}
       </Button>
       <div className="mt-5">
         <Label className="mb-10 mr-4">Rows: </Label>
@@ -147,11 +150,11 @@ export const TableElementSetting: React.FC<ITableElementSettingProps> = (
         })}
       </div>
       <Button
-        className="bottom-0 mt-5 w-[100%] justify-start"
+        className="bottom-0 mt-5 w-[100%]"
         variant="outline"
         onClick={addRow}
       >
-        add row
+        {t('add_row')}
       </Button>
     </div>
   );

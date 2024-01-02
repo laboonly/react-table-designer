@@ -8,18 +8,21 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { paperSizeList } from '@/store/constants';
+import { useTranslation } from 'react-i18next';
 
 export const EditToolBar = () => {
   const { paperSize, changePaperSize } = usePaperSizeStore(
     (state: IPaperSizeModalType) => state,
   );
 
+  const { t } = useTranslation();
+
   return (
     <div className="border-1 flex justify-end border-gray-200 bg-[#fff] px-[20px] py-[8px]">
       <div className="flex justify-start space-x-4">
         <div className="flex justify-start">
           <div className="flex w-[200px] items-center ">
-            <Label className="w-[150px]">Paper size: </Label>
+            <Label className="w-[150px]">{t('paper_size')}</Label>
             <Select
               onValueChange={(value) => changePaperSize(value)}
               defaultValue={paperSize}

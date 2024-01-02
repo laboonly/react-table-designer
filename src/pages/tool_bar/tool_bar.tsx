@@ -1,6 +1,5 @@
 import { Button } from '@/components/ui/button';
 import { Pencil2Icon, PlayIcon, CameraIcon } from '@radix-ui/react-icons';
-
 import {
   useSettingModalStore,
   useSelectElementInfoStore,
@@ -13,6 +12,14 @@ import {
 import { useReactToPrint } from 'react-to-print';
 import { useCallback } from 'react';
 import { paperSizeList } from '@/store';
+import { useTranslation } from 'react-i18next';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+} from '@/components/ui/select';
+import { Translate } from '@icon-park/react';
 
 interface IToolBarProps {
   printRef: React.RefObject<HTMLDivElement>;
@@ -34,6 +41,8 @@ export const ToolBar = (props: IToolBarProps) => {
       isEdit: !settingModal,
     });
   };
+
+  const { t, i18n } = useTranslation();
 
   const { paperSize } = usePaperSizeStore(
     (state: IPaperSizeModalType) => state,
@@ -57,22 +66,46 @@ export const ToolBar = (props: IToolBarProps) => {
     });
   };
 
+  const lngs: { [key: string]: { nativeName: string } } = {
+    en: { nativeName: 'English' },
+    zh: { nativeName: '中文' },
+  };
+
   return (
     <div className="mx-[16px] flex justify-between justify-items-center border-b-2 border-gray-400 py-[8px]">
-      <h1 className="leading-[36px]">Page Designer</h1>
+      <h1 className="leading-[36px]">{t('title')}</h1>
       <div className="flex justify-end space-x-4">
         <Button variant="ghost" onClick={() => setSeettingModal()}>
           <Pencil2Icon className="w-4.h mr-2" />
-          {settingModal ? 'Cancel Edit Layout' : 'Edit Layout'}
+          {settingModal ? t('cancel_edit_layout') : t('edit_layout')}
         </Button>
         <Button variant="ghost">
           <PlayIcon className="w-4.h mr-2" />
-          Present
+          {t('present')}
         </Button>
         <Button variant="ghost" onClick={() => handlePrint()}>
           <CameraIcon className="w-4.h mr-2" />
-          Print
+          {t('print')}
         </Button>
+        <div>
+          <Select
+            onValueChange={(value) => i18n.changeLanguage(value)}
+            defaultValue={i18n.language}
+          >
+            <SelectTrigger>
+              <Translate theme="outline" size="22" fill="#333" />
+            </SelectTrigger>
+            <SelectContent>
+              {Object.keys(lngs).map((lng) => {
+                return (
+                  <SelectItem key={lng} value={lng}>
+                    {lngs[lng].nativeName}
+                  </SelectItem>
+                );
+              })}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
     </div>
   );
