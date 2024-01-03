@@ -99,7 +99,7 @@ export const Home = () => {
               </div>
             </div>
           )}
-          <div className="relative h-full grow pt-[54px]">
+          <div className="relative h-full grow px-[70px] pt-[54px]">
             <div className="absolute left-0 top-0 w-full">
               {settingModal && <EditToolBar />}
             </div>
