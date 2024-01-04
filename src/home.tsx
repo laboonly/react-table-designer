@@ -12,6 +12,8 @@ import {
   IPrintAreaPositionStoreType,
   useTableRecordData,
   ITableRecordDataStoreType,
+  useTableFieldData,
+  ITableFieldDataStoreType,
 } from './store';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
@@ -21,6 +23,7 @@ import { Button } from '@/components/ui/button';
 import { useTranslation } from 'react-i18next';
 
 import '@icon-park/react/styles/index.css';
+import { bitable } from '@lark-base-open/js-sdk';
 
 export const Home = () => {
   const settingModal = useSettingModalStore(
@@ -44,9 +47,8 @@ export const Home = () => {
     }
   }, [width, height, scrollLeft, scrollTop, setPrintAreaPosition]);
 
-  const { recordIndex, setRecordIndex, recordsTotal } = useTableRecordData(
-    (state: ITableRecordDataStoreType) => state,
-  );
+  const { recordIndex, setRecordIndex, recordsTotal, setRecordIds } =
+    useTableRecordData((state: ITableRecordDataStoreType) => state);
   const canNext = recordIndex < recordsTotal - 1;
   const canPre = recordIndex > 0;
 
@@ -64,6 +66,35 @@ export const Home = () => {
 
   const { t } = useTranslation();
 
+  const { setTableFieldData, setFieldIds } = useTableFieldData(
+    (state: ITableFieldDataStoreType) => state,
+  );
+
+  const baseTable = bitable.base;
+
+  useEffect(() => {
+    const fn = async () => {
+      const table = await baseTable.getActiveTable();
+
+      // 获取列信息
+      const fieldMap = new Map();
+      const fieldIds: string[] = [];
+      const tableFieldMetaList = await table.getFieldMetaList();
+      tableFieldMetaList.forEach((field) => {
+        fieldMap.set(field.id, field);
+        fieldIds.push(field.id);
+      });
+      console.log('fieldMap---->', fieldMap);
+      setTableFieldData(fieldMap);
+      setFieldIds(fieldIds);
+
+      // 获取行信息
+      const recordIdList = await table.getRecordIdList();
+      setRecordIds(recordIdList);
+    };
+    fn();
+  }, []);
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="h-screen">
@@ -79,7 +110,7 @@ export const Home = () => {
               </div>
               <div className="flex flex-col">
                 <h2 className="mb-4">{t('table_elements')}</h2>
-                <div className="flex justify-center space-x-2">
+                <div className="mb-4 flex justify-center space-x-2">
                   <Button
                     className="w-[150px]"
                     disabled={!canPre}

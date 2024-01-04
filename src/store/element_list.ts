@@ -134,9 +134,11 @@ export interface IRecordsData {
 export interface ITableRecordDataStoreType {
   recordIndex: number;
   records: IRecordsData[];
+  recordIds: string[];
   recordsTotal: number;
   setRecordIndex: (index: number) => void;
   setTableRecordsData: (data: IRecordsData[]) => void;
+  setRecordIds: (data: string[]) => void;
 }
 
 export const useTableRecordData = create<ITableRecordDataStoreType>()(
@@ -144,12 +146,20 @@ export const useTableRecordData = create<ITableRecordDataStoreType>()(
     (set) => ({
       recordIndex: 0,
       records: [],
+      recordIds: [],
       recordsTotal: 0,
       setRecordIndex: (index: number) => set({ recordIndex: index }),
       setTableRecordsData: (data: IRecordsData[]) =>
         set(() => {
           return {
             records: data,
+            recordsTotal: data.length,
+          };
+        }),
+      setRecordIds: (data: string[]) =>
+        set(() => {
+          return {
+            recordIds: data,
             recordsTotal: data.length,
           };
         }),
@@ -166,21 +176,30 @@ export const useTableRecordData = create<ITableRecordDataStoreType>()(
 export interface IFieldsType {
   id: string;
   name: string;
-  type: string;
+  type: number;
 }
 export interface ITableFieldDataStoreType {
   fieldMap: Map<string, IFieldsType>;
+  fieldIds: string[];
   setTableFieldData: (data: Map<string, IFieldsType>) => void;
+  setFieldIds: (data: string[]) => void;
 }
 
 export const useTableFieldData = create<ITableFieldDataStoreType>()(
   persist(
     (set) => ({
       fieldMap: new Map(),
+      fieldIds: [],
       setTableFieldData: (data: Map<string, IFieldsType>) =>
         set(() => {
           return {
             fieldMap: data,
+          };
+        }),
+      setFieldIds: (data: string[]) =>
+        set(() => {
+          return {
+            fieldIds: data,
           };
         }),
     }),

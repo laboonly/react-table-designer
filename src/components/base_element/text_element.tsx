@@ -2,7 +2,7 @@ import { TextIcon } from '@radix-ui/react-icons';
 import { Button } from '@/components/ui/button';
 import { useDrag } from 'react-dnd';
 import { ItemTypes, sourceElementTypes } from '@/store/constants';
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import {
   defaultTextElement,
   usePrintElementListStore,
@@ -12,20 +12,24 @@ import {
   IPrintRecordElementListType,
   IPrintAreaPositionStoreType,
   MyDropResult,
+  useTableRecordData,
+  ITableRecordDataStoreType,
 } from '@/store';
 import { v4 as uuidv4 } from 'uuid';
+import { getCellValueToString } from '@/api/lark';
 
 interface ITextProps {
   sourceType: sourceElementTypes;
   content?: string;
   style?: React.CSSProperties;
   fieldId?: string;
+  fieldType?: number;
 }
 
 export const TextElement: React.FC<React.PropsWithChildren<ITextProps>> = (
   props,
 ) => {
-  const { content = 'Text', style, sourceType, fieldId } = props;
+  const { content = 'Text', style, sourceType, fieldId, fieldType } = props;
 
   const { addPrintElement } = usePrintElementListStore(
     (state: IPrintElementListType) => state,
@@ -37,6 +41,23 @@ export const TextElement: React.FC<React.PropsWithChildren<ITextProps>> = (
     (state: IPrintAreaPositionStoreType) => state.position,
   );
   const elementRef = useRef<HTMLDivElement>(null);
+
+  const { recordIndex, recordIds } = useTableRecordData(
+    (state: ITableRecordDataStoreType) => state,
+  );
+  const [cellValue, setCellValue] = useState<string>('');
+
+  useEffect(() => {
+    const fn = async () => {
+      const cellString = await getCellValueToString(
+        fieldId as string,
+        recordIds[recordIndex],
+        fieldType as number,
+      );
+      setCellValue(cellString);
+    };
+    fn();
+  }, [fieldId, recordIndex, recordIds, fieldType]);
 
   const [, drag] = useDrag(
     () => ({
@@ -113,7 +134,7 @@ export const TextElement: React.FC<React.PropsWithChildren<ITextProps>> = (
       >
         <Button className="w-[100%] justify-start" variant="outline">
           <TextIcon className="w-4.h mr-2" />
-          {content}
+          {`${content}(${cellValue})`}
         </Button>
       </div>
     </div>

@@ -18,12 +18,13 @@ import { useRef } from 'react';
 interface ITmageProps {
   sourceType: sourceElementTypes;
   fieldId?: string;
+  content?: string;
 }
 
 export const ImageElement: React.FC<React.PropsWithChildren<ITmageProps>> = (
   props,
 ) => {
-  const { sourceType, fieldId } = props;
+  const { sourceType, fieldId, content } = props;
   const addPrintElement = usePrintElementListStore(
     (state: IPrintElementListType) => state.addPrintElement,
   );
@@ -101,7 +102,7 @@ export const ImageElement: React.FC<React.PropsWithChildren<ITmageProps>> = (
       >
         <Button className="w-[100%] justify-start" variant="outline">
           <ImageIcon className="w-4.h mr-2" />
-          Image
+          {content ? content : 'Image'}
         </Button>
       </div>
     </div>

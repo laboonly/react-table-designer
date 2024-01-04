@@ -13,18 +13,21 @@ import {
   ISettingModalType,
 } from '@/store';
 import { Textarea } from '@/components/ui/textarea';
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Moveable from 'react-moveable';
 import { flushSync } from 'react-dom';
 import { radiansToDegrees } from '@/lib/utils';
 import ReactHtmlParser from 'react-html-parser';
+import { getCellValueToString } from '@/api/lark';
+
 interface ITextPropsType {
   elementInfo: IBaseElementType;
 }
 
 export const TextPrintElement: React.FC<ITextPropsType> = (props) => {
   const { elementInfo } = props;
-  const { content, styles, uuid, sourceType, fieldId, rotate } = elementInfo;
+  const { content, styles, uuid, sourceType, fieldId, rotate, fieldType } =
+    elementInfo;
   const { width = 200, height = 60, top, left } = styles;
   const targetRef = useRef<HTMLImageElement>(null);
 
@@ -42,7 +45,7 @@ export const TextPrintElement: React.FC<ITextPropsType> = (props) => {
     (state: IPrintRecordElementListType) => state,
   );
 
-  const { recordIndex, records } = useTableRecordData(
+  const { recordIndex, recordIds } = useTableRecordData(
     (state: ITableRecordDataStoreType) => state,
   );
 
@@ -52,6 +55,20 @@ export const TextPrintElement: React.FC<ITextPropsType> = (props) => {
     }
     return selectElementInfo.uuid === uuid && selectElementInfo.isEdit;
   }, [selectElementInfo]);
+
+  const [cellValue, setCellValue] = useState<string>();
+
+  useEffect(() => {
+    const fn = async () => {
+      const cellString = await getCellValueToString(
+        fieldId as string,
+        recordIds[recordIndex],
+        fieldType as number,
+      );
+      setCellValue(cellString);
+    };
+    fn();
+  }, [fieldId, recordIndex, recordIds, fieldType]);
 
   const setEditingElement = () => {
     if (!settingModal) return;
@@ -123,9 +140,7 @@ export const TextPrintElement: React.FC<ITextPropsType> = (props) => {
         ) : (
           fieldId && (
             <div style={{ whiteSpace: 'pre-wrap' }}>
-              {ReactHtmlParser(
-                `<p>${records[recordIndex].fields[fieldId]}</p>`,
-              )}
+              {ReactHtmlParser(`<p>${cellValue}</p>`)}
             </div>
           )
         )}

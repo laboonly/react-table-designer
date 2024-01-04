@@ -9,11 +9,14 @@ import {
   sourceElementTypes,
   IPrintRecordElementListType,
   usePrintRecordElementListStore,
+  ITableRecordDataStoreType,
+  useTableRecordData,
 } from '@/store';
 import Moveable from 'react-moveable';
 import { flushSync } from 'react-dom';
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { radiansToDegrees } from '@/lib/utils';
+import { getAttachmentUrl } from '@/api/lark';
 
 interface IImagePropsType {
   elementInfo: IBaseElementType;
@@ -23,7 +26,7 @@ export const ImagePrintElement: React.FC<
   React.PropsWithChildren<IImagePropsType>
 > = (props) => {
   const { elementInfo } = props;
-  const { src, styles, uuid, sourceType, rotate } = elementInfo;
+  const { src, styles, uuid, sourceType, rotate, fieldId } = elementInfo;
   const { width = 200, height = 60, top, left } = styles;
 
   const targetRef = useRef<HTMLImageElement>(null);
@@ -43,6 +46,22 @@ export const ImagePrintElement: React.FC<
   const { updatePrintRecordElement } = usePrintRecordElementListStore(
     (state: IPrintRecordElementListType) => state,
   );
+
+  const [cellValue, setCellValue] = useState<string>();
+  const { recordIndex, recordIds } = useTableRecordData(
+    (state: ITableRecordDataStoreType) => state,
+  );
+
+  useEffect(() => {
+    const fn = async () => {
+      const cellString = await getAttachmentUrl(
+        fieldId as string,
+        recordIds[recordIndex],
+      );
+      setCellValue(cellString);
+    };
+    fn();
+  }, [fieldId, recordIndex, recordIds]);
 
   const setEditingElement = () => {
     if (!settingModal) return;
@@ -69,7 +88,7 @@ export const ImagePrintElement: React.FC<
           position: 'relative',
           width: width,
           height: height,
-          backgroundImage: `url(${src})`,
+          backgroundImage: `url(${fieldId ? cellValue : src})`,
           backgroundPosition: 'center center',
           backgroundSize: '100% 100%',
           transform: `rotate(${rotate}deg)`,
