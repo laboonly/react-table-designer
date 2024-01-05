@@ -5,8 +5,11 @@ import {
   ITableRecordDataStoreType,
   ITableFieldDataStoreType,
 } from '@/store';
-import { sourceElementTypes } from '@/store/constants';
-import { FieldType } from '@lark-base-open/js-sdk';
+import {
+  sourceElementTypes,
+  textContentFieldType,
+  attachmentContentFieldType,
+} from '@/store/constants';
 
 export const RecordElementContent = () => {
   const { recordIds } = useTableRecordData(
@@ -17,25 +20,6 @@ export const RecordElementContent = () => {
     (state: ITableFieldDataStoreType) => state,
   );
 
-  const textFieldType = [
-    FieldType.Text,
-    FieldType.AutoNumber,
-    FieldType.CreatedTime,
-    FieldType.CreatedUser,
-    FieldType.DateTime,
-    FieldType.Email,
-    FieldType.GroupChat,
-    FieldType.ModifiedTime,
-    FieldType.SingleSelect,
-    FieldType.User,
-    FieldType.SingleLink,
-    FieldType.Number,
-    FieldType.Phone,
-    FieldType.MultiSelect,
-  ];
-
-  const attachment = [FieldType.Attachment];
-
   return (
     <div className="flex flex-col space-y-4">
       {recordIds.length > 0 &&
@@ -43,7 +27,7 @@ export const RecordElementContent = () => {
         fieldIds.map((item: string, index: number) => {
           const field = fieldMap.get(item);
           if (!field?.id) return null;
-          if (textFieldType.includes(field.type)) {
+          if (textContentFieldType.includes(field.type)) {
             return (
               <TextElement
                 key={index}
@@ -54,7 +38,7 @@ export const RecordElementContent = () => {
               />
             );
           }
-          if (attachment.includes(field.type)) {
+          if (attachmentContentFieldType.includes(field.type)) {
             return (
               <ImageElement
                 key={index}

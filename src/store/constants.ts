@@ -1,3 +1,5 @@
+import { FieldType } from '@lark-base-open/js-sdk';
+
 export enum ItemTypes {
   KNIGHT = 'KNIGHT',
 }
@@ -142,5 +144,27 @@ export const paperSizeList = {
     height: '257mm',
   },
 };
+
+export const textContentFieldType = [
+  FieldType.Text, // 文本列
+  FieldType.AutoNumber, // 自动编号
+  FieldType.CreatedTime, // 创建时间
+  FieldType.CreatedUser, // 创建人
+  FieldType.DateTime, // 日期列
+  FieldType.Email, // 邮箱列
+  FieldType.GroupChat, // 讨论组
+  FieldType.ModifiedTime, // 修改日期
+  FieldType.SingleSelect, // 单向选择
+  FieldType.User, // 成员
+  FieldType.SingleLink, // 单向关联
+  FieldType.Number, // 数字列
+  FieldType.Phone, // 电话列
+  FieldType.MultiSelect, // 多选列
+  FieldType.Currency, // 货币列
+  FieldType.Formula, // 公式列
+  FieldType.Url, // url 列
+];
+
+export const attachmentContentFieldType = [FieldType.Attachment];
 
 export const paperSizeOption = ['A3', 'A4', 'A5', 'A6', 'B3', 'B4', 'B5'];
