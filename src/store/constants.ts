@@ -119,7 +119,7 @@ export const paperSizeList = {
   },
   A4: {
     width: '210mm',
-    height: '297mm',
+    height: '296mm',
   },
   A5: {
     width: '148mm',
