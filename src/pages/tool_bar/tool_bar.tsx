@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { Pencil2Icon, PlayIcon, CameraIcon } from '@radix-ui/react-icons';
+import { Pencil2Icon, CameraIcon } from '@radix-ui/react-icons';
 import {
   useSettingModalStore,
   useSelectElementInfoStore,
@@ -79,10 +79,10 @@ export const ToolBar = (props: IToolBarProps) => {
           <Pencil2Icon className="w-4.h mr-2" />
           {settingModal ? t('cancel_edit_layout') : t('edit_layout')}
         </Button>
-        <Button variant="ghost">
+        {/* <Button variant="ghost">
           <PlayIcon className="w-4.h mr-2" />
           {t('present')}
-        </Button>
+        </Button> */}
         <Button variant="ghost" onClick={() => handlePrint()}>
           <CameraIcon className="w-4.h mr-2" />
           {t('print')}

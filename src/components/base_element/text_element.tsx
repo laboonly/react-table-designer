@@ -134,7 +134,7 @@ export const TextElement: React.FC<React.PropsWithChildren<ITextProps>> = (
       >
         <Button className="w-[100%] justify-start" variant="outline">
           <TextIcon className="w-4.h mr-2" />
-          {`${content}(${cellValue})`}
+          {`${content}`}
         </Button>
       </div>
     </div>
