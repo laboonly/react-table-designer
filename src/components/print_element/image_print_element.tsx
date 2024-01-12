@@ -14,6 +14,7 @@ import Moveable from 'react-moveable';
 import { flushSync } from 'react-dom';
 import { useRef } from 'react';
 import { radiansToDegrees } from '@/lib/utils';
+import logo from '../../assets/images/logo.svg';
 
 interface IImagePropsType {
   elementInfo: IBaseElementType;
@@ -69,7 +70,7 @@ export const ImagePrintElement: React.FC<
           position: 'relative',
           width: width,
           height: height,
-          backgroundImage: `url(${src})`,
+          backgroundImage: `url(${src === '' ? logo : src})`,
           backgroundPosition: 'center center',
           backgroundSize: '100% 100%',
           transform: `rotate(${rotate}deg)`,
