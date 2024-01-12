@@ -111,7 +111,7 @@ export const Home = () => {
               </div>
               <div className="flex flex-col">
                 <h2 className="mb-4">{t('table_elements')}</h2>
-                <div className="flex justify-center space-x-2">
+                <div className="mb-4 flex justify-center space-x-2">
                   <Button
                     className="w-[150px]"
                     disabled={!canPre}
