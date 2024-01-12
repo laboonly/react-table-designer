@@ -12,6 +12,10 @@ import {
   IPrintAreaPositionStoreType,
   useTableRecordData,
   ITableRecordDataStoreType,
+  IRecordsData,
+  IFieldsType,
+  useTableFieldData,
+  ITableFieldDataStoreType,
 } from './store';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
@@ -19,7 +23,9 @@ import { useWindowSize, useScroll } from 'react-use';
 import { useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from 'react-i18next';
-
+import { getQueryParamsString } from '@/lib/utils';
+import axios from 'axios';
+import { getTableRecordsData, getTablefieldsData } from '@/api';
 import '@icon-park/react/styles/index.css';
 
 export const Home = () => {
@@ -44,11 +50,37 @@ export const Home = () => {
     }
   }, [width, height, scrollLeft, scrollTop, setPrintAreaPosition]);
 
-  const { recordIndex, setRecordIndex, recordsTotal } = useTableRecordData(
-    (state: ITableRecordDataStoreType) => state,
-  );
+  const { recordIndex, setRecordIndex, recordsTotal, setTableRecordsData } =
+    useTableRecordData((state: ITableRecordDataStoreType) => state);
   const canNext = recordIndex < recordsTotal - 1;
   const canPre = recordIndex > 0;
+
+  const { setTableFieldData } = useTableFieldData(
+    (state: ITableFieldDataStoreType) => state,
+  );
+
+  useEffect(() => {
+    const tableId = getQueryParamsString('tableid');
+    const viewId = getQueryParamsString('viewid');
+    if (!tableId || !viewId) return;
+    axios.defaults.headers.common['Authorization'] =
+      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzcm43YjY3SUJUSzA1dTVZdmQiLCJpYXQiOjE3MDQxNzc5MDMsImV4cCI6MTcwNTkwNTkwM30.r3CEhUOG5lxZ372EABKHVARpPoDGAB2-jlQQH7FcKuA';
+    getTableRecordsData(tableId, viewId).then(
+      (res: { data: { records: IRecordsData[] } }) => {
+        setTableRecordsData(res.data.records);
+        console.log('res.data.records---->', res.data.records);
+      },
+    );
+
+    getTablefieldsData(tableId, viewId).then((res: { data: IFieldsType[] }) => {
+      const fields = res.data;
+      const fieldMap = new Map();
+      fields.forEach((item: IFieldsType) => {
+        fieldMap.set(item.id, item);
+      });
+      setTableFieldData(fieldMap);
+    });
+  }, [setTableRecordsData, setTableFieldData]);
 
   const nextRecord = () => {
     if (recordIndex < recordsTotal - 1) {
