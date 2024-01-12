@@ -17,6 +17,7 @@ import { flushSync } from 'react-dom';
 import { useRef, useEffect, useState } from 'react';
 import { radiansToDegrees } from '@/lib/utils';
 import { getAttachmentUrl } from '@/api/lark';
+import logo from '../../assets/images/logo.svg';
 
 interface IImagePropsType {
   elementInfo: IBaseElementType;
@@ -88,7 +89,9 @@ export const ImagePrintElement: React.FC<
           position: 'relative',
           width: width,
           height: height,
-          backgroundImage: `url(${fieldId ? cellValue : src})`,
+          backgroundImage: `url(${
+            fieldId ? cellValue : src === '' ? logo : src
+          })`,
           backgroundPosition: 'center center',
           backgroundSize: '100% 100%',
           transform: `rotate(${rotate}deg)`,
