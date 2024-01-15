@@ -41,7 +41,7 @@ $ pnpm run dev
 - [Vite](https://github.com/vitejs/vite)
 - [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss)
 
-## 】意见建议
+## 意见建议
 
 Feel free to dive in! [Open an issue](https://github.com/laboonly/react-table-designer) or submit PRs.
 
