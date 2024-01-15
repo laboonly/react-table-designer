@@ -12,6 +12,9 @@
 - word模版(待支持)
 - 其他类型辅助线(待支持)
 
+## Demo
+  https://react-table-designer.vercel.app/
+
 ## 项目安装使用
 ## 安装（Install）:
 
