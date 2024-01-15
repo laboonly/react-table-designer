@@ -1,4 +1,4 @@
-import { TextIcon } from '@radix-ui/react-icons';
+import { ReaderIcon } from '@radix-ui/react-icons';
 import { Button } from '@/components/ui/button';
 import { useDrag } from 'react-dnd';
 import { ItemTypes, sourceElementTypes } from '@/store/constants';
@@ -72,7 +72,7 @@ export const PdfElement: React.FC = () => {
         }}
       >
         <Button className="w-[100%] justify-start" variant="outline">
-          <TextIcon className="w-4.h mr-2" />
+          <ReaderIcon className="w-4.h mr-2" />
           Pdf
         </Button>
       </div>
