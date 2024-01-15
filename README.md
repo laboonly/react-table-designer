@@ -35,16 +35,6 @@ $ pnpm run dev
 # yarn run dev
 ```
 
-
-## Related Efforts
-
-- [Vite](https://github.com/vitejs/vite)
-- [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss)
-
-## 意见建议
-
-Feel free to dive in! [Open an issue](https://github.com/laboonly/react-table-designer) or submit PRs.
-
 ## 后续计划
 - 辅助线
   * 拖拽时的辅助提示
@@ -61,6 +51,10 @@ Feel free to dive in! [Open an issue](https://github.com/laboonly/react-table-de
 - 打印的优化
   * 添加页面分割线
   * 多页面打印
+
+## 意见建议
+
+Feel free to dive in! [Open an issue](https://github.com/laboonly/react-table-designer) or submit PRs.
 
 ## License
 
