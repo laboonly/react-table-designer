@@ -16,10 +16,8 @@ A react table designer
 
 ```sh
 $ cd react-table-designer
-$ pnpm install
+$ yarn install
 
-# npm install
-# yarn install
 ```
 
 ## Usage
@@ -27,10 +25,7 @@ $ pnpm install
 Let's run!
 
 ```sh
-$ pnpm run dev
-
-# npm run dev
-# yarn run dev
+$ yarn run dev
 ```
 
 
