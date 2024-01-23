@@ -1,4 +1,4 @@
-import { bitable, FieldType, IAttachmentField } from '@lark-base-open/js-sdk';
+import { bitable, IAttachmentField } from '@lark-base-open/js-sdk';
 
 export const getCellValueToString = async (
   fieldId: string,

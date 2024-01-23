@@ -45,7 +45,7 @@ export const TextElement: React.FC<React.PropsWithChildren<ITextProps>> = (
   const { recordIndex, recordIds } = useTableRecordData(
     (state: ITableRecordDataStoreType) => state,
   );
-  const [cellValue, setCellValue] = useState<string>('');
+  const [, setCellValue] = useState<string>('');
 
   useEffect(() => {
     const fn = async () => {
