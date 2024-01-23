@@ -20,5 +20,7 @@
     "element_setting": "组件设置",
     "delete_element": "删除组件",
     "add_field": "添加列",
-    "add_row": "添加行"
+    "add_row": "添加行",
+    "clear_all_element_title": "注意",
+    "clear_all_element_content": "此操作将清空画布上的所有元素"
 }

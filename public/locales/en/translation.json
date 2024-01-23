@@ -20,5 +20,7 @@
     "element_setting": "Element Setting",
     "delete_element": "Delete Element",
     "add_field": "Add Field",
-    "add_row": "Add Row"
+    "add_row": "Add Row",
+    "clear_all_element_title": "Notice",
+    "clear_all_element_content": "This action will clear all elements on the canvas"
 }
