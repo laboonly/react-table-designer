@@ -284,3 +284,17 @@ export const usePrintAreaPosition = create<IPrintAreaPositionStoreType>()(
       }),
   }),
 );
+
+// word模版设置
+export interface IWordTemplatesType {
+  wordTemplateModal: boolean;
+  setWordTemplateModal: (isWordTemplate: boolean) => void;
+}
+
+export const useWordTemplates = create<IWordTemplatesType>()((set) => ({
+  wordTemplateModal: false,
+  setWordTemplateModal: (isWordTemplate: boolean) =>
+    set(() => {
+      return { wordTemplateModal: isWordTemplate };
+    }),
+}));
