@@ -31,6 +31,7 @@ import { saveAs } from 'file-saver';
 import { sourceElementTypes } from '@/store/constants';
 import { Label } from '@/components/ui/label';
 import { useTranslation } from 'react-i18next';
+import { getCellValueToString } from '@/api/lark';
 
 export const EditLeftToolBar = () => {
   const [fileName, setFileName] = useState<string>();
@@ -46,18 +47,24 @@ export const EditLeftToolBar = () => {
   const { printList, resetPrintElement, importPrintElement } =
     usePrintElementListStore((state: IPrintElementListType) => state);
 
-  const { recordIndex, records } = useTableRecordData(
+  const { recordIndex, recordIds } = useTableRecordData(
     (state: ITableRecordDataStoreType) => state,
   );
 
   const { t } = useTranslation();
 
   const exportTemplate = () => {
-    const transformRecordList = printRecordList.map((item) => {
+    console.log('printRecordList---->', printRecordList);
+    const transformRecordList = printRecordList.map(async (item) => {
+      const cellString = await getCellValueToString(
+        item.fieldId as string,
+        recordIds[recordIndex],
+        item.fieldType as number,
+      );
       return {
         ...item,
         sourceType: sourceElementTypes.Base,
-        content: records[recordIndex].fields[item.fieldId!],
+        content: cellString,
       };
     });
 
