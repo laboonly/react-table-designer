@@ -50,7 +50,7 @@ export const ToolBar = (props: IToolBarProps) => {
     (state: IPaperSizeModalType) => state,
   );
 
-  const { wordTemplateModal, setWordTemplateModal } = useWordTemplates(
+  const { wordTemplateModal } = useWordTemplates(
     (state: IWordTemplatesType) => state,
   );
 
@@ -82,12 +82,12 @@ export const ToolBar = (props: IToolBarProps) => {
     <div className="mx-[16px] flex justify-between justify-items-center border-b-2 border-gray-400 py-[8px]">
       <h1 className="leading-[36px]">{t('title')}</h1>
       <div className="flex justify-end space-x-4">
-        <Button
+        {/* <Button
           variant="ghost"
           onClick={() => setWordTemplateModal(!wordTemplateModal)}
         >
           {!wordTemplateModal ? t('word_template') : t('designer_modal')}
-        </Button>
+        </Button>*/}
         {!wordTemplateModal && (
           <Button variant="ghost" onClick={() => setSeettingModal()}>
             <Pencil2Icon className="w-4.h mr-2" />
