@@ -125,7 +125,8 @@ export const TablePrintElement: React.FC<ITableElementPropsType> = (props) => {
         target={settingModal ? targetRef : null} // move拖拽对象
         origin={false} // 显示中心点
         keepRatio={false} // 保持宽高
-        edge={false} //
+        edge={true} //
+        renderDirections={['e']} // 变化的点
         ables={[DimensionViewable]}
         dragTarget={dragTarget}
         useMutationObserver={true} // 跟随目标css属性设置而变换
@@ -134,6 +135,7 @@ export const TablePrintElement: React.FC<ITableElementPropsType> = (props) => {
         rotatable={settingModal} // 开启旋转
         zoom={settingModal ? 1 : 0}
         throttleDrag={0}
+        hideDefaultLines={true}
         props={{
           dimensionViewable: true,
           uuid: uuid,

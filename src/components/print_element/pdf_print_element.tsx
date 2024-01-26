@@ -65,6 +65,7 @@ export const PdfPrintElement: React.FC<
           height: height,
           transform: `rotate(${rotate}deg)`,
           textAlign: 'center',
+          border: settingModal ? '1px dashed #020617' : 'none',
         }}
       >
         {pdfFile?.pdfData ? (
@@ -93,11 +94,12 @@ export const PdfPrintElement: React.FC<
         useMutationObserver={true}
         zoom={settingModal ? 1 : 0}
         throttleDrag={0}
+        hideDefaultLines={true}
         padding={{
-          left: 10,
-          right: 10,
-          top: 10,
-          bottom: 10,
+          left: 5,
+          right: 5,
+          top: 5,
+          bottom: 5,
         }}
         onRender={(e) => {
           console.log('onRender');

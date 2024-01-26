@@ -107,7 +107,7 @@ export const TextPrintElement: React.FC<ITextPropsType> = (props) => {
         ref={targetRef}
         id={`uuid-${uuid}`}
         style={{
-          border: settingModal ? '1px solid #020617' : 'none',
+          border: settingModal ? '1px dashed #020617' : 'none',
           cursor: settingModal ? 'move' : 'default',
           wordWrap: 'break-word',
           color: styles.color,
@@ -152,18 +152,20 @@ export const TextPrintElement: React.FC<ITextPropsType> = (props) => {
         target={settingModal ? targetRef : null} // move拖拽对象
         origin={false} // 显示中心点
         keepRatio={false} // 保持宽高
-        edge={false} //
+        edge={true} //
         useMutationObserver={true} // 跟随目标css属性设置而变换
         draggable={settingModal} // 开启拖砖
         resizable={settingModal} // 开启调整大小
         rotatable={settingModal} // 开启旋转
         zoom={settingModal ? 1 : 0}
         throttleDrag={0}
+        renderDirections={['e', 's']} // 变化的点
+        hideDefaultLines={true}
         padding={{
-          left: 10,
-          right: 10,
-          top: 10,
-          bottom: 10,
+          left: 5,
+          right: 5,
+          top: 5,
+          bottom: 5,
         }}
         onRender={(e) => {
           console.log('onRender');
