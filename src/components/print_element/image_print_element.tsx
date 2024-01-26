@@ -74,6 +74,7 @@ export const ImagePrintElement: React.FC<
           backgroundPosition: 'center center',
           backgroundSize: '100% 100%',
           transform: `rotate(${rotate}deg)`,
+          border: settingModal ? '1px dashed #020617' : 'none',
         }}
       />
       <Moveable
@@ -95,12 +96,13 @@ export const ImagePrintElement: React.FC<
         snapDirections={{ top: true, left: true, bottom: false, right: false }}
         verticalGuidelines={[50, 150, 250, 450, 550]}
         horizontalGuidelines={[0, 100, 200, 400, 500]}
+        hideDefaultLines={true}
         elementGuidelines={['.guideLine']}
         padding={{
-          left: 10,
-          right: 10,
-          top: 10,
-          bottom: 10,
+          left: 5,
+          right: 5,
+          top: 5,
+          bottom: 5,
         }}
         onRender={(e) => {
           e.target.style.cssText += e.cssText;
