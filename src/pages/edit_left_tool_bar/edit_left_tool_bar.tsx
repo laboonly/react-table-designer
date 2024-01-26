@@ -195,23 +195,39 @@ export const EditLeftToolBar = () => {
         </DialogContent>
       </Dialog>
       <div>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <Button variant="outline" size="icon">
-                <Clear
-                  theme="outline"
-                  size="24"
-                  fill="#333"
-                  onClick={() => clearAllElement()}
-                />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="right">
-              <p>{t('clear_all_element')}</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline" size="icon">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Button variant="outline" size="icon">
+                      <Clear theme="outline" size="24" fill="#333" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent side="right">
+                    <p>{t('clear_all_element')}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>{t('clear_all_element_title')}</DialogTitle>
+              <DialogDescription>
+                {t('clear_all_element_content')}
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button type="submit" onClick={() => clearAllElement()}>
+                  {t('confirmed')}
+                </Button>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
