@@ -15,13 +15,6 @@ import { useReactToPrint } from 'react-to-print';
 import { useCallback } from 'react';
 import { paperSizeList } from '@/store';
 import { useTranslation } from 'react-i18next';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-} from '@/components/ui/select';
-import { Translate } from '@icon-park/react';
 
 interface IToolBarProps {
   printRef?: React.RefObject<HTMLDivElement>;
@@ -44,7 +37,7 @@ export const ToolBar = (props: IToolBarProps) => {
     });
   };
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const { paperSize } = usePaperSizeStore(
     (state: IPaperSizeModalType) => state,
@@ -104,7 +97,7 @@ export const ToolBar = (props: IToolBarProps) => {
             {t('print')}
           </Button>
         )}
-        <div>
+        {/* <div>
           <Select
             onValueChange={(value) => i18n.changeLanguage(value)}
             defaultValue={i18n.language}
@@ -122,7 +115,7 @@ export const ToolBar = (props: IToolBarProps) => {
               })}
             </SelectContent>
           </Select>
-        </div>
+        </div> */}
       </div>
     </div>
   );
