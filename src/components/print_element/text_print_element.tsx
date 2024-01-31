@@ -45,7 +45,7 @@ export const TextPrintElement: React.FC<ITextPropsType> = (props) => {
     (state: IPrintRecordElementListType) => state,
   );
 
-  const { recordIndex, recordIds } = useTableRecordData(
+  const { activeRecordId } = useTableRecordData(
     (state: ITableRecordDataStoreType) => state,
   );
 
@@ -62,13 +62,13 @@ export const TextPrintElement: React.FC<ITextPropsType> = (props) => {
     const fn = async () => {
       const cellString = await getCellValueToString(
         fieldId as string,
-        recordIds[recordIndex],
+        activeRecordId,
         fieldType as number,
       );
       setCellValue(cellString);
     };
     fn();
-  }, [fieldId, recordIndex, recordIds, fieldType]);
+  }, [fieldId, activeRecordId, fieldType]);
 
   const setEditingElement = () => {
     if (!settingModal) return;
@@ -163,9 +163,9 @@ export const TextPrintElement: React.FC<ITextPropsType> = (props) => {
         hideDefaultLines={true}
         padding={{
           left: 5,
-          right: 5,
+          right: 10,
           top: 5,
-          bottom: 5,
+          bottom: 10,
         }}
         onRender={(e) => {
           console.log('onRender');

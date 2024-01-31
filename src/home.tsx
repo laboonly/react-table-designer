@@ -47,20 +47,28 @@ export const Home = () => {
     }
   }, [width, height, scrollLeft, scrollTop, setPrintAreaPosition]);
 
-  const { recordIndex, setRecordIndex, recordsTotal, setRecordIds } =
-    useTableRecordData((state: ITableRecordDataStoreType) => state);
+  const {
+    recordIndex,
+    setRecordIndex,
+    recordsTotal,
+    setRecordIds,
+    setActiveRecordId,
+    recordIds,
+  } = useTableRecordData((state: ITableRecordDataStoreType) => state);
   const canNext = recordIndex < recordsTotal - 1;
   const canPre = recordIndex > 0;
 
   const nextRecord = () => {
     if (recordIndex < recordsTotal - 1) {
       setRecordIndex(recordIndex + 1);
+      setActiveRecordId(recordIds[recordIndex + 1]);
     }
   };
 
   const preRecord = () => {
     if (recordIndex > 0) {
       setRecordIndex(recordIndex - 1);
+      setActiveRecordId(recordIds[recordIndex - 1]);
     }
   };
 
@@ -90,9 +98,19 @@ export const Home = () => {
 
       // 获取行信息
       const recordIdList = await table.getRecordIdList();
+      console.log('recordIdList--->', recordIdList);
       setRecordIds(recordIdList);
+      setActiveRecordId(recordIdList[recordIndex]);
     };
     fn();
+
+    // 表格选择监听
+    bitable.base.onSelectionChange((event: { data: any }) => {
+      console.log('current selection', event);
+      if (event.data.recordId) {
+        setActiveRecordId(event.data.recordId);
+      }
+    });
   }, []);
 
   return (

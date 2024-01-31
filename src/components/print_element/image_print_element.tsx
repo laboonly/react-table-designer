@@ -49,7 +49,7 @@ export const ImagePrintElement: React.FC<
   );
 
   const [cellValue, setCellValue] = useState<string>();
-  const { recordIndex, recordIds } = useTableRecordData(
+  const { activeRecordId } = useTableRecordData(
     (state: ITableRecordDataStoreType) => state,
   );
 
@@ -57,12 +57,12 @@ export const ImagePrintElement: React.FC<
     const fn = async () => {
       const cellString = await getAttachmentUrl(
         fieldId as string,
-        recordIds[recordIndex],
+        activeRecordId,
       );
       setCellValue(cellString);
     };
     fn();
-  }, [fieldId, recordIndex, recordIds]);
+  }, [fieldId, activeRecordId]);
 
   const setEditingElement = () => {
     if (!settingModal) return;

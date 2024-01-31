@@ -136,9 +136,11 @@ export interface ITableRecordDataStoreType {
   records: IRecordsData[];
   recordIds: string[];
   recordsTotal: number;
+  activeRecordId: string;
   setRecordIndex: (index: number) => void;
   setTableRecordsData: (data: IRecordsData[]) => void;
   setRecordIds: (data: string[]) => void;
+  setActiveRecordId: (recordId: string) => void;
 }
 
 export const useTableRecordData = create<ITableRecordDataStoreType>()(
@@ -148,6 +150,7 @@ export const useTableRecordData = create<ITableRecordDataStoreType>()(
       records: [],
       recordIds: [],
       recordsTotal: 0,
+      activeRecordId: '',
       setRecordIndex: (index: number) => set({ recordIndex: index }),
       setTableRecordsData: (data: IRecordsData[]) =>
         set(() => {
@@ -163,6 +166,8 @@ export const useTableRecordData = create<ITableRecordDataStoreType>()(
             recordsTotal: data.length,
           };
         }),
+      setActiveRecordId: (recordId: string) =>
+        set({ activeRecordId: recordId }),
     }),
     {
       name: 'recordDataStore',
