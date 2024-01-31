@@ -132,7 +132,7 @@ export const TablePrintElement: React.FC<ITableElementPropsType> = (props) => {
         useMutationObserver={true} // 跟随目标css属性设置而变换
         draggable={settingModal} // 开启拖拽
         resizable={settingModal} // 开启调整大小
-        rotatable={settingModal} // 开启旋转
+        rotatable={false} // 开启旋转
         zoom={settingModal ? 1 : 0}
         throttleDrag={0}
         hideDefaultLines={true}

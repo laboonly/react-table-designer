@@ -90,11 +90,12 @@ export const PdfPrintElement: React.FC<
         edge={false} //
         draggable={settingModal} // 开启拖砖
         resizable={settingModal} // 开启调整大小
-        rotatable={settingModal} // 开启旋转
+        rotatable={false} // 开启旋转
         useMutationObserver={true}
         zoom={settingModal ? 1 : 0}
         throttleDrag={0}
         hideDefaultLines={true}
+        renderDirections={['se', 'sw', 'nw', 'ne']}
         padding={{
           left: 5,
           right: 5,
