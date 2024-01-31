@@ -104,10 +104,8 @@ tr {
   opacity: 1;
 }
 
-.rpv-core__page-layer {
-  &:after {
-    box-shadow: none!important;
-  }
+.rpv-core__page-layer:after {
+  box-shadow: none!important;
 }
 
 .rpv-core__inner-pages {
