@@ -66,10 +66,10 @@ export const ToolBar = (props: IToolBarProps) => {
     });
   };
 
-  const lngs: { [key: string]: { nativeName: string } } = {
-    en: { nativeName: 'English' },
-    zh: { nativeName: '中文' },
-  };
+  // const lngs: { [key: string]: { nativeName: string } } = {
+  //   en: { nativeName: 'English' },
+  //   zh: { nativeName: '中文' },
+  // };
 
   return (
     <div className="mx-[16px] flex justify-between justify-items-center border-b-2 border-gray-400 py-[8px]">
