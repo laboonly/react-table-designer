@@ -143,6 +143,10 @@ export const paperSizeList = {
     width: '182mm',
     height: '257mm',
   },
+  Label: {
+    width: '70mm',
+    height: '50mm',
+  },
 };
 
 export const textContentFieldType = [
